@@ -1,0 +1,662 @@
+[
+  {
+    "id": "ก",
+    "character": "ก",
+    "class": "middle",
+    "words": [
+      {
+        "id": "ก-ไก่",
+        "thai": "ไก่",
+        "pronunciation": "ကောကိုင်",
+        "meaning": "ကြက်",
+        "image": "/images/words/kai.svg",
+        "audio": "/audio/words/kai.m4a"
+      }
+    ]
+  },
+  {
+    "id": "จ",
+    "character": "จ",
+    "class": "middle",
+    "words": [
+      {
+        "id": "จ-จาน",
+        "thai": "จาน",
+        "pronunciation": "ကျောကျန်း",
+        "meaning": "ပန်းကန်ပြား",
+        "image": "/images/words/chan.svg",
+        "audio": "/audio/words/chan.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ด",
+    "character": "ด",
+    "class": "middle",
+    "words": [
+      {
+        "id": "ด-เด็ก",
+        "thai": "เด็ก",
+        "pronunciation": "ဒေါဒေ့",
+        "meaning": "ကလေး",
+        "image": "/images/words/dek.svg",
+        "audio": "/audio/words/dek.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ต",
+    "character": "ต",
+    "class": "middle",
+    "words": [
+      {
+        "id": "ต-เต่า",
+        "thai": "เต่า",
+        "pronunciation": "သောသောင်",
+        "meaning": "လိပ်",
+        "image": "/images/words/tao.svg",
+        "audio": "/audio/words/tao.m4a"
+      }
+    ]
+  },
+  {
+    "id": "บ",
+    "character": "บ",
+    "class": "middle",
+    "words": [
+      {
+        "id": "บ-ใบไม้",
+        "thai": "ใบไม้",
+        "pronunciation": "ဘောဘိုင်မိုင်း",
+        "meaning": "သစ်ရွက်",
+        "image": "/images/words/baimai.svg",
+        "audio": "/audio/words/baimai.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ป",
+    "character": "ป",
+    "class": "middle",
+    "words": [
+      {
+        "id": "ป-ปลา",
+        "thai": "ปลา",
+        "pronunciation": "ပေါပလား",
+        "meaning": "ငါး",
+        "image": "/images/words/pla.svg",
+        "audio": "/audio/words/pla.m4a"
+      }
+    ]
+  },
+  {
+    "id": "อ",
+    "character": "อ",
+    "class": "middle",
+    "words": [
+      {
+        "id": "อ-อ่าง",
+        "thai": "อ่าง",
+        "pronunciation": "အောအန်",
+        "meaning": "ဇလုံ /ဘေစင်",
+        "image": "/images/words/ang.svg",
+        "audio": "/audio/words/ang.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ฎ",
+    "character": "ฎ",
+    "class": "middle",
+    "words": [
+      {
+        "id": "ฎ-ชฎา",
+        "thai": "ชฎา",
+        "pronunciation": "ဒေါချဒါး",
+        "meaning": "ထိုင်းခေါင်းဆောင်း",
+        "image": "/images/words/chada.svg",
+        "audio": "/audio/words/chada.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ฏ",
+    "character": "ฏ",
+    "class": "middle",
+    "words": [
+      {
+        "id": "ฏ-ปฏัก",
+        "thai": "ปฏัก",
+        "pronunciation": "သောပါသက်",
+        "meaning": "ချွန်း / လှံတံ",
+        "image": "/images/words/patak.svg",
+        "audio": "/audio/words/patak.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ข",
+    "character": "ข",
+    "class": "high",
+    "words": [
+      {
+        "id": "ข-ไข่",
+        "thai": "ไข่",
+        "pronunciation": "ခေါခိုင်",
+        "meaning": "ဥ",
+        "image": "/images/words/khai.svg",
+        "audio": "/audio/words/khai.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ฃ",
+    "character": "ฃ",
+    "class": "high",
+    "words": [
+      {
+        "id": "ฃ-ขวด",
+        "thai": "ขวด",
+        "pronunciation": "ခေါခုဝပ်",
+        "meaning": "ပုလင်း",
+        "image": "/images/words/khuat.svg",
+        "audio": "/audio/words/khuat.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ฉ",
+    "character": "ฉ",
+    "class": "high",
+    "words": [
+      {
+        "id": "ฉ-ฉิ่ง",
+        "thai": "ฉิ่ง",
+        "pronunciation": "ချောချင်",
+        "meaning": "ထိုင်းတူရိယာ",
+        "image": "/images/words/ching.svg",
+        "audio": "/audio/words/ching.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ถ",
+    "character": "ถ",
+    "class": "high",
+    "words": [
+      {
+        "id": "ถ-ถุง",
+        "thai": "ถุง",
+        "pronunciation": "ထောထွန်",
+        "meaning": "အိတ်",
+        "image": "/images/words/thung.svg",
+        "audio": "/audio/words/thung.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ฐ",
+    "character": "ฐ",
+    "class": "high",
+    "words": [
+      {
+        "id": "ฐ-ฐาน",
+        "thai": "ฐาน",
+        "pronunciation": "ထောထန်း",
+        "meaning": "အောက်ခံပုလ္လင်",
+        "image": "/images/words/than.svg",
+        "audio": "/audio/words/than.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ผ",
+    "character": "ผ",
+    "class": "high",
+    "words": [
+      {
+        "id": "ผ-ผึ้ง",
+        "thai": "ผึ้ง",
+        "pronunciation": "ဖောဖွန့်",
+        "meaning": "ပျား",
+        "image": "/images/words/phueng.svg",
+        "audio": "/audio/words/phueng.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ฝ",
+    "character": "ฝ",
+    "class": "high",
+    "words": [
+      {
+        "id": "ฝ-ฝา",
+        "thai": "ฝา",
+        "pronunciation": "Faw Far",
+        "meaning": "အဖုံး",
+        "image": "/images/words/fa.svg",
+        "audio": "/audio/words/fa.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ส",
+    "character": "ส",
+    "class": "high",
+    "words": [
+      {
+        "id": "ส-เสือ",
+        "thai": "เสือ",
+        "pronunciation": "ဆောဆူးရ",
+        "meaning": "ကျား",
+        "image": "/images/words/suea.svg",
+        "audio": "/audio/words/suea.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ศ",
+    "character": "ศ",
+    "class": "high",
+    "words": [
+      {
+        "id": "ศ-ศาลา",
+        "thai": "ศาลา",
+        "pronunciation": "ဆောဆာလား",
+        "meaning": "ဇရပ်",
+        "image": "/images/words/sala.svg",
+        "audio": "/audio/words/sala.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ษ",
+    "character": "ษ",
+    "class": "high",
+    "words": [
+      {
+        "id": "ษ-ฤาษี",
+        "thai": "ฤาษี",
+        "pronunciation": "ဆောရူဆီး",
+        "meaning": "ရသေ့",
+        "image": "/images/words/ruesi.svg",
+        "audio": "/audio/words/ruesi.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ห",
+    "character": "ห",
+    "class": "high",
+    "words": [
+      {
+        "id": "ห-หีบ",
+        "thai": "หีบ",
+        "pronunciation": "ဟောဟစ်",
+        "meaning": "ရတနာသေတ္တာ",
+        "image": "/images/words/hip.svg",
+        "audio": "/audio/words/hip.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ค",
+    "character": "ค",
+    "class": "low",
+    "words": [
+      {
+        "id": "ค-ควาย",
+        "thai": "ควาย",
+        "pronunciation": "ခေါခွိုင်း",
+        "meaning": "ကျွဲ",
+        "image": "/images/words/khwai.svg",
+        "audio": "/audio/words/khwai.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ฅ",
+    "character": "ฅ",
+    "class": "low",
+    "words": [
+      {
+        "id": "ฅ-คน",
+        "thai": "คน",
+        "pronunciation": "ခေါခွန်",
+        "meaning": "လူ",
+        "image": "/images/words/khon.svg",
+        "audio": "/audio/words/khon.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ฆ",
+    "character": "ฆ",
+    "class": "low",
+    "words": [
+      {
+        "id": "ฆ-ระฆัง",
+        "thai": "ระฆัง",
+        "pronunciation": "ခေါရခန်",
+        "meaning": "ခေါင်းလောင်း",
+        "image": "/images/words/rakhang.svg",
+        "audio": "/audio/words/rakhang.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ง",
+    "character": "ง",
+    "class": "low",
+    "words": [
+      {
+        "id": "ง-งู",
+        "thai": "งู",
+        "pronunciation": "ငေါငူး",
+        "meaning": "မြွေ",
+        "image": "/images/words/ngu.svg",
+        "audio": "/audio/words/ngu.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ช",
+    "character": "ช",
+    "class": "low",
+    "words": [
+      {
+        "id": "ช-ช้าง",
+        "thai": "ช้าง",
+        "pronunciation": "ချောချန်း",
+        "meaning": "ဆင်",
+        "image": "/images/words/chang.svg",
+        "audio": "/audio/words/chang.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ซ",
+    "character": "ซ",
+    "class": "low",
+    "words": [
+      {
+        "id": "ซ-โซ่",
+        "thai": "โซ่",
+        "pronunciation": "ဆောဆို့",
+        "meaning": "ချိန်းကြိုး",
+        "image": "/images/words/so.svg",
+        "audio": "/audio/words/so.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ฌ",
+    "character": "ฌ",
+    "class": "low",
+    "words": [
+      {
+        "id": "ฌ-เฌอ",
+        "thai": "เฌอ",
+        "pronunciation": "ချောချေး",
+        "meaning": "သစ်ပင်",
+        "image": "/images/words/choe.svg",
+        "audio": "/audio/words/choe.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ญ",
+    "character": "ญ",
+    "class": "low",
+    "words": [
+      {
+        "id": "ญ-หญิง",
+        "thai": "หญิง",
+        "pronunciation": "ယောယင်/ယောဖူးယင်",
+        "meaning": "အမျိုးသမီး",
+        "image": "/images/words/ying.svg",
+        "audio": "/audio/words/ying.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ฑ",
+    "character": "ฑ",
+    "class": "low",
+    "words": [
+      {
+        "id": "ฑ-มณโฑ",
+        "thai": "มณโฑ",
+        "pronunciation": "ထောမွန်ထိုး",
+        "meaning": "ရာမရနမင်းသမီး",
+        "image": "/images/words/montho.svg",
+        "audio": "/audio/words/montho.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ฒ",
+    "character": "ฒ",
+    "class": "low",
+    "words": [
+      {
+        "id": "ฒ-ผู้เฒ่า",
+        "thai": "ผู้เฒ่า",
+        "pronunciation": "ထောဖူ့ထောင်း",
+        "meaning": "လူကြီး",
+        "image": "/images/words/phuthao.svg",
+        "audio": "/audio/words/phuthao.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ณ",
+    "character": "ณ",
+    "class": "low",
+    "words": [
+      {
+        "id": "ณ-เณร",
+        "thai": "เณร",
+        "pronunciation": "နောနင်း",
+        "meaning": "ကိုရင်",
+        "image": "/images/words/nen.svg",
+        "audio": "/audio/words/nen.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ท",
+    "character": "ท",
+    "class": "low",
+    "words": [
+      {
+        "id": "ท-ทหาร",
+        "thai": "ทหาร",
+        "pronunciation": "ထောထဟန်",
+        "meaning": "စစ်သား",
+        "image": "/images/words/thahan.svg",
+        "audio": "/audio/words/thahan.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ธ",
+    "character": "ธ",
+    "class": "low",
+    "words": [
+      {
+        "id": "ธ-ธง",
+        "thai": "ธง",
+        "pronunciation": "ထောထုံး",
+        "meaning": "အလံ",
+        "image": "/images/words/thong.svg",
+        "audio": "/audio/words/thong.m4a"
+      }
+    ]
+  },
+  {
+    "id": "น",
+    "character": "น",
+    "class": "low",
+    "words": [
+      {
+        "id": "น-หนู",
+        "thai": "หนู",
+        "pronunciation": "နောနူ",
+        "meaning": "ကြွက်",
+        "image": "/images/words/nu.svg",
+        "audio": "/audio/words/nu.m4a"
+      }
+    ]
+  },
+  {
+    "id": "พ",
+    "character": "พ",
+    "class": "low",
+    "words": [
+      {
+        "id": "พ-พาน",
+        "thai": "พาน",
+        "pronunciation": "ဖောဖန်း",
+        "meaning": "ဆွမ်းအုပ်/လင်ဗန်း",
+        "image": "/images/words/phan.svg",
+        "audio": "/audio/words/phan.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ฟ",
+    "character": "ฟ",
+    "class": "low",
+    "words": [
+      {
+        "id": "ฟ-ฟัน",
+        "thai": "ฟัน",
+        "pronunciation": "Faw Fan",
+        "meaning": "သွား",
+        "image": "/images/words/fan.svg",
+        "audio": "/audio/words/fan.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ภ",
+    "character": "ภ",
+    "class": "low",
+    "words": [
+      {
+        "id": "ภ-สำเภา",
+        "thai": "สำเภา",
+        "pronunciation": "ဖောဆန်ဖောင်း",
+        "meaning": "တရုတ်လှေ",
+        "image": "/images/words/samphao.svg",
+        "audio": "/audio/words/samphao.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ม",
+    "character": "ม",
+    "class": "low",
+    "words": [
+      {
+        "id": "ม-ม้า",
+        "thai": "ม้า",
+        "pronunciation": "မောမား",
+        "meaning": "မြင်း",
+        "image": "/images/words/ma.svg",
+        "audio": "/audio/words/ma.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ย",
+    "character": "ย",
+    "class": "low",
+    "words": [
+      {
+        "id": "ย-ยักษ์",
+        "thai": "ยักษ์",
+        "pronunciation": "ယောယက်",
+        "meaning": "ဘီလူး",
+        "image": "/images/words/yak.svg",
+        "audio": "/audio/words/yak.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ร",
+    "character": "ร",
+    "class": "low",
+    "words": [
+      {
+        "id": "ร-เรือ",
+        "thai": "เรือ",
+        "pronunciation": "ရောရူရ",
+        "meaning": "လှေ",
+        "image": "/images/words/ruea.svg",
+        "audio": "/audio/words/ruea.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ล",
+    "character": "ล",
+    "class": "low",
+    "words": [
+      {
+        "id": "ล-ลิง",
+        "thai": "ลิง",
+        "pronunciation": "လောလင်း",
+        "meaning": "မျောက်",
+        "image": "/images/words/ling.svg",
+        "audio": "/audio/words/ling.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ว",
+    "character": "ว",
+    "class": "low",
+    "words": [
+      {
+        "id": "ว-แหวน",
+        "thai": "แหวน",
+        "pronunciation": "ဝေါဝယ်(န်)",
+        "meaning": "လက်စွပ်",
+        "image": "/images/words/waen.svg",
+        "audio": "/audio/words/waen.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ฬ",
+    "character": "ฬ",
+    "class": "low",
+    "words": [
+      {
+        "id": "ฬ-จุฬา",
+        "thai": "จุฬา",
+        "pronunciation": "လောကျုလား",
+        "meaning": "စွန်",
+        "image": "/images/words/chula.svg",
+        "audio": "/audio/words/chula.m4a"
+      }
+    ]
+  },
+  {
+    "id": "ฮ",
+    "character": "ฮ",
+    "class": "low",
+    "words": [
+      {
+        "id": "ฮ-นกฮูก",
+        "thai": "นกฮูก",
+        "pronunciation": "ဟောနို(က်)ဟု(က်)",
+        "meaning": "ဇီးကွက်",
+        "image": "/images/words/nokhuk.svg",
+        "audio": "/audio/words/nokhuk.m4a"
+      }
+    ]
+  }
+]

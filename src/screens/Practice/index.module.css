@@ -1,0 +1,13 @@
+.practice {
+  display: flex;
+  flex-direction: column;
+  max-width: 42rem;
+  margin: 0 auto;
+}
+
+.empty {
+  margin: var(--space-6) auto;
+  max-width: 28rem;
+  text-align: center;
+  color: var(--color-text-muted);
+}

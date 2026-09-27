@@ -1,0 +1,88 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  height: 100%;
+  padding: var(--space-4) var(--space-3);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: 0 4px 0 var(--color-border);
+  text-align: center;
+}
+
+.character {
+  margin: 0;
+  font-family: var(--font-thai);
+  font-size: 3.5rem;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--color-text);
+}
+
+.words {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.word {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.image,
+.imagePlaceholder {
+  width: 6.5rem;
+  aspect-ratio: 1;
+  margin-bottom: var(--space-2);
+  border-radius: var(--radius-md);
+}
+
+.image {
+  object-fit: contain;
+}
+
+.imagePlaceholder {
+  display: grid;
+  place-items: center;
+  padding: var(--space-2);
+  border: 2px dashed var(--color-border-strong);
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+}
+
+.thai {
+  margin: 0;
+  font-family: var(--font-thai);
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.burmese {
+  margin: 0;
+  font-family: var(--font-burmese);
+  line-height: 1.8;
+}
+
+.meaning {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--color-brand);
+}
+
+.pronunciation {
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.audio {
+  margin-top: var(--space-2);
+}

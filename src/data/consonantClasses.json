@@ -1,0 +1,23 @@
+[
+  {
+    "id": "middle",
+    "name": "Middle Class",
+    "shortName": "Middle",
+    "burmeseName": "အလယ်သံဗျည်းအုပ်စု",
+    "tone": "Mid tone"
+  },
+  {
+    "id": "high",
+    "name": "High Class",
+    "shortName": "High",
+    "burmeseName": "အမြင့်သံဗျည်းအုပ်စု",
+    "tone": "Rising tone"
+  },
+  {
+    "id": "low",
+    "name": "Low Class",
+    "shortName": "Low",
+    "burmeseName": "အနိမ့်သံဗျည်းအုပ်စု",
+    "tone": "Mid tone"
+  }
+]

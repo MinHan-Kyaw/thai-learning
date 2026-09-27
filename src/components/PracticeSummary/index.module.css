@@ -1,0 +1,55 @@
+.summary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  max-width: 28rem;
+  margin: var(--space-6) auto 0;
+  text-align: center;
+}
+
+.title {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-brand);
+  border-radius: var(--radius-sm);
+}
+
+.scoreCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: var(--space-5);
+  border: 2px solid var(--color-brand-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-brand-light);
+  box-shadow: 0 4px 0 var(--color-brand-border);
+}
+
+.scoreLabel {
+  color: var(--color-text-muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.8125rem;
+}
+
+.score {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.message {
+  margin: 0;
+  font-size: 1.125rem;
+}
+
+.actions {
+  display: grid;
+  gap: var(--space-3);
+  width: 100%;
+  margin-top: var(--space-2);
+}

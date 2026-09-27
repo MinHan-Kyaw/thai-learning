@@ -1,0 +1,88 @@
+.home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+  max-width: 30rem;
+  margin: var(--space-5) auto 0;
+  text-align: center;
+}
+
+.letters {
+  display: flex;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.letter {
+  display: grid;
+  place-items: center;
+  width: 4.5rem;
+  height: 4.5rem;
+  border: 2px solid var(--color-brand-border);
+  border-radius: var(--radius-md);
+  background: var(--color-brand-light);
+  box-shadow: 0 4px 0 var(--color-brand-border);
+  font-family: var(--font-thai);
+  font-size: 2.5rem;
+  font-weight: 500;
+  color: var(--color-brand);
+}
+
+.letter:nth-child(2) {
+  transform: translateY(-0.5rem) rotate(4deg);
+}
+
+.letter:first-child {
+  transform: rotate(-4deg);
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(2.25rem, 8vw, 3rem);
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.subtitle {
+  margin: calc(var(--space-3) * -1) 0 0;
+  font-size: 1.25rem;
+  color: var(--color-text-muted);
+}
+
+.actions {
+  display: grid;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+.classes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+  width: 100%;
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.classItem {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-3) var(--space-2);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.classCount {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--color-brand);
+}
+
+.className {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
