@@ -15,7 +15,21 @@ updates:
     commit-message:
       prefix: 'chore(deps)'
       prefix-development: 'chore(deps-dev)'
+    ignore:
+      # eslint-plugin-react and eslint-plugin-jsx-a11y do not support ESLint 10 yet; move eslint and @eslint/js together.
+      - dependency-name: 'eslint'
+        update-types: ['version-update:semver-major']
+      - dependency-name: '@eslint/js'
+        update-types: ['version-update:semver-major']
+      # Types must match the Node.js runtime in .nvmrc (24).
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
     groups:
+      # vitest and its plugins share a peer range, so they must be upgraded in one pull request.
+      vitest:
+        patterns:
+          - 'vitest'
+          - '@vitest/*'
       development-dependencies:
         applies-to: 'version-updates'
         dependency-type: 'development'
