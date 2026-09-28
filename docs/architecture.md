@@ -132,11 +132,11 @@ and is never persisted; the Advanced toggle is screen state and starts off on ev
 
 ### Answer modes
 
-| Mode     | Prompt                                 | Correct when                                             |
-| -------- | -------------------------------------- | -------------------------------------------------------- |
-| `select` | picture, "Which word is this?"         | the chosen option is the answer                          |
-| `type`   | picture + Burmese pronunciation hint   | the text equals the word, `ก ไก่`, `ก (ไก่)` or `กอ ไก่` |
-| `speak`  | picture + `ก (ไก่)` with a play button | a recognized transcript contains the word                |
+| Mode     | Prompt                                 | Correct when                                                                 |
+| -------- | -------------------------------------- | ---------------------------------------------------------------------------- |
+| `select` | picture, "Which word is this?"         | the chosen option is the answer                                              |
+| `type`   | picture + Burmese pronunciation hint   | the text is the letter `ก`; `ไก่`, `ก ไก่`, `ก (ไก่)` or `กอ ไก่` also count |
+| `speak`  | picture + `ก (ไก่)` with a play button | a recognized transcript contains the word                                    |
 
 `src/helpers/thaiAnswer.ts` compares after `normalizeThai` (NFKC, spaces, brackets and zero-width characters removed),
 so mark order and `ำ`/`ํา` spellings don't matter. For `speak`, the recognizer returns up to 5 alternatives and the

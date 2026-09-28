@@ -13,7 +13,7 @@ interface PracticeQuestionProps {
 
 const PROMPTS: Record<AnswerMode, string> = {
   select: 'Which word is this?',
-  type: 'Type this word in Thai',
+  type: 'Type the Thai letter',
   speak: 'Say this word',
 };
 

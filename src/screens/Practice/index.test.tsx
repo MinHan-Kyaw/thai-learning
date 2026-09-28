@@ -166,23 +166,23 @@ describe('Practice', () => {
   });
 
   describe('given advanced practice is turned on', () => {
-    it('asks the learner to type the Thai word', async () => {
+    it('asks the learner to type the Thai letter', async () => {
       renderPractice();
 
       await turnOnAdvanced();
 
       expect(screen.getByRole('switch', { name: 'Advanced' })).toHaveAttribute('aria-checked', 'true');
-      expect(screen.getByRole('heading', { name: 'Type this word in Thai' })).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: 'Type the Thai letter' })).toBeInTheDocument();
       expect(screen.getByRole('textbox', { name: 'Your answer in Thai' })).toBeInTheDocument();
       expect(screen.queryByRole('list', { name: 'Answer options' })).not.toBeInTheDocument();
     });
 
-    describe('given the correct word is typed and Enter is pressed', () => {
+    describe('given the correct letter is typed and Enter is pressed', () => {
       it('scores the answer and plays the word', async () => {
         renderPractice();
         await turnOnAdvanced();
 
-        await userEvent.type(screen.getByRole('textbox'), `${getCorrectAnswer().thai}{Enter}`);
+        await userEvent.type(screen.getByRole('textbox'), `${getCorrectAnswer().consonant}{Enter}`);
 
         expect(screen.getByRole('status')).toHaveTextContent('Correct.');
         expect(screen.getByRole('textbox')).toHaveAttribute('readonly');
@@ -194,7 +194,7 @@ describe('Practice', () => {
           renderPractice();
           await turnOnAdvanced();
 
-          await userEvent.type(screen.getByRole('textbox'), `${getCorrectAnswer().thai}{Enter}`);
+          await userEvent.type(screen.getByRole('textbox'), `${getCorrectAnswer().consonant}{Enter}`);
           await userEvent.keyboard('{Enter}');
 
           expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '1');
@@ -203,13 +203,13 @@ describe('Practice', () => {
       });
     });
 
-    describe('given a wrong word is typed', () => {
+    describe('given a wrong answer is typed', () => {
       it('shows the correct answer after pressing Next', async () => {
         renderPractice();
         await turnOnAdvanced();
         const correctWord = getLetterWithWord(getCorrectAnswer());
 
-        await userEvent.type(screen.getByRole('textbox'), 'ฮ');
+        await userEvent.type(screen.getByRole('textbox'), 'ฮฮ');
         await userEvent.click(screen.getByRole('button', { name: 'Next' }));
 
         expect(screen.getByRole('status')).toHaveTextContent('Incorrect.');
@@ -277,7 +277,7 @@ describe('Practice', () => {
 
         await userEvent.click(screen.getByRole('button', { name: "Can't speak now" }));
 
-        expect(screen.getByRole('heading', { name: 'Type this word in Thai' })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: 'Type the Thai letter' })).toBeInTheDocument();
         expect(screen.getByRole('switch', { name: 'Advanced' })).toHaveAccessibleDescription('Also type your answers');
       });
     });

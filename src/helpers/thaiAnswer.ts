@@ -8,7 +8,7 @@ export const normalizeThai = (text: string): string => text.normalize('NFKC').re
 type AnswerWord = Pick<VocabularyItem, 'consonant' | 'thai'>;
 
 const getAcceptedAnswers = ({ consonant, thai }: AnswerWord): string[] =>
-  [thai, `${consonant}${thai}`, `${consonant}อ${thai}`].map(normalizeThai);
+  [consonant, thai, `${consonant}${thai}`, `${consonant}อ${thai}`].map(normalizeThai);
 
 export const isTypedAnswerCorrect = (answer: AnswerWord, typed: string): boolean =>
   getAcceptedAnswers(answer).includes(normalizeThai(typed));

@@ -19,14 +19,14 @@ describe('PracticeQuestion', () => {
   });
 
   describe('given a typing question', () => {
-    it('asks for the Thai word and hints the Burmese pronunciation without showing the Thai', () => {
+    it('asks for the Thai letter and hints the Burmese pronunciation without showing the Thai', () => {
       render(
         <PracticeQuestion question={buildQuestion(0, 'type')} onPlayAudio={vi.fn()}>
           <p>Answer area</p>
         </PracticeQuestion>
       );
 
-      expect(screen.getByRole('heading', { name: 'Type this word in Thai' })).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: 'Type the Thai letter' })).toBeInTheDocument();
       expect(screen.getByText('ကောကိုင်')).toHaveAttribute('lang', 'my');
       expect(screen.queryByText(/ไก่/)).not.toBeInTheDocument();
     });

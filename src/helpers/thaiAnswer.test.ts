@@ -15,12 +15,12 @@ describe('normalizeThai', () => {
 });
 
 describe('isTypedAnswerCorrect', () => {
-  it('accepts the word, the letter with the word, and the recited letter name', () => {
-    ['ไก่', 'ก (ไก่)', 'กไก่', 'กอ ไก่'].forEach((typed) => expect(isTypedAnswerCorrect(kai, typed)).toBe(true));
+  it('accepts the letter, the word, the letter with the word, and the recited letter name', () => {
+    ['ก', ' ก ', 'ไก่', 'ก (ไก่)', 'กไก่', 'กอ ไก่'].forEach((typed) => expect(isTypedAnswerCorrect(kai, typed)).toBe(true));
   });
 
-  it('rejects a different word or a missing tone mark', () => {
-    ['ไข่', 'ไก', 'ไก่ไก่', ''].forEach((typed) => expect(isTypedAnswerCorrect(kai, typed)).toBe(false));
+  it('rejects a different letter or word, or a missing tone mark', () => {
+    ['ข', 'กก', 'ไข่', 'ไก', 'ไก่ไก่', ''].forEach((typed) => expect(isTypedAnswerCorrect(kai, typed)).toBe(false));
   });
 });
 
