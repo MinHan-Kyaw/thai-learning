@@ -33,19 +33,24 @@ const Consonants = () => {
 
   useEffect(() => () => stopAudio(), []);
 
+  const handleSelectClass = (classId: ConsonantClassId) => {
+    if (classId === selectedClassId) {
+      return;
+    }
+    setSearchParams({ class: classId }, { replace: true });
+    window.scrollTo({ top: 0 });
+  };
+
   return (
     <>
       <h1 className="sr-only">Thai Consonants</h1>
 
-      <ClassTabs
-        classes={consonantClasses}
-        counts={counts}
-        selectedClassId={selectedClassId}
-        onSelect={(classId) => setSearchParams({ class: classId }, { replace: true })}
-      />
+      <div className="sticky top-header z-5 -mx-4 -mt-2 bg-surface px-4 py-2">
+        <ClassTabs classes={consonantClasses} counts={counts} selectedClassId={selectedClassId} onSelect={handleSelectClass} />
+      </div>
 
       {selectedClass && (
-        <section className="mt-6" aria-labelledby="consonant-class-title">
+        <section className="mt-4" aria-labelledby="consonant-class-title">
           <div className="mb-4 flex flex-wrap items-baseline gap-x-3 gap-y-1">
             <h2 id="consonant-class-title" className="text-[1.375rem] font-extrabold">
               {selectedClass.name}

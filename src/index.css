@@ -25,6 +25,7 @@
 
   --breakpoint-xs: 30rem;
   --container-content: 60rem;
+  --spacing-header: 4.375rem;
 
   --shadow-edge: 0 4px 0 var(--color-line);
   --shadow-edge-strong: 0 4px 0 var(--color-line-strong);

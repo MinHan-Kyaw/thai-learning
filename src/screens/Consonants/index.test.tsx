@@ -28,7 +28,9 @@ describe('Consonants', () => {
     expect(screen.getByRole('article', { name: 'ก' })).toHaveTextContent('ကောကိုင်');
   });
 
-  it('switches to the chosen class', async () => {
+  it('switches to the chosen class and scrolls back to its first letter', async () => {
+    const scrollTo = vi.fn();
+    vi.stubGlobal('scrollTo', scrollTo);
     renderConsonants();
 
     await userEvent.click(screen.getByRole('button', { name: /^High/ }));
@@ -36,6 +38,19 @@ describe('Consonants', () => {
     expect(screen.getByRole('heading', { level: 2, name: 'High Class' })).toBeInTheDocument();
     expect(getCards()).toHaveLength(11);
     expect(screen.getByRole('article', { name: 'ข' })).toBeInTheDocument();
+    expect(scrollTo).toHaveBeenCalledWith({ top: 0 });
+  });
+
+  describe('given the selected class is chosen again', () => {
+    it('stays where the learner is', async () => {
+      const scrollTo = vi.fn();
+      vi.stubGlobal('scrollTo', scrollTo);
+      renderConsonants();
+
+      await userEvent.click(screen.getByRole('button', { name: /^Middle/ }));
+
+      expect(scrollTo).not.toHaveBeenCalled();
+    });
   });
 
   it('plays the Thai audio for a word', async () => {

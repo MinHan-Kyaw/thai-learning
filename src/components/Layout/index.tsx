@@ -9,7 +9,7 @@ const NAV_ITEMS = [
 
 const Layout = () => (
   <div className="flex min-h-dvh flex-col">
-    <header className="sticky top-0 z-10 border-b-2 border-line bg-surface">
+    <header className="sticky top-0 z-10 h-header border-b-2 border-line bg-surface">
       <div className="mx-auto flex max-w-content items-center justify-between gap-4 px-4 py-3">
         <Link to="/" className="inline-flex items-center gap-2 rounded-xl text-xl font-extrabold text-brand no-underline">
           <span

@@ -58,7 +58,7 @@ public/
   folders) until a real requirement exists.
 - Style with Tailwind utility classes in the markup; there are no per-component CSS files. Design tokens live in the
   `@theme` block of `src/index.css` and become utilities: colours `bg-brand`, `text-ink-muted`, `border-line`…,
-  fonts `font-thai`/`font-burmese`, shadows `shadow-edge*`, breakpoint `xs` (30rem), width `max-w-content`.
+  fonts `font-thai`/`font-burmese`, shadows `shadow-edge*`, breakpoint `xs` (30rem), width `max-w-content`, header height `h-header`/`top-header` (for bars that stick below it).
 - Use only those semantic tokens. Tailwind's default palette is switched off (`--color-*: initial`), so raw classes like
   `bg-green-600` generate nothing. Add a token to `@theme` instead of hardcoding a colour.
 - Keep class lists readable: Prettier sorts them (`prettier-plugin-tailwindcss`). For conditional classes use the
