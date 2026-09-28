@@ -81,6 +81,10 @@ Because `dist/` has no `404.html`, Cloudflare Pages serves `index.html` for unkn
 `/practice` load the app. The free `*.pages.dev` address works immediately; a custom domain can be added under the
 project's _Custom domains_ tab.
 
+**Link previews:** `index.html` has Open Graph and Twitter card tags so shared links show a title, description and
+`public/og-image.png` (1200×630). Social apps require absolute URLs, so `og:url`, `og:image` and `twitter:image` point
+to `https://thai-learning-dxd.pages.dev`. Update them when a custom domain is added.
+
 **Other providers** — no code changes required:
 
 | Provider        | Build command   | Output | SPA fallback                                                   |
