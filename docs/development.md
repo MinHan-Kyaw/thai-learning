@@ -20,7 +20,9 @@ When adding a dependency, `npm install <pkg>` picks the newest version that sati
 2. Make the change with tests.
 3. Run `npm run lint && npm run typecheck && npm test && npm run build`.
 4. Open a pull request into `develop` using the template. Merge once CI is green.
-5. To release, open a pull request from `develop` into `main`; merging it deploys the site.
+5. To release, open a pull request from `develop` into `main`; merging it deploys the site through Cloudflare Pages.
+6. Optionally open a pull request from `main` back into `develop`. It has no file changes; it only brings the release
+   merge commit onto `develop` so GitHub stops showing `develop` as behind `main`.
 
 ## Conventions
 

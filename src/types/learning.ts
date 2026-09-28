@@ -28,8 +28,11 @@ export interface VocabularyItem extends Word {
   consonant: string;
 }
 
+export type AnswerMode = 'select' | 'type' | 'speak';
+
 export interface PracticeQuestion {
   id: string;
   answer: VocabularyItem;
   options: VocabularyItem[];
+  mode: AnswerMode;
 }

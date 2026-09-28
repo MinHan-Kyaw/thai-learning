@@ -1,4 +1,4 @@
-import type { PracticeQuestion, VocabularyItem } from '../types/learning';
+import type { AnswerMode, PracticeQuestion, VocabularyItem } from '../types/learning';
 
 export const buildVocabularyItem = (overrides: Partial<VocabularyItem> = {}): VocabularyItem => ({
   id: 'ก-ไก่',
@@ -42,9 +42,9 @@ export const buildVocabulary = (): VocabularyItem[] => [
   }),
 ];
 
-export const buildQuestion = (answerIndex = 0): PracticeQuestion => {
+export const buildQuestion = (answerIndex = 0, mode: AnswerMode = 'select'): PracticeQuestion => {
   const options = buildVocabulary().slice(0, 3);
   const answer = options[answerIndex] as VocabularyItem;
 
-  return { id: answer.id, answer, options };
+  return { id: answer.id, answer, options, mode };
 };
