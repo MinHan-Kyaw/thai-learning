@@ -5,8 +5,6 @@ import { getLetterWithWord } from '../../helpers/vocabulary';
 import type { PracticeQuestion as PracticeQuestionType, VocabularyItem } from '../../types/learning';
 import AnswerOption, { type AnswerResult } from '../AnswerOption';
 
-import styles from './index.module.css';
-
 interface PracticeQuestionProps {
   question: PracticeQuestionType;
   selectedAnswerId: string | null;
@@ -42,16 +40,21 @@ const PracticeQuestion = ({ question, selectedAnswerId, answered, onSelectAnswer
   }, [question.id]);
 
   return (
-    <section className={styles.question} aria-labelledby="practice-question-prompt">
+    <section className="flex flex-col items-center gap-3" aria-labelledby="practice-question-prompt">
       {question.answer.image && (
-        <div className={styles.imageFrame}>
-          <img className={styles.image} src={assetUrl(question.answer.image)} alt={question.answer.meaning} lang="my" />
+        <div className="grid aspect-square w-[min(100%,10.5rem)] place-items-center rounded-3xl border-2 border-line bg-surface p-3 shadow-edge md:w-68">
+          <img
+            className="size-full object-contain"
+            src={assetUrl(question.answer.image)}
+            alt={question.answer.meaning}
+            lang="my"
+          />
         </div>
       )}
-      <h2 id="practice-question-prompt" className={styles.prompt} ref={headingRef} tabIndex={-1}>
+      <h2 id="practice-question-prompt" className="rounded-xl text-center text-2xl font-extrabold" ref={headingRef} tabIndex={-1}>
         Which word is this?
       </h2>
-      <ul className={styles.options} aria-label="Answer options" role="list">
+      <ul className="grid w-full gap-3 md:grid-cols-3" aria-label="Answer options" role="list">
         {question.options.map((option) => (
           <li key={option.id}>
             <AnswerOption

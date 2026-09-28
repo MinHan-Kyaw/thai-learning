@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import type { ConsonantClass } from '../../types/learning';
@@ -27,8 +27,8 @@ describe('ClassTabs', () => {
     const button = screen.getByRole('button', { name: /Middle/ });
 
     expect(button).not.toHaveTextContent('Class');
-    expect(button.querySelector('.count')).toHaveTextContent('9 letters');
-    expect(button.querySelector('.visuallyHidden')).toHaveTextContent('letters');
+    expect(button).toHaveTextContent('Middle 9 letters');
+    expect(within(button).getByText('letters')).toHaveClass('sr-only');
   });
 
   it('marks the selected class as pressed', () => {

@@ -10,7 +10,12 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const Button = ({ variant = 'primary', fullWidth = false, type = 'button', className, ...props }: ButtonProps) => (
-  <button type={type} className={classNames(getButtonClassName(variant, fullWidth), className)} {...props} />
+  <button
+    type={type}
+    className={classNames(getButtonClassName(variant, fullWidth), className)}
+    data-variant={variant}
+    {...props}
+  />
 );
 
 export default Button;

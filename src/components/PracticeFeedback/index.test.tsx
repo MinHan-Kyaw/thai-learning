@@ -35,7 +35,7 @@ describe('PracticeFeedback', () => {
       );
 
       expect(screen.getByRole('status')).toHaveTextContent('Correct.');
-      expect(screen.getByRole('status')).toHaveClass('visuallyHidden');
+      expect(screen.getByRole('status')).toHaveClass('sr-only');
     });
   });
 
@@ -46,7 +46,7 @@ describe('PracticeFeedback', () => {
       );
 
       expect(screen.getByRole('status')).toHaveTextContent('Incorrect. The answer is ก (ไก่).');
-      expect(screen.getByRole('status')).toHaveClass('visuallyHidden');
+      expect(screen.getByRole('status')).toHaveClass('sr-only');
     });
   });
 

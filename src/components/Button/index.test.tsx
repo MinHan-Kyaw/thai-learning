@@ -26,7 +26,7 @@ describe('Button', () => {
   it('applies the variant class', () => {
     render(<Button variant="secondary">Back</Button>);
 
-    expect(screen.getByRole('button', { name: 'Back' })).toHaveClass('secondary');
+    expect(screen.getByRole('button', { name: 'Back' })).toHaveAttribute('data-variant', 'secondary');
   });
 
   describe('given it is disabled', () => {
@@ -56,6 +56,6 @@ describe('ButtonLink', () => {
     const link = screen.getByRole('link', { name: 'Start Practice' });
 
     expect(link).toHaveAttribute('href', '/practice');
-    expect(link).toHaveClass('button', 'primary');
+    expect(link).toHaveAttribute('data-variant', 'primary');
   });
 });

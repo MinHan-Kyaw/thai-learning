@@ -3,8 +3,6 @@ import { useEffect, useRef } from 'react';
 import Button from '../Button';
 import ButtonLink from '../Button/ButtonLink';
 
-import styles from './index.module.css';
-
 interface PracticeSummaryProps {
   score: number;
   total: number;
@@ -34,18 +32,21 @@ const PracticeSummary = ({ score, total, onRestart }: PracticeSummaryProps) => {
   }, []);
 
   return (
-    <section className={styles.summary} aria-labelledby="practice-summary-title">
-      <h1 id="practice-summary-title" className={styles.title} ref={headingRef} tabIndex={-1}>
+    <section
+      className="mx-auto mt-8 flex max-w-md flex-col items-center gap-4 text-center"
+      aria-labelledby="practice-summary-title"
+    >
+      <h1 id="practice-summary-title" className="rounded-xl text-[2rem] font-extrabold text-brand" ref={headingRef} tabIndex={-1}>
         Practice complete!
       </h1>
-      <div className={styles.scoreCard}>
-        <span className={styles.scoreLabel}>Your score</span>
-        <span className={styles.score}>
+      <div className="flex w-full flex-col items-center rounded-3xl border-2 border-brand-border bg-brand-light p-6 shadow-edge-brand-soft">
+        <span className="text-[0.8125rem] font-bold tracking-[0.05em] text-ink-muted uppercase">Your score</span>
+        <span className="text-5xl leading-[1.2] font-extrabold">
           {score} / {total}
         </span>
       </div>
-      <p className={styles.message}>{getMessage(score, total)}</p>
-      <div className={styles.actions}>
+      <p className="text-lg">{getMessage(score, total)}</p>
+      <div className="mt-2 grid w-full gap-3">
         <Button fullWidth onClick={onRestart}>
           Practice again
         </Button>

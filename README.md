@@ -10,7 +10,7 @@ progress lives only in memory for the current session.
 
 ## Tech stack
 
-React 19 · TypeScript · Vite · CSS Modules · React Router · Vitest · React Testing Library · ESLint · Prettier · Stylelint
+React 19 · TypeScript · Vite · Tailwind CSS 4 · React Router · Vitest · React Testing Library · ESLint · Prettier · Stylelint
 
 ## Getting started
 

@@ -10,7 +10,7 @@ interface ButtonLinkProps extends LinkProps {
 }
 
 const ButtonLink = ({ variant = 'primary', fullWidth = false, className, ...props }: ButtonLinkProps) => (
-  <Link className={classNames(getButtonClassName(variant, fullWidth), className)} {...props} />
+  <Link className={classNames(getButtonClassName(variant, fullWidth), className)} data-variant={variant} {...props} />
 );
 
 export default ButtonLink;

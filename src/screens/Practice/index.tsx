@@ -19,8 +19,6 @@ import { getVocabulary } from '../../helpers/vocabulary';
 import { playAudio, stopAudio } from '../../services/audio';
 import type { VocabularyItem } from '../../types/learning';
 
-import styles from './index.module.css';
-
 const buildQuestions = () => generatePracticeQuestions(getVocabulary(consonants));
 
 const Practice = () => {
@@ -30,7 +28,11 @@ const Practice = () => {
   useEffect(() => () => stopAudio(), []);
 
   if (state.questions.length === 0) {
-    return <p className={styles.empty}>There is not enough vocabulary to start a practice session yet.</p>;
+    return (
+      <p className="mx-auto my-8 max-w-md text-center text-ink-muted">
+        There is not enough vocabulary to start a practice session yet.
+      </p>
+    );
   }
 
   if (isPracticeComplete(state) || !question) {
@@ -69,8 +71,8 @@ const Practice = () => {
   };
 
   return (
-    <div className={styles.practice}>
-      <h1 className="visuallyHidden">Practice</h1>
+    <div className="mx-auto flex max-w-[42rem] flex-col">
+      <h1 className="sr-only">Practice</h1>
       <ProgressBar
         current={state.currentQuestionIndex + (state.answered ? 1 : 0)}
         total={state.questions.length}
