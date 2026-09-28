@@ -39,7 +39,8 @@ flowchart LR
 | `/practice`                           | Picture quiz                                                  |
 | `*`                                   | Redirects to `/`                                              |
 
-Static hosts must serve `index.html` for unknown paths (the deploy workflow copies it to `404.html` for GitHub Pages).
+Static hosts must serve `index.html` for unknown paths. Cloudflare Pages does this automatically because the build has no
+`404.html`.
 
 ## Data model
 
