@@ -14,12 +14,12 @@ When adding a dependency, `npm install <pkg>` picks the newest version that sati
 ## Workflow
 
 - `develop` is the default branch where work is integrated; `main` is the released (deployed) branch.
-- Nobody pushes directly to `develop` or `main`. Both only change through a pull request with at least one approval.
+- Nobody pushes directly to `develop` or `main`. Both only change through a pull request (enforced by a GitHub ruleset; no approval required).
 
 1. Branch from `develop` (`feature/…`, `chore/…`, `content/…`).
 2. Make the change with tests.
 3. Run `npm run lint && npm run typecheck && npm test && npm run build`.
-4. Open a pull request into `develop` using the template. CI must be green and one reviewer must approve.
+4. Open a pull request into `develop` using the template. Merge once CI is green.
 5. To release, open a pull request from `develop` into `main`; merging it deploys the site.
 
 ## Conventions
@@ -65,9 +65,21 @@ npm ci --ignore-scripts → lint → type check → unit tests → production bu
 
 The app is a static bundle (`dist/`). `vite.config.ts` reads `BASE_PATH` (default `/`) for sub-path hosting.
 
-**GitHub Pages (configured):** `.github/workflows/deploy.yml` runs on pushes to `main`. Enable it once in the repository:
-_Settings → Pages → Build and deployment → Source: GitHub Actions_. The workflow copies `index.html` to `404.html` so
-deep links such as `/practice` load the app.
+**Cloudflare Pages (configured):** connected to the GitHub repository in the Cloudflare dashboard
+(_Workers & Pages → Pages → Connect to Git_). Cloudflare builds on every push; nothing in this repo triggers it.
+
+| Setting                | Value                                                 |
+| ---------------------- | ----------------------------------------------------- |
+| Production branch      | `main` (the live site)                                |
+| Preview deployments    | every other branch and pull request (own preview URL) |
+| Framework preset       | Vite / React (Vite)                                   |
+| Build command          | `npm run build`                                       |
+| Build output directory | `dist`                                                |
+| Environment variable   | `NODE_VERSION` = `24`                                 |
+
+Because `dist/` has no `404.html`, Cloudflare Pages serves `index.html` for unknown paths, so deep links such as
+`/practice` load the app. The free `*.pages.dev` address works immediately; a custom domain can be added under the
+project's _Custom domains_ tab.
 
 **Other providers** — no code changes required:
 
@@ -82,6 +94,6 @@ Set `BASE_PATH=/sub/path/` only when the site is not served from the domain root
 ## Workflow security rules
 
 - Pin every action to a full commit SHA with a `# vX.Y.Z` comment; Dependabot keeps them updated.
-- Declare `permissions:` at workflow level and escalate per job (see `deploy.yml`).
+- Declare `permissions:` at workflow level and escalate per job only when a job needs more.
 - Never interpolate `${{ … }}` inside a `run:` block; pass values through `env:`.
 - Never use `secrets: inherit`.

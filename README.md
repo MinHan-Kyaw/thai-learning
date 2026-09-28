@@ -41,8 +41,9 @@ Open http://localhost:5173.
 
 - **CI** (`.github/workflows/ci.yml`) runs on every pull request and on pushes to `develop` and `main`:
   install → lint → type check → unit tests → production build. A pull request is not ready until all steps pass.
-- **Deploy** (`.github/workflows/deploy.yml`) publishes `main` to GitHub Pages. The hosting provider is not baked into the
-  app; see [docs/development.md](docs/development.md#deployment) to switch providers.
+- **Deploy**: Cloudflare Pages builds and publishes `main` as the live site, and gives every other branch and pull
+  request its own preview URL. The hosting provider is not baked into the app; see
+  [docs/development.md](docs/development.md#deployment).
 
 ## Documentation
 
