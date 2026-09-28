@@ -8,7 +8,7 @@ const ProgressBar = ({ current, total, label }: ProgressBarProps) => {
   const percentage = total > 0 ? Math.round((current / total) * 100) : 0;
 
   return (
-    <div className="mb-4 flex items-center gap-3">
+    <div className="flex flex-1 items-center gap-3">
       <div
         className="h-4 flex-1 overflow-hidden rounded-full bg-line"
         role="progressbar"

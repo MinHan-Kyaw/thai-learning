@@ -1,11 +1,13 @@
 import { ANSWER_OPTION_COUNT, QUESTION_COUNT } from '../constants/practice';
-import type { PracticeQuestion, VocabularyItem } from '../types/learning';
+import type { AnswerMode, PracticeQuestion, VocabularyItem } from '../types/learning';
 
 import { randomizeArray } from './randomizeArray';
+import { isSpokenAnswerCorrect, isTypedAnswerCorrect } from './thaiAnswer';
 
 interface GenerateQuestionsOptions {
   questionCount?: number;
   optionCount?: number;
+  modes?: readonly AnswerMode[];
   random?: () => number;
 }
 
@@ -13,12 +15,17 @@ export interface PracticeState {
   questions: PracticeQuestion[];
   currentQuestionIndex: number;
   selectedAnswerId: string | null;
+  response: string;
   answered: boolean;
   score: number;
 }
 
+export type PracticeAnswer = Pick<PracticeState, 'selectedAnswerId' | 'response'>;
+
 export type PracticeAction =
   | { type: 'SELECT_ANSWER'; answerId: string }
+  | { type: 'ENTER_RESPONSE'; response: string }
+  | { type: 'SET_ANSWER_MODES'; modes: readonly AnswerMode[] }
   | { type: 'SUBMIT_ANSWER' }
   | { type: 'NEXT_QUESTION' }
   | { type: 'RESTART'; questions: PracticeQuestion[] };
@@ -42,9 +49,27 @@ const pickDistractors = (
     .slice(0, count);
 };
 
+export const getAnswerModes = ({ advanced, speech }: { advanced: boolean; speech: boolean }): AnswerMode[] => {
+  if (!advanced) {
+    return ['select'];
+  }
+  return speech ? ['select', 'type', 'speak'] : ['select', 'type'];
+};
+
+export const assignAnswerModes = (
+  count: number,
+  modes: readonly AnswerMode[],
+  random: () => number = Math.random
+): AnswerMode[] => Array.from({ length: count }, () => modes[Math.floor(random() * modes.length)] ?? 'select');
+
 export const generatePracticeQuestions = (
   vocabulary: readonly VocabularyItem[],
-  { questionCount = QUESTION_COUNT, optionCount = ANSWER_OPTION_COUNT, random = Math.random }: GenerateQuestionsOptions = {}
+  {
+    questionCount = QUESTION_COUNT,
+    optionCount = ANSWER_OPTION_COUNT,
+    modes = ['select'],
+    random = Math.random,
+  }: GenerateQuestionsOptions = {}
 ): PracticeQuestion[] => {
   const pool = vocabulary.filter((item) => item.image);
   const distinctWordCount = new Set(pool.map((item) => item.thai)).size;
@@ -53,19 +78,22 @@ export const generatePracticeQuestions = (
     return [];
   }
 
-  return randomizeArray(pool, random)
-    .slice(0, questionCount)
-    .map((answer) => ({
-      id: answer.id,
-      answer,
-      options: randomizeArray([answer, ...pickDistractors(pool, answer, optionCount - 1, random)], random),
-    }));
+  const answers = randomizeArray(pool, random).slice(0, questionCount);
+  const answerModes = assignAnswerModes(answers.length, modes, random);
+
+  return answers.map((answer, index) => ({
+    id: answer.id,
+    answer,
+    options: randomizeArray([answer, ...pickDistractors(pool, answer, optionCount - 1, random)], random),
+    mode: answerModes[index] ?? 'select',
+  }));
 };
 
 export const createPracticeState = (questions: PracticeQuestion[]): PracticeState => ({
   questions,
   currentQuestionIndex: 0,
   selectedAnswerId: null,
+  response: '',
   answered: false,
   score: 0,
 });
@@ -76,33 +104,78 @@ export const getCurrentQuestion = (state: PracticeState): PracticeQuestion | und
 export const isPracticeComplete = (state: PracticeState): boolean =>
   state.questions.length > 0 && state.currentQuestionIndex >= state.questions.length;
 
-export const isAnswerCorrect = (question: PracticeQuestion, answerId: string | null): boolean => question.answer.id === answerId;
+export const isAnswerCorrect = (question: PracticeQuestion, { selectedAnswerId, response }: PracticeAnswer): boolean => {
+  switch (question.mode) {
+    case 'type':
+      return isTypedAnswerCorrect(question.answer, response);
+    case 'speak':
+      return isSpokenAnswerCorrect(question.answer, response);
+    default:
+      return question.answer.id === selectedAnswerId;
+  }
+};
+
+export const hasAnswer = (question: PracticeQuestion, { selectedAnswerId, response }: PracticeAnswer): boolean =>
+  question.mode === 'select' ? selectedAnswerId !== null : response.trim() !== '';
 
 export const practiceReducer = (state: PracticeState, action: PracticeAction): PracticeState => {
   const question = getCurrentQuestion(state);
 
   switch (action.type) {
     case 'SELECT_ANSWER':
-      if (!question || state.answered || !question.options.some((option) => option.id === action.answerId)) {
+      if (
+        !question ||
+        state.answered ||
+        question.mode !== 'select' ||
+        !question.options.some((option) => option.id === action.answerId)
+      ) {
         return state;
       }
       return { ...state, selectedAnswerId: action.answerId };
 
+    case 'ENTER_RESPONSE':
+      if (!question || state.answered || question.mode === 'select') {
+        return state;
+      }
+      return { ...state, response: action.response };
+
+    case 'SET_ANSWER_MODES': {
+      const firstChangeableIndex = state.answered ? state.currentQuestionIndex + 1 : state.currentQuestionIndex;
+      const questions = state.questions.map((item, index) => {
+        const mode = action.modes[index];
+        return index >= firstChangeableIndex && mode && mode !== item.mode ? { ...item, mode } : item;
+      });
+      const currentModeChanged = questions[state.currentQuestionIndex] !== question;
+
+      return {
+        ...state,
+        questions,
+        selectedAnswerId: currentModeChanged ? null : state.selectedAnswerId,
+        response: currentModeChanged ? '' : state.response,
+      };
+    }
+
     case 'SUBMIT_ANSWER':
-      if (!question || state.answered || state.selectedAnswerId === null) {
+      if (!question || state.answered || !hasAnswer(question, state)) {
         return state;
       }
       return {
         ...state,
         answered: true,
-        score: isAnswerCorrect(question, state.selectedAnswerId) ? state.score + 1 : state.score,
+        score: isAnswerCorrect(question, state) ? state.score + 1 : state.score,
       };
 
     case 'NEXT_QUESTION':
       if (!state.answered) {
         return state;
       }
-      return { ...state, currentQuestionIndex: state.currentQuestionIndex + 1, selectedAnswerId: null, answered: false };
+      return {
+        ...state,
+        currentQuestionIndex: state.currentQuestionIndex + 1,
+        selectedAnswerId: null,
+        response: '',
+        answered: false,
+      };
 
     case 'RESTART':
       return createPracticeState(action.questions);

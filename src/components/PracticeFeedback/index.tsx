@@ -1,8 +1,8 @@
 import { classNames } from '../../helpers/classNames';
 import { getLetterWithWord } from '../../helpers/vocabulary';
 import type { VocabularyItem } from '../../types/learning';
-import type { AnswerResult } from '../AnswerOption';
 import Button from '../Button';
+import type { AnswerResult } from '../ResultIcon';
 
 interface PracticeFeedbackProps {
   result: AnswerResult | null;

@@ -6,53 +6,61 @@ import { buildQuestion } from '../../tests/fixtures';
 import PracticeQuestion from '.';
 
 describe('PracticeQuestion', () => {
-  it('renders the picture, prompt and exactly three answer options', () => {
-    render(<PracticeQuestion question={buildQuestion()} selectedAnswerId={null} answered={false} onSelectAnswer={vi.fn()} />);
+  it('renders the picture, the prompt and the answer area', () => {
+    render(
+      <PracticeQuestion question={buildQuestion()} onPlayAudio={vi.fn()}>
+        <p>Answer area</p>
+      </PracticeQuestion>
+    );
 
     expect(screen.getByRole('img', { name: 'ကြက်' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Which word is this?' })).toBeInTheDocument();
-    expect(screen.getAllByRole('button')).toHaveLength(3);
-    expect(screen.getByRole('button', { name: /ก \(ไก่\)/ })).toHaveTextContent('ကောကိုင်');
+    expect(screen.getByText('Answer area')).toBeInTheDocument();
   });
 
-  it('calls onSelectAnswer with the chosen option', async () => {
-    const onSelectAnswer = vi.fn();
-    const question = buildQuestion();
-    render(<PracticeQuestion question={question} selectedAnswerId={null} answered={false} onSelectAnswer={onSelectAnswer} />);
+  describe('given a typing question', () => {
+    it('asks for the Thai word and hints the Burmese pronunciation without showing the Thai', () => {
+      render(
+        <PracticeQuestion question={buildQuestion(0, 'type')} onPlayAudio={vi.fn()}>
+          <p>Answer area</p>
+        </PracticeQuestion>
+      );
 
-    await userEvent.click(screen.getByRole('button', { name: /จ \(จาน\)/ }));
-
-    expect(onSelectAnswer).toHaveBeenCalledWith(question.options[1]);
-  });
-
-  describe('given an answer is selected but not yet evaluated', () => {
-    it('highlights the selection without revealing the result', () => {
-      render(<PracticeQuestion question={buildQuestion()} selectedAnswerId="จ-จาน" answered={false} onSelectAnswer={vi.fn()} />);
-
-      expect(screen.getByRole('button', { name: /จ \(จาน\)/ })).toHaveAttribute('aria-pressed', 'true');
-      expect(screen.queryByText('Correct')).not.toBeInTheDocument();
-      expect(screen.queryByText('Incorrect')).not.toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: 'Type this word in Thai' })).toBeInTheDocument();
+      expect(screen.getByText('ကောကိုင်')).toHaveAttribute('lang', 'my');
+      expect(screen.queryByText(/ไก่/)).not.toBeInTheDocument();
     });
   });
 
-  describe('given an incorrect answer has been evaluated', () => {
-    it('marks the selected answer as incorrect, reveals the correct one and disables the options', () => {
-      render(<PracticeQuestion question={buildQuestion()} selectedAnswerId="จ-จาน" answered onSelectAnswer={vi.fn()} />);
+  describe('given a speaking question', () => {
+    it('shows the word to say and lets the learner hear it first', async () => {
+      const onPlayAudio = vi.fn();
+      render(
+        <PracticeQuestion question={buildQuestion(0, 'speak')} onPlayAudio={onPlayAudio}>
+          <p>Answer area</p>
+        </PracticeQuestion>
+      );
 
-      expect(screen.getByRole('button', { name: /จ \(จาน\)/ })).toHaveTextContent('Incorrect');
-      expect(screen.getByRole('button', { name: /ก \(ไก่\)/ })).toHaveTextContent('Correct');
-      screen.getAllByRole('button').forEach((button) => expect(button).toBeDisabled());
+      await userEvent.click(screen.getByRole('button', { name: 'Play Thai audio for ก (ไก่)' }));
+
+      expect(screen.getByRole('heading', { name: 'Say this word' })).toBeInTheDocument();
+      expect(screen.getByText('ก (ไก่)')).toHaveAttribute('lang', 'th');
+      expect(onPlayAudio).toHaveBeenCalledTimes(1);
     });
   });
 
   describe('given the question changes', () => {
     it('moves focus to the prompt for keyboard and screen reader users', () => {
       const { rerender } = render(
-        <PracticeQuestion question={buildQuestion(0)} selectedAnswerId={null} answered={false} onSelectAnswer={vi.fn()} />
+        <PracticeQuestion question={buildQuestion(0)} onPlayAudio={vi.fn()}>
+          <p>Answer area</p>
+        </PracticeQuestion>
       );
 
       rerender(
-        <PracticeQuestion question={buildQuestion(1)} selectedAnswerId={null} answered={false} onSelectAnswer={vi.fn()} />
+        <PracticeQuestion question={buildQuestion(1)} onPlayAudio={vi.fn()}>
+          <p>Answer area</p>
+        </PracticeQuestion>
       );
 
       expect(screen.getByRole('heading', { name: 'Which word is this?' })).toHaveFocus();
