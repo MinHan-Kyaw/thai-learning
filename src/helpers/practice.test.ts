@@ -2,9 +2,12 @@ import { buildQuestion, buildVocabulary, buildVocabularyItem } from '../tests/fi
 import type { VocabularyItem } from '../types/learning';
 
 import {
+  assignAnswerModes,
   createPracticeState,
   generatePracticeQuestions,
+  getAnswerModes,
   getCurrentQuestion,
+  hasAnswer,
   isAnswerCorrect,
   isPracticeComplete,
   practiceReducer,
@@ -74,6 +77,21 @@ describe('generatePracticeQuestions', () => {
     expect(() => generatePracticeQuestions(vocabulary)).not.toThrow();
   });
 
+  it('asks every question by selecting an answer by default', () => {
+    generatePracticeQuestions(buildLargeVocabulary(20)).forEach((question) => expect(question.mode).toBe('select'));
+  });
+
+  describe('given several answer modes', () => {
+    it('mixes them across the questions', () => {
+      const questions = generatePracticeQuestions(buildLargeVocabulary(60), {
+        questionCount: 60,
+        modes: ['select', 'type', 'speak'],
+      });
+
+      expect(new Set(questions.map((question) => question.mode))).toEqual(new Set(['select', 'type', 'speak']));
+    });
+  });
+
   describe('given some words have no image', () => {
     it('only asks about words that can be shown as a picture', () => {
       const vocabulary = [...buildVocabulary(), buildVocabularyItem({ id: 'ฑ-มณโฑ', thai: 'มณโฑ', image: undefined })];
@@ -96,7 +114,14 @@ describe('practiceReducer', () => {
   const initialState = createPracticeState(questions);
 
   it('starts at the first question with no score', () => {
-    expect(initialState).toEqual({ questions, currentQuestionIndex: 0, selectedAnswerId: null, answered: false, score: 0 });
+    expect(initialState).toEqual({
+      questions,
+      currentQuestionIndex: 0,
+      selectedAnswerId: null,
+      response: '',
+      answered: false,
+      score: 0,
+    });
     expect(getCurrentQuestion(initialState)).toBe(questions[0]);
   });
 
@@ -126,6 +151,73 @@ describe('practiceReducer', () => {
         const answered: PracticeState = { ...initialState, selectedAnswerId: 'ก-ไก่', answered: true };
 
         expect(practiceReducer(answered, { type: 'SELECT_ANSWER', answerId: 'จ-จาน' })).toBe(answered);
+      });
+    });
+
+    describe('given the question is answered by typing', () => {
+      it('ignores it', () => {
+        const typing = createPracticeState([buildQuestion(0, 'type')]);
+
+        expect(practiceReducer(typing, { type: 'SELECT_ANSWER', answerId: 'ก-ไก่' })).toBe(typing);
+      });
+    });
+  });
+
+  describe('ENTER_RESPONSE', () => {
+    it('stores the typed or spoken answer without evaluating it', () => {
+      const typing = createPracticeState([buildQuestion(0, 'type')]);
+
+      const state = practiceReducer(typing, { type: 'ENTER_RESPONSE', response: 'ไก่' });
+
+      expect(state.response).toBe('ไก่');
+      expect(state.answered).toBe(false);
+    });
+
+    describe('given the question is answered by selecting', () => {
+      it('ignores it', () => {
+        expect(practiceReducer(initialState, { type: 'ENTER_RESPONSE', response: 'ไก่' })).toBe(initialState);
+      });
+    });
+
+    describe('given the question was already evaluated', () => {
+      it('ignores it', () => {
+        const answered: PracticeState = { ...createPracticeState([buildQuestion(0, 'type')]), response: 'ไก่', answered: true };
+
+        expect(practiceReducer(answered, { type: 'ENTER_RESPONSE', response: 'ปลา' })).toBe(answered);
+      });
+    });
+  });
+
+  describe('SET_ANSWER_MODES', () => {
+    it('changes the mode of the current and upcoming questions and clears the current answer', () => {
+      const selected = practiceReducer(initialState, { type: 'SELECT_ANSWER', answerId: 'จ-จาน' });
+
+      const state = practiceReducer(selected, { type: 'SET_ANSWER_MODES', modes: ['type', 'speak'] });
+
+      expect(state.questions.map((question) => question.mode)).toEqual(['type', 'speak']);
+      expect(state.selectedAnswerId).toBeNull();
+      expect(state.response).toBe('');
+    });
+
+    describe('given the current question keeps its mode', () => {
+      it('keeps the current answer', () => {
+        const selected = practiceReducer(initialState, { type: 'SELECT_ANSWER', answerId: 'จ-จาน' });
+
+        const state = practiceReducer(selected, { type: 'SET_ANSWER_MODES', modes: ['select', 'type'] });
+
+        expect(state.selectedAnswerId).toBe('จ-จาน');
+        expect(state.questions[0]).toBe(questions[0]);
+      });
+    });
+
+    describe('given the current question was already evaluated', () => {
+      it('only changes the upcoming questions', () => {
+        const answered: PracticeState = { ...initialState, selectedAnswerId: 'ก-ไก่', answered: true, score: 1 };
+
+        const state = practiceReducer(answered, { type: 'SET_ANSWER_MODES', modes: ['type', 'type'] });
+
+        expect(state.questions.map((question) => question.mode)).toEqual(['select', 'type']);
+        expect(state.selectedAnswerId).toBe('ก-ไก่');
       });
     });
   });
@@ -159,6 +251,45 @@ describe('practiceReducer', () => {
       });
     });
 
+    describe('given the correct word is typed', () => {
+      it('scores the answer', () => {
+        const typed = practiceReducer(createPracticeState([buildQuestion(0, 'type')]), {
+          type: 'ENTER_RESPONSE',
+          response: 'ไก่',
+        });
+
+        const state = practiceReducer(typed, { type: 'SUBMIT_ANSWER' });
+
+        expect(state.answered).toBe(true);
+        expect(state.score).toBe(1);
+      });
+    });
+
+    describe('given a wrong word is spoken', () => {
+      it('marks the question answered without scoring', () => {
+        const spoken = practiceReducer(createPracticeState([buildQuestion(0, 'speak')]), {
+          type: 'ENTER_RESPONSE',
+          response: 'ปลา',
+        });
+
+        const state = practiceReducer(spoken, { type: 'SUBMIT_ANSWER' });
+
+        expect(state.answered).toBe(true);
+        expect(state.score).toBe(0);
+      });
+    });
+
+    describe('given only whitespace is typed', () => {
+      it('ignores it', () => {
+        const typed = practiceReducer(createPracticeState([buildQuestion(0, 'type')]), {
+          type: 'ENTER_RESPONSE',
+          response: '  ',
+        });
+
+        expect(practiceReducer(typed, { type: 'SUBMIT_ANSWER' })).toBe(typed);
+      });
+    });
+
     describe('given the question was already evaluated', () => {
       it('does not score twice', () => {
         const answered: PracticeState = { ...initialState, selectedAnswerId: 'ก-ไก่', answered: true, score: 1 };
@@ -169,13 +300,14 @@ describe('practiceReducer', () => {
   });
 
   describe('NEXT_QUESTION', () => {
-    it('advances to the next question and clears the selection', () => {
-      const answered: PracticeState = { ...initialState, selectedAnswerId: 'ก-ไก่', answered: true, score: 1 };
+    it('advances to the next question and clears the answer', () => {
+      const answered: PracticeState = { ...initialState, selectedAnswerId: 'ก-ไก่', response: 'ไก่', answered: true, score: 1 };
 
       const state = practiceReducer(answered, { type: 'NEXT_QUESTION' });
 
       expect(state.currentQuestionIndex).toBe(1);
       expect(state.selectedAnswerId).toBeNull();
+      expect(state.response).toBe('');
       expect(state.answered).toBe(false);
       expect(state.score).toBe(1);
       expect(getCurrentQuestion(state)).toBe(questions[1]);
@@ -216,11 +348,70 @@ describe('practiceReducer', () => {
 
 describe('isAnswerCorrect', () => {
   it('detects the correct answer', () => {
-    expect(isAnswerCorrect(buildQuestion(0), 'ก-ไก่')).toBe(true);
+    expect(isAnswerCorrect(buildQuestion(0), { selectedAnswerId: 'ก-ไก่', response: '' })).toBe(true);
   });
 
   it('detects an incorrect answer', () => {
-    expect(isAnswerCorrect(buildQuestion(0), 'จ-จาน')).toBe(false);
+    expect(isAnswerCorrect(buildQuestion(0), { selectedAnswerId: 'จ-จาน', response: '' })).toBe(false);
+  });
+
+  describe('given a typing question', () => {
+    it('compares the typed Thai word', () => {
+      expect(isAnswerCorrect(buildQuestion(0, 'type'), { selectedAnswerId: null, response: 'ก ไก่' })).toBe(true);
+      expect(isAnswerCorrect(buildQuestion(0, 'type'), { selectedAnswerId: null, response: 'ไข่' })).toBe(false);
+    });
+  });
+
+  describe('given a speaking question', () => {
+    it('looks for the word in what was heard', () => {
+      expect(isAnswerCorrect(buildQuestion(0, 'speak'), { selectedAnswerId: null, response: 'กอ ไก่' })).toBe(true);
+      expect(isAnswerCorrect(buildQuestion(0, 'speak'), { selectedAnswerId: null, response: 'ปลา' })).toBe(false);
+    });
+  });
+});
+
+describe('hasAnswer', () => {
+  describe('given a selecting question', () => {
+    it('needs a selected option', () => {
+      expect(hasAnswer(buildQuestion(0), { selectedAnswerId: null, response: 'ไก่' })).toBe(false);
+      expect(hasAnswer(buildQuestion(0), { selectedAnswerId: 'ก-ไก่', response: '' })).toBe(true);
+    });
+  });
+
+  describe('given a typing question', () => {
+    it('needs non-blank text', () => {
+      expect(hasAnswer(buildQuestion(0, 'type'), { selectedAnswerId: null, response: ' ' })).toBe(false);
+      expect(hasAnswer(buildQuestion(0, 'type'), { selectedAnswerId: null, response: 'ไ' })).toBe(true);
+    });
+  });
+});
+
+describe('getAnswerModes', () => {
+  describe('given advanced practice is off', () => {
+    it('only selects answers', () => {
+      expect(getAnswerModes({ advanced: false, speech: true })).toEqual(['select']);
+    });
+  });
+
+  describe('given advanced practice is on', () => {
+    it('adds typing and speaking', () => {
+      expect(getAnswerModes({ advanced: true, speech: true })).toEqual(['select', 'type', 'speak']);
+    });
+  });
+
+  describe('given speech recognition is unavailable', () => {
+    it('leaves speaking out', () => {
+      expect(getAnswerModes({ advanced: true, speech: false })).toEqual(['select', 'type']);
+    });
+  });
+});
+
+describe('assignAnswerModes', () => {
+  it('picks one of the given modes for each question', () => {
+    const sequence = [0, 0.4, 0.9];
+    const random = () => sequence.shift() ?? 0;
+
+    expect(assignAnswerModes(3, ['select', 'type', 'speak'], random)).toEqual(['select', 'type', 'speak']);
   });
 });
 

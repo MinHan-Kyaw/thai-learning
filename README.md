@@ -9,7 +9,10 @@ A responsive, client-side web app for Burmese-speaking learners studying Thai co
 - **Consonants:** browse the 44 Thai consonants by class (Middle, High, Low). Each card shows the letter, a picture, the
   Thai word, its Burmese meaning and pronunciation, and plays the Thai letter name (e.g. "กอ ไก่").
 - **Practice:** a 10-question picture quiz. Pick the matching answer, shown as letter and word (`ก (ไก่)`) with its
-  Burmese pronunciation, hear it, then press Next to see ✓ or ✗.
+  Burmese pronunciation, hear it, then press Next to see ✓ or ✗. Turn on **Advanced** to mix in, at random, questions
+  where you type the Thai letter (hinted by its Burmese pronunciation) or say it aloud into the microphone. Speaking uses
+  the browser's speech recognition (Chrome, Edge, Safari); where it is unavailable or the learner taps "Can't speak now",
+  those questions become select or type questions.
 
 There is no backend, database or user account. All learning content is static JSON bundled with the app, and practice
 progress lives only in memory for the current session.
