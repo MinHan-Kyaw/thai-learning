@@ -65,11 +65,16 @@ const Practice = () => {
     setSpeechStatus('idle');
   };
 
-  const handleAdvancedChange = (checked: boolean) => {
+  const restart = (isAdvanced: boolean) => {
+    window.clearTimeout(wordAudioTimer.current);
+    stopAudio();
     resetSpeech();
+    dispatch({ type: 'RESTART', questions: buildQuestions(getAnswerModes({ advanced: isAdvanced, speech: speechAvailable })) });
+  };
+
+  const handleAdvancedChange = (checked: boolean) => {
     setAdvanced(checked);
-    const modes = getAnswerModes({ advanced: checked, speech: speechAvailable });
-    dispatch({ type: 'SET_ANSWER_MODES', modes: assignAnswerModes(state.questions.length, modes) });
+    restart(checked);
   };
 
   if (state.questions.length === 0) {
@@ -81,15 +86,7 @@ const Practice = () => {
   }
 
   if (isPracticeComplete(state) || !question) {
-    return (
-      <PracticeSummary
-        score={state.score}
-        total={state.questions.length}
-        onRestart={() =>
-          dispatch({ type: 'RESTART', questions: buildQuestions(getAnswerModes({ advanced, speech: speechAvailable })) })
-        }
-      />
-    );
+    return <PracticeSummary score={state.score} total={state.questions.length} onRestart={() => restart(advanced)} />;
   }
 
   const isLastQuestion = state.currentQuestionIndex === state.questions.length - 1;

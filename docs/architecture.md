@@ -110,10 +110,13 @@ stateDiagram-v2
   Evaluated --> Unanswered: NEXT_QUESTION ("Continue") more questions
   Evaluated --> Complete: NEXT_QUESTION ("See results") last question
   Complete --> Unanswered: RESTART ("Practice again")
+  Evaluated --> Unanswered: RESTART (Advanced switched on or off)
+  Answering --> Unanswered: RESTART (Advanced switched on or off)
 ```
 
-`SET_ANSWER_MODES` (Advanced toggle, "Can't speak now") re-assigns the modes of the current question, if it is not yet
-evaluated, and every later question; a current question whose mode changes loses its unsubmitted answer.
+Switching Advanced on or off restarts the practice with new questions in the new modes. `SET_ANSWER_MODES`
+("Can't speak now") re-assigns the modes of the current question, if it is not yet evaluated, and every later question;
+a current question whose mode changes loses its unsubmitted answer.
 
 ```ts
 interface PracticeState {

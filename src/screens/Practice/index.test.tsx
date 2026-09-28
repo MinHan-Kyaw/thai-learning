@@ -21,10 +21,17 @@ vi.mock('../../services/speech', () => ({
   stopListening: vi.fn(),
 }));
 // Always pick the most advanced mode on offer, so a test controls the mode through the toggle and speech support.
-vi.mock('../../helpers/practice', async (importOriginal) => ({
-  ...(await importOriginal<typeof import('../../helpers/practice')>()),
-  assignAnswerModes: (count: number, modes: readonly AnswerMode[]) => Array.from({ length: count }, () => modes.at(-1)),
-}));
+vi.mock('../../helpers/practice', async (importOriginal) => {
+  const practice = await importOriginal<typeof import('../../helpers/practice')>();
+  const pickLast = (count: number, modes: readonly AnswerMode[]) => Array.from({ length: count }, () => modes.at(-1));
+
+  return {
+    ...practice,
+    assignAnswerModes: pickLast,
+    generatePracticeQuestions: (...args: Parameters<typeof practice.generatePracticeQuestions>) =>
+      practice.generatePracticeQuestions(...args).map((question) => ({ ...question, mode: args[1]?.modes?.at(-1) ?? 'select' })),
+  };
+});
 
 const vocabulary = getVocabulary(consonants);
 
@@ -219,6 +226,19 @@ describe('Practice', () => {
 
         expect(screen.getByRole('status')).toHaveTextContent('Incorrect.');
         expect(screen.getByText(/Correct answer/)).toHaveTextContent(correctWord);
+      });
+    });
+
+    describe('given a question was already answered', () => {
+      it('starts the practice again', async () => {
+        renderPractice();
+        await answerQuestion(getCorrectOption());
+
+        await turnOnAdvanced();
+
+        expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
+        expect(screen.getByRole('button', { name: 'Next' })).toBeDisabled();
+        expect(screen.getByRole('status')).toBeEmptyDOMElement();
       });
     });
 
