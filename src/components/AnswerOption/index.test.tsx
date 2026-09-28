@@ -35,7 +35,7 @@ describe('AnswerOption', () => {
       render(<AnswerOption thai="ไก่" pronunciation="ကောကိုင်" selected onSelect={vi.fn()} />);
 
       expect(screen.getByRole('button')).toHaveAttribute('aria-pressed', 'true');
-      expect(screen.getByRole('button')).toHaveClass('selected');
+      expect(screen.getByRole('button')).toHaveAttribute('data-status', 'selected');
     });
   });
 
@@ -43,8 +43,8 @@ describe('AnswerOption', () => {
     it('shows a tick icon with a screen-reader label in addition to the colour', () => {
       render(<AnswerOption thai="ไก่" pronunciation="ကောကိုင်" selected result="correct" disabled onSelect={vi.fn()} />);
 
-      expect(screen.getByRole('button')).toHaveClass('correct');
-      expect(screen.getByText('Correct')).toHaveClass('visuallyHidden');
+      expect(screen.getByRole('button')).toHaveAttribute('data-status', 'correct');
+      expect(screen.getByText('Correct')).toHaveClass('sr-only');
       expect(screen.getByRole('button').querySelector('svg')).toBeInTheDocument();
     });
   });
@@ -53,8 +53,8 @@ describe('AnswerOption', () => {
     it('shows a cross icon with a screen-reader label in addition to the colour', () => {
       render(<AnswerOption thai="ปลา" pronunciation="ပေါပလား" selected result="incorrect" disabled onSelect={vi.fn()} />);
 
-      expect(screen.getByRole('button')).toHaveClass('incorrect');
-      expect(screen.getByText('Incorrect')).toHaveClass('visuallyHidden');
+      expect(screen.getByRole('button')).toHaveAttribute('data-status', 'incorrect');
+      expect(screen.getByText('Incorrect')).toHaveClass('sr-only');
       expect(screen.getByRole('button').querySelector('svg')).toBeInTheDocument();
     });
   });

@@ -120,7 +120,9 @@ learning continues silently. Screens call `stopAudio()` on unmount and when movi
 
 ## Styling
 
-CSS Modules per component plus design tokens in `src/index.css`. Visual direction: white background, green primary
+Tailwind CSS 4 utilities in the markup, with the design tokens (colours, fonts, edge shadows, `xs` breakpoint, content
+width) defined in the `@theme` block of `src/index.css`. The default Tailwind palette is disabled so only semantic tokens
+exist. Visual direction: white background, green primary
 actions with a pressed "shadow" edge, light-green supporting surfaces, rounded cards and buttons, large Thai glyphs.
 Fonts are bundled with `@fontsource` (Nunito for UI, Noto Sans Thai Looped, Noto Sans Myanmar), so rendering does not
 depend on the learner's installed fonts.

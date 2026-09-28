@@ -9,8 +9,6 @@ import { getConsonantsByClass } from '../../helpers/vocabulary';
 import { playAudio, stopAudio } from '../../services/audio';
 import type { ConsonantClassId, Word } from '../../types/learning';
 
-import styles from './index.module.css';
-
 const DEFAULT_CLASS_ID: ConsonantClassId = 'middle';
 
 const isConsonantClassId = (value: string | null): value is ConsonantClassId =>
@@ -37,7 +35,7 @@ const Consonants = () => {
 
   return (
     <>
-      <h1 className="visuallyHidden">Thai Consonants</h1>
+      <h1 className="sr-only">Thai Consonants</h1>
 
       <ClassTabs
         classes={consonantClasses}
@@ -47,17 +45,17 @@ const Consonants = () => {
       />
 
       {selectedClass && (
-        <section className={styles.panel} aria-labelledby="consonant-class-title">
-          <div className={styles.panelHeader}>
-            <h2 id="consonant-class-title" className={styles.panelTitle}>
+        <section className="mt-6" aria-labelledby="consonant-class-title">
+          <div className="mb-4 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <h2 id="consonant-class-title" className="text-[1.375rem] font-extrabold">
               {selectedClass.name}
             </h2>
-            <span className={styles.tone}>{selectedClass.tone}</span>
-            <span className={styles.burmeseName} lang="my">
+            <span className="rounded-full bg-brand-light px-3 text-sm font-bold text-brand">{selectedClass.tone}</span>
+            <span className="font-burmese leading-[1.8] text-ink-muted" lang="my">
               {selectedClass.burmeseName}
             </span>
           </div>
-          <ul className={styles.grid} role="list">
+          <ul className="grid grid-cols-[repeat(auto-fill,minmax(min(100%,13rem),1fr))] gap-4" role="list">
             {visibleConsonants.map((consonant) => (
               <li key={consonant.id}>
                 <ConsonantCard consonant={consonant} onPlayAudio={handlePlayAudio} />

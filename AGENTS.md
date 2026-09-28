@@ -13,7 +13,7 @@ There is **no backend, no database, no authentication and no persistence**. The 
 
 ## Tech stack
 
-React 19, TypeScript (strict), Vite, CSS Modules, React Router (declarative mode), Vitest, React Testing Library,
+React 19, TypeScript (strict), Vite, Tailwind CSS 4, React Router (declarative mode), Vitest, React Testing Library,
 ESLint 9 flat config, Prettier, Stylelint. Node.js 24 (`.nvmrc`).
 
 ## Commands
@@ -34,7 +34,7 @@ Run a single test file: `npx vitest run src/helpers/practice.test.ts`
 
 ```text
 src/
-├── components/   Reusable, presentational UI. One folder per component: index.tsx, index.module.css, index.test.tsx
+├── components/   Reusable, presentational UI. One folder per component: index.tsx, index.test.tsx
 ├── screens/      Page-level composition (Home, Consonants, Practice). Screens own state and wire services.
 ├── data/         Learning content JSON + typed loader (index.ts) + data validation test
 ├── helpers/      Pure functions (randomizeArray, practice engine, vocabulary, assetUrl)
@@ -56,15 +56,23 @@ public/
 - Omit `={true}` on boolean props; self-close empty elements; never use array indexes as React keys — use data IDs.
 - Prefer an existing component before adding a new one. Don't add abstractions (context, state libraries, reducers
   folders) until a real requirement exists.
-- Use the design tokens in `src/index.css` (`--color-brand`, `--space-4`, `--radius-md`, …), not raw colours.
+- Style with Tailwind utility classes in the markup; there are no per-component CSS files. Design tokens live in the
+  `@theme` block of `src/index.css` and become utilities: colours `bg-brand`, `text-ink-muted`, `border-line`…,
+  fonts `font-thai`/`font-burmese`, shadows `shadow-edge*`, breakpoint `xs` (30rem), width `max-w-content`.
+- Use only those semantic tokens. Tailwind's default palette is switched off (`--color-*: initial`), so raw classes like
+  `bg-green-600` generate nothing. Add a token to `@theme` instead of hardcoding a colour.
+- Keep class lists readable: Prettier sorts them (`prettier-plugin-tailwindcss`). For conditional classes use the
+  `classNames` helper and map states to class strings (see `AnswerOption`), and expose state for tests with `data-*`
+  attributes rather than asserting on utility classes.
+- Use `sr-only` for screen-reader-only text.
 
 ## Component conventions
 
 - Components are presentational: they receive data and callbacks via props and never import `src/data` or services.
 - Screens compose components, read data from `src/data`, hold state, and call services.
 - Every text node in Thai gets `lang="th"`; every Burmese text node gets `lang="my"`.
-- Thai text uses `var(--font-thai)` (Noto Sans Thai **Looped**) at weight 400/500. Heavier weights fill in the loops that
-  learners rely on to tell letters apart (e.g. ด/ค). Burmese uses `var(--font-burmese)`.
+- Thai text uses `font-thai` (Noto Sans Thai **Looped**) at `font-normal`/`font-medium`. Heavier weights fill in the loops that
+  learners rely on to tell letters apart (e.g. ด/ค). Burmese uses `font-burmese`.
 
 ## Learning content rules
 
@@ -106,7 +114,7 @@ Pronunciation is written manually in Burmese script by the project owner and is 
 
 ## Accessibility
 
-Semantic HTML, visible focus (`--focus-ring`), keyboard-operable controls, `alt` text on every image (the Burmese
+Semantic HTML, visible focus (global `:focus-visible` outline in `src/index.css`), keyboard-operable controls, `alt` text on every image (the Burmese
 meaning — it must not reveal the Thai answer), never colour alone for correct/incorrect, labelled audio buttons,
 touch targets ≥ 44px, focus moved to the new prompt on question change.
 

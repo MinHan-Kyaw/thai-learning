@@ -29,13 +29,15 @@ Project conventions, enforced by `eslint.config.js`, `.prettierrc.json` and `.st
 - 2-space indentation, 130-character lines, single quotes, semicolons, `es5` trailing commas.
 - `PascalCase/index.tsx` for components and screens, `camelCase.ts` for helpers, services and constants.
 - Function components; hooks at the top level with complete dependency arrays.
-- CSS class names are `camelCase` (Stylelint `selector-class-pattern`).
+- Styling is Tailwind utility classes; Prettier sorts them via `prettier-plugin-tailwindcss`. Stylelint checks
+  `src/index.css` and allows Tailwind's at-rules (`@theme`, `@utility`, …).
 
 ## Testing
 
 - Vitest + jsdom + React Testing Library; `@testing-library/jest-dom` matchers are loaded in `src/tests/setup.ts`.
 - `clearMocks` and `unstubGlobals` are enabled, so mocks reset between tests.
-- CSS Modules use non-scoped class names in tests, so `toHaveClass('selected')` works.
+- Components expose visual state as `data-*` attributes (`data-variant`, `data-status`); assert on those, not on
+  utility classes.
 - Shared fixtures live in `src/tests/fixtures.ts`.
 - Coverage: `npm run test:coverage` (V8).
 
