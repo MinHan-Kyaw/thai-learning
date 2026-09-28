@@ -1,13 +1,10 @@
 import { useEffect, useRef, type ReactNode } from 'react';
 
 import { assetUrl } from '../../helpers/assetUrl';
-import { getLetterWithWord } from '../../helpers/vocabulary';
 import type { AnswerMode, PracticeQuestion as PracticeQuestionType } from '../../types/learning';
-import AudioButton from '../AudioButton';
 
 interface PracticeQuestionProps {
   question: PracticeQuestionType;
-  onPlayAudio: () => void;
   children: ReactNode;
 }
 
@@ -17,7 +14,7 @@ const PROMPTS: Record<AnswerMode, string> = {
   speak: 'Say this word',
 };
 
-const PracticeQuestion = ({ question, onPlayAudio, children }: PracticeQuestionProps) => {
+const PracticeQuestion = ({ question, children }: PracticeQuestionProps) => {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const isFirstQuestion = useRef(true);
   const { answer, mode } = question;
@@ -44,19 +41,6 @@ const PracticeQuestion = ({ question, onPlayAudio, children }: PracticeQuestionP
         <p className="-mt-2 font-burmese text-[1.0625rem] leading-[1.8] text-ink-muted" lang="my">
           {answer.pronunciation}
         </p>
-      )}
-      {mode === 'speak' && (
-        <div className="-mt-1 flex items-center gap-3">
-          {answer.audio && <AudioButton label={`Play Thai audio for ${getLetterWithWord(answer)}`} onPlay={onPlayAudio} />}
-          <p className="flex flex-col">
-            <span className="font-thai text-[1.625rem] leading-[1.3] font-medium" lang="th">
-              {getLetterWithWord(answer)}
-            </span>{' '}
-            <span className="font-burmese text-[1.0625rem] leading-[1.8] text-ink-muted" lang="my">
-              {answer.pronunciation}
-            </span>
-          </p>
-        </div>
       )}
       {children}
     </section>

@@ -16,7 +16,7 @@ flowchart LR
   JSON["src/data/*.json"] --> Loader["src/data/index.ts<br/>(typed exports)"]
   Loader --> Screens
   Helpers["src/helpers<br/>(pure functions)"] --> Screens
-  Services["src/services<br/>audio.ts · speech.ts"] --> Screens
+  Services["src/services<br/>audio.ts · sound.ts · speech.ts"] --> Screens
   Screens["src/screens<br/>Home · Consonants · Practice"] --> Components["src/components<br/>(presentational)"]
 ```
 
@@ -132,21 +132,29 @@ and is never persisted; the Advanced toggle is screen state and starts off on ev
 
 ### Answer modes
 
-| Mode     | Prompt                                 | Correct when                                                                 |
-| -------- | -------------------------------------- | ---------------------------------------------------------------------------- |
-| `select` | picture, "Which word is this?"         | the chosen option is the answer                                              |
-| `type`   | picture + Burmese pronunciation hint   | the text is the letter `ก`; `ไก่`, `ก ไก่`, `ก (ไก่)` or `กอ ไก่` also count |
-| `speak`  | picture + `ก (ไก่)` with a play button | a recognized transcript contains the word                                    |
+| Mode     | Prompt                               | Correct when                                                                 |
+| -------- | ------------------------------------ | ---------------------------------------------------------------------------- |
+| `select` | picture, "Which word is this?"       | the chosen option is the answer                                              |
+| `type`   | picture + Burmese pronunciation hint | the text is the letter `ก`; `ไก่`, `ก ไก่`, `ก (ไก่)` or `กอ ไก่` also count |
+| `speak`  | picture only, "Say this word"        | a recognized transcript contains the word                                    |
 
 `src/helpers/thaiAnswer.ts` compares after `normalizeThai` (NFKC, spaces, brackets and zero-width characters removed),
 so mark order and `ำ`/`ํา` spellings don't matter. For `speak`, the recognizer returns up to 5 alternatives and the
-first one containing the word is kept. Type and speak questions play the word's Thai audio once evaluated.
+first one containing the word is kept. Checking an answer plays a feedback sound; type and speak questions then play
+the word's Thai audio once that sound has finished.
 
 ## Audio
 
 `src/services/audio.ts` keeps a single `HTMLAudioElement`. `playAudio(src)` stops the current sound before starting the
 next one, so rapid answer changes never overlap. Rejected playback (autoplay policy, missing file) is swallowed so
 learning continues silently. Screens call `stopAudio()` on unmount and when moving to the next question.
+
+## Feedback sounds
+
+`src/services/sound.ts` synthesizes the check sounds with the Web Audio API, so there are no sound files: a rising
+two-note chime for a correct answer and a low falling tone for an incorrect one (`FEEDBACK_SOUND_DURATION_MS` long).
+One `AudioContext` is created lazily on the first check (a user gesture, as iOS requires) and resumed if the browser
+suspended it. Missing Web Audio or any playback error is swallowed.
 
 ## Speech recognition
 

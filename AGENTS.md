@@ -39,7 +39,7 @@ src/
 ├── data/         Learning content JSON + typed loader (index.ts) + data validation test
 ├── helpers/      Pure functions (randomizeArray, practice engine, vocabulary, assetUrl)
 ├── constants/    Shared constants (practice question/option counts)
-├── services/     Side-effect wrappers (audio playback, speech recognition)
+├── services/     Side-effect wrappers (audio playback, feedback sounds, speech recognition)
 ├── types/        Shared TypeScript types for learning data
 └── tests/        Test setup and shared fixtures
 public/
@@ -106,7 +106,7 @@ Pronunciation is written manually in Burmese script by the project owner and is 
 - Tests are colocated: `Component/index.test.tsx`, `helpers/foo.test.ts`.
 - Put conditions in a `describe('given …')` block, not in the `it` text.
 - Query by role and accessible name (Testing Library) rather than test IDs or class names.
-- Mock `src/services/audio` and `src/services/speech` in component/screen tests; each service has its own unit test.
+- Mock `src/services/audio`, `src/services/sound` and `src/services/speech` in component/screen tests; each service has its own unit test.
 - New reusable components need tests. Practice logic must stay covered for: correct and incorrect answers, question and
   answer randomization, option uniqueness, progression, completion and score, and for each answer mode (select, type,
   speak) including the Advanced toggle and the "Can't speak now" fallback.

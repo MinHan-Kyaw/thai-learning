@@ -56,16 +56,16 @@ const SpokenAnswer = ({ transcript, status, answered, result, correctAnswer, onL
         {!answered && STATUS_MESSAGES[status]}
       </p>
       {transcript && (
-        <p className="flex items-center gap-2 text-ink-muted">
+        <p className="flex items-baseline gap-2 text-ink-muted">
           You said:{' '}
           <span className="font-thai text-xl font-medium text-ink" lang="th">
             {transcript}
           </span>
-          {result && <ResultIcon result={result} />}
+          {result && <ResultIcon result={result} className="self-center" />}
         </p>
       )}
       {result === 'incorrect' && (
-        <p className="text-center text-ink-muted">
+        <p className="flex items-baseline gap-2 text-ink-muted">
           Correct answer:{' '}
           <span className="font-thai text-xl font-medium text-ink" lang="th">
             {getLetterWithWord(correctAnswer)}

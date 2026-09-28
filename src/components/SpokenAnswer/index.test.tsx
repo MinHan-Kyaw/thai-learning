@@ -77,4 +77,12 @@ describe('SpokenAnswer', () => {
       expect(screen.queryByRole('button', { name: "Can't speak now" })).not.toBeInTheDocument();
     });
   });
+
+  describe('given a correct answer has been evaluated', () => {
+    it('does not repeat the answer', () => {
+      renderSpokenAnswer({ transcript: 'ไก่', answered: true, result: 'correct' });
+
+      expect(screen.queryByText(/Correct answer/)).not.toBeInTheDocument();
+    });
+  });
 });

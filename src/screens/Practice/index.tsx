@@ -25,6 +25,7 @@ import {
 import { pickTranscript } from '../../helpers/thaiAnswer';
 import { getVocabulary } from '../../helpers/vocabulary';
 import { playAudio, stopAudio } from '../../services/audio';
+import { FEEDBACK_SOUND_DURATION_MS, playFeedbackSound } from '../../services/sound';
 import { isSpeechRecognitionSupported, listen, stopListening } from '../../services/speech';
 import type { AnswerMode, VocabularyItem } from '../../types/learning';
 
@@ -44,12 +45,14 @@ const Practice = () => {
   const [speechStatus, setSpeechStatus] = useState<SpeechStatus>('idle');
   const [state, dispatch] = useReducer(practiceReducer, undefined, () => createPracticeState(buildQuestions(['select'])));
   const listenRequest = useRef(0);
+  const wordAudioTimer = useRef<number | undefined>(undefined);
   const question = getCurrentQuestion(state);
   const speechAvailable = isSpeechRecognitionSupported() && !speakingSkipped;
 
   useEffect(
     () => () => {
       listenRequest.current += 1;
+      window.clearTimeout(wordAudioTimer.current);
       stopAudio();
       stopListening();
     },
@@ -100,6 +103,7 @@ const Practice = () => {
 
   const handleAction = () => {
     if (state.answered) {
+      window.clearTimeout(wordAudioTimer.current);
       stopAudio();
       resetSpeech();
       dispatch({ type: 'NEXT_QUESTION' });
@@ -109,9 +113,11 @@ const Practice = () => {
       return;
     }
     resetSpeech();
+    playFeedbackSound(isAnswerCorrect(question, state) ? 'correct' : 'incorrect');
     dispatch({ type: 'SUBMIT_ANSWER' });
     if (question.mode !== 'select') {
-      playWordAudio(question.answer);
+      const { answer } = question;
+      wordAudioTimer.current = window.setTimeout(() => playWordAudio(answer), FEEDBACK_SOUND_DURATION_MS);
     }
   };
 
@@ -165,7 +171,7 @@ const Practice = () => {
           onChange={handleAdvancedChange}
         />
       </div>
-      <PracticeQuestion question={question} onPlayAudio={() => playWordAudio(question.answer)}>
+      <PracticeQuestion question={question}>
         {question.mode === 'select' && (
           <AnswerOptions
             question={question}

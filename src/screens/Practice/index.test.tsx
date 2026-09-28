@@ -1,18 +1,20 @@
 import { MemoryRouter } from 'react-router';
 
-import { render, screen, within } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { QUESTION_COUNT } from '../../constants/practice';
 import { consonants } from '../../data';
 import { getVocabulary, getLetterWithWord } from '../../helpers/vocabulary';
 import { playAudio } from '../../services/audio';
+import { playFeedbackSound } from '../../services/sound';
 import { isSpeechRecognitionSupported, listen } from '../../services/speech';
 import type { AnswerMode } from '../../types/learning';
 
 import Practice from '.';
 
 vi.mock('../../services/audio', () => ({ playAudio: vi.fn(), stopAudio: vi.fn() }));
+vi.mock('../../services/sound', () => ({ FEEDBACK_SOUND_DURATION_MS: 0, playFeedbackSound: vi.fn() }));
 vi.mock('../../services/speech', () => ({
   isSpeechRecognitionSupported: vi.fn(() => false),
   listen: vi.fn(),
@@ -103,19 +105,20 @@ describe('Practice', () => {
   });
 
   describe('given the selected answer is correct', () => {
-    it('shows positive feedback after pressing Next', async () => {
+    it('shows positive feedback with a chime after pressing Next', async () => {
       renderPractice();
 
       await answerQuestion(getCorrectOption());
 
       expect(screen.getByRole('status')).toHaveTextContent('Correct.');
+      expect(playFeedbackSound).toHaveBeenCalledExactlyOnceWith('correct');
       expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '1');
       getOptionButtons().forEach((button) => expect(button).toBeDisabled());
     });
   });
 
   describe('given the selected answer is incorrect', () => {
-    it('shows the correct answer after pressing Next', async () => {
+    it('shows the correct answer with a low tone after pressing Next', async () => {
       renderPractice();
       const correctWord = getLetterWithWord(getCorrectAnswer());
 
@@ -123,6 +126,7 @@ describe('Practice', () => {
 
       expect(screen.getByRole('status')).toHaveTextContent('Incorrect.');
       expect(screen.getByRole('status')).toHaveTextContent(correctWord);
+      expect(playFeedbackSound).toHaveBeenCalledExactlyOnceWith('incorrect');
     });
   });
 
@@ -178,7 +182,7 @@ describe('Practice', () => {
     });
 
     describe('given the correct letter is typed and Enter is pressed', () => {
-      it('scores the answer and plays the word', async () => {
+      it('scores the answer, chimes and then plays the word', async () => {
         renderPractice();
         await turnOnAdvanced();
 
@@ -186,7 +190,8 @@ describe('Practice', () => {
 
         expect(screen.getByRole('status')).toHaveTextContent('Correct.');
         expect(screen.getByRole('textbox')).toHaveAttribute('readonly');
-        expect(playAudio).toHaveBeenCalledWith(getCorrectAnswer().audio);
+        expect(playFeedbackSound).toHaveBeenCalledWith('correct');
+        await waitFor(() => expect(playAudio).toHaveBeenCalledWith(getCorrectAnswer().audio));
       });
 
       describe('given Enter is pressed again', () => {
