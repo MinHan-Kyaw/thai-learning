@@ -24,6 +24,9 @@ updates:
       # Types must match the Node.js runtime in .nvmrc (24).
       - dependency-name: '@types/node'
         update-types: ['version-update:semver-major']
+      # typescript-eslint supports TypeScript < 6.1; raise this once it supports newer versions.
+      - dependency-name: 'typescript'
+        versions: ['>= 6.1.0']
     groups:
       # vitest and its plugins share a peer range, so they must be upgraded in one pull request.
       vitest:
