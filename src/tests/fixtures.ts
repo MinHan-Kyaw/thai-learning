@@ -3,6 +3,7 @@ import type { AnswerMode, PracticeQuestion, VocabularyItem } from '../types/lear
 export const buildVocabularyItem = (overrides: Partial<VocabularyItem> = {}): VocabularyItem => ({
   id: 'ก-ไก่',
   consonant: 'ก',
+  consonantClass: 'middle',
   thai: 'ไก่',
   pronunciation: 'ကောကိုင်',
   meaning: 'ကြက်',

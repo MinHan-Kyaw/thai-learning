@@ -50,6 +50,29 @@ describe('PracticeFeedback', () => {
     });
   });
 
+  describe('given a wrong group was chosen', () => {
+    it('announces the correct group', () => {
+      render(
+        <PracticeFeedback
+          result="incorrect"
+          correctAnswer={buildVocabularyItem()}
+          correctClass={{
+            id: 'middle',
+            group: 1,
+            name: 'Middle Class',
+            shortName: 'Middle',
+            burmeseName: 'အလယ်',
+            tone: 'Mid tone',
+          }}
+          actionLabel="Continue"
+          onAction={vi.fn()}
+        />
+      );
+
+      expect(screen.getByRole('status')).toHaveTextContent('Incorrect. The answer is group 1, Middle.');
+    });
+  });
+
   it('calls onAction when the action button is pressed', async () => {
     const onAction = vi.fn();
     render(

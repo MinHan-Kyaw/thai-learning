@@ -1,6 +1,7 @@
 import { useEffect, useRef, type ReactNode } from 'react';
 
 import { assetUrl } from '../../helpers/assetUrl';
+import { getLetterWithWord } from '../../helpers/vocabulary';
 import type { AnswerMode, PracticeQuestion as PracticeQuestionType } from '../../types/learning';
 
 interface PracticeQuestionProps {
@@ -10,6 +11,7 @@ interface PracticeQuestionProps {
 
 const PROMPTS: Record<AnswerMode, string> = {
   select: 'Which word is this?',
+  class: 'Which group is this letter in?',
   type: 'Type the Thai letter',
   speak: 'Say this word',
 };
@@ -40,6 +42,16 @@ const PracticeQuestion = ({ question, children }: PracticeQuestionProps) => {
       {mode === 'type' && (
         <p className="-mt-2 font-burmese text-[1.0625rem] leading-[1.8] text-ink-muted" lang="my">
           {answer.pronunciation}
+        </p>
+      )}
+      {mode === 'class' && (
+        <p className="-mt-1 flex flex-col items-center">
+          <span className="font-thai text-[1.625rem] leading-[1.3] font-medium" lang="th">
+            {getLetterWithWord(answer)}
+          </span>{' '}
+          <span className="font-burmese text-[1.0625rem] leading-[1.8] text-ink-muted" lang="my">
+            {answer.pronunciation}
+          </span>
         </p>
       )}
       {children}

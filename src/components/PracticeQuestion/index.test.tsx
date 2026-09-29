@@ -31,6 +31,21 @@ describe('PracticeQuestion', () => {
     });
   });
 
+  describe('given a group question', () => {
+    it('shows the picture with the letter, word and pronunciation', () => {
+      render(
+        <PracticeQuestion question={buildQuestion(0, 'class')}>
+          <p>Answer area</p>
+        </PracticeQuestion>
+      );
+
+      expect(screen.getByRole('heading', { name: 'Which group is this letter in?' })).toBeInTheDocument();
+      expect(screen.getByRole('img', { name: 'ကြက်' })).toBeInTheDocument();
+      expect(screen.getByText('ก (ไก่)')).toHaveAttribute('lang', 'th');
+      expect(screen.getByText('ကောကိုင်')).toHaveAttribute('lang', 'my');
+    });
+  });
+
   describe('given a speaking question', () => {
     it('shows only the picture so the learner recalls the word', () => {
       render(

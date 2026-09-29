@@ -20,16 +20,21 @@ vi.mock('../../services/speech', () => ({
   listen: vi.fn(),
   stopListening: vi.fn(),
 }));
-// Always pick the most advanced mode on offer, so a test controls the mode through the toggle and speech support.
+// By default pick the most advanced mode on offer, so a test controls the mode through the toggle and speech support.
+const modePicker = vi.hoisted(() => ({
+  pick: (modes: readonly AnswerMode[]): AnswerMode | undefined => modes.at(-1),
+}));
 vi.mock('../../helpers/practice', async (importOriginal) => {
   const practice = await importOriginal<typeof import('../../helpers/practice')>();
-  const pickLast = (count: number, modes: readonly AnswerMode[]) => Array.from({ length: count }, () => modes.at(-1));
 
   return {
     ...practice,
-    assignAnswerModes: pickLast,
+    assignAnswerModes: (count: number, modes: readonly AnswerMode[]) =>
+      Array.from({ length: count }, () => modePicker.pick(modes)),
     generatePracticeQuestions: (...args: Parameters<typeof practice.generatePracticeQuestions>) =>
-      practice.generatePracticeQuestions(...args).map((question) => ({ ...question, mode: args[1]?.modes?.at(-1) ?? 'select' })),
+      practice
+        .generatePracticeQuestions(...args)
+        .map((question) => ({ ...question, mode: modePicker.pick(args[1]?.modes ?? ['select']) ?? 'select' })),
   };
 });
 
@@ -70,6 +75,8 @@ const answerQuestion = async (option: HTMLElement) => {
 };
 
 const turnOnAdvanced = () => userEvent.click(screen.getByRole('switch', { name: 'Advanced' }));
+
+const openQuestionTypes = () => userEvent.click(screen.getByRole('button', { name: 'Question types' }));
 
 describe('Practice', () => {
   it('shows the first question with three answer options and a disabled Next button', () => {
@@ -229,6 +236,34 @@ describe('Practice', () => {
       });
     });
 
+    it('offers audio, type and group, all ticked', async () => {
+      renderPractice();
+
+      expect(screen.queryByRole('button', { name: 'Question types' })).not.toBeInTheDocument();
+
+      await turnOnAdvanced();
+      await openQuestionTypes();
+
+      expect(screen.getByRole('checkbox', { name: 'Audio' })).toBeDisabled();
+      expect(screen.getByRole('checkbox', { name: 'Type' })).toBeChecked();
+      expect(screen.getByRole('checkbox', { name: 'Group' })).toBeChecked();
+    });
+
+    describe('given a question type is unticked', () => {
+      it('leaves it out and starts the practice again', async () => {
+        renderPractice();
+        await turnOnAdvanced();
+        await userEvent.type(screen.getByRole('textbox'), `${getCorrectAnswer().consonant}{Enter}`);
+        await openQuestionTypes();
+
+        await userEvent.click(screen.getByRole('checkbox', { name: 'Type' }));
+
+        expect(screen.getByRole('heading', { name: 'Which group is this letter in?' })).toBeInTheDocument();
+        expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
+        expect(screen.getByRole('checkbox', { name: 'Type' })).not.toBeChecked();
+      });
+    });
+
     describe('given a question was already answered', () => {
       it('starts the practice again', async () => {
         renderPractice();
@@ -268,8 +303,9 @@ describe('Practice', () => {
       renderPractice();
 
       await turnOnAdvanced();
+      await openQuestionTypes();
 
-      expect(screen.getByRole('switch', { name: 'Advanced' })).toHaveAccessibleDescription('Also type and speak your answers');
+      expect(screen.getByRole('checkbox', { name: 'Audio' })).toBeEnabled();
       expect(screen.getByRole('heading', { name: 'Say this word' })).toBeInTheDocument();
       expect(screen.getByRole('button', { name: 'Next' })).toBeDisabled();
     });
@@ -303,7 +339,66 @@ describe('Practice', () => {
         await userEvent.click(screen.getByRole('button', { name: "Can't speak now" }));
 
         expect(screen.getByRole('heading', { name: 'Type the Thai letter' })).toBeInTheDocument();
-        expect(screen.getByRole('switch', { name: 'Advanced' })).toHaveAccessibleDescription('Also type your answers');
+
+        await openQuestionTypes();
+
+        expect(screen.getByRole('checkbox', { name: 'Audio' })).not.toBeChecked();
+      });
+    });
+  });
+
+  describe('given advanced practice asks for the group', () => {
+    beforeEach(() => {
+      modePicker.pick = (modes) => (modes.includes('class') ? 'class' : 'select');
+    });
+
+    afterEach(() => {
+      modePicker.pick = (modes) => modes.at(-1);
+    });
+
+    it('shows the letter with its word and offers groups 1, 2 and 3', async () => {
+      renderPractice();
+
+      await turnOnAdvanced();
+
+      expect(screen.getByRole('heading', { name: 'Which group is this letter in?' })).toBeInTheDocument();
+      expect(screen.getByText(getLetterWithWord(getCorrectAnswer()))).toHaveAttribute('lang', 'th');
+      expect(
+        within(screen.getByRole('list', { name: 'Groups' }))
+          .getAllByRole('button')
+          .map((button) => button.textContent?.trim())
+      ).toEqual(['1 Middle', '2 High', '3 Low']);
+    });
+
+    describe('given the correct group is chosen', () => {
+      it('scores it with a chime', async () => {
+        renderPractice();
+        await turnOnAdvanced();
+        const correctGroup = { middle: '1 Middle', high: '2 High', low: '3 Low' }[getCorrectAnswer().consonantClass];
+
+        await userEvent.click(screen.getByRole('button', { name: correctGroup }));
+        await userEvent.click(screen.getByRole('button', { name: 'Next' }));
+
+        expect(screen.getByRole('status')).toHaveTextContent('Correct.');
+        expect(playFeedbackSound).toHaveBeenCalledWith('correct');
+      });
+    });
+
+    describe('given a wrong group is chosen', () => {
+      it('announces and marks the correct group', async () => {
+        renderPractice();
+        await turnOnAdvanced();
+        const { consonantClass } = getCorrectAnswer();
+        const wrongGroup = consonantClass === 'middle' ? '2 High' : '1 Middle';
+        const correctGroup = { middle: '1 Middle', high: '2 High', low: '3 Low' }[consonantClass];
+
+        await userEvent.click(screen.getByRole('button', { name: wrongGroup }));
+        await userEvent.click(screen.getByRole('button', { name: 'Next' }));
+
+        expect(screen.getByRole('status')).toHaveTextContent(
+          `Incorrect. The answer is group ${correctGroup.replace(' ', ', ')}.`
+        );
+        expect(screen.getByRole('button', { name: new RegExp(correctGroup) })).toHaveAttribute('data-status', 'correct');
       });
     });
   });

@@ -108,7 +108,7 @@ Pronunciation is written manually in Burmese script by the project owner and is 
 - Query by role and accessible name (Testing Library) rather than test IDs or class names.
 - Mock `src/services/audio`, `src/services/sound` and `src/services/speech` in component/screen tests; each service has its own unit test.
 - New reusable components need tests. Practice logic must stay covered for: correct and incorrect answers, question and
-  answer randomization, option uniqueness, progression, completion and score, and for each answer mode (select, type,
+  answer randomization, option uniqueness, progression, completion and score, and for each answer mode (select, class, type,
   speak) including the Advanced toggle and the "Can't speak now" fallback.
 - `src/data/consonants.test.ts` validates the content (IDs, required fields, Burmese script, Unicode order, files exist).
   Keep it passing; update its known-gap lists only when the owner confirms the gap.

@@ -21,6 +21,10 @@ describe('consonant classes', () => {
     expect(consonantClasses.map((consonantClass) => consonantClass.id)).toEqual(['middle', 'high', 'low']);
   });
 
+  it('numbers the classes as groups 1 (middle), 2 (high) and 3 (low)', () => {
+    expect(consonantClasses.map((consonantClass) => consonantClass.group)).toEqual([1, 2, 3]);
+  });
+
   it('gives every class a name, short name, Burmese name and tone', () => {
     consonantClasses.forEach((consonantClass) => {
       expect(consonantClass.name).not.toBe('');

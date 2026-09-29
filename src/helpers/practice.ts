@@ -49,12 +49,15 @@ const pickDistractors = (
     .slice(0, count);
 };
 
-export const getAnswerModes = ({ advanced, speech }: { advanced: boolean; speech: boolean }): AnswerMode[] => {
-  if (!advanced) {
-    return ['select'];
-  }
-  return speech ? ['select', 'type', 'speak'] : ['select', 'type'];
-};
+export const ADVANCED_ANSWER_MODES: readonly AnswerMode[] = ['class', 'type', 'speak'];
+
+export const getAnswerModes = ({
+  advanced,
+  enabled,
+}: {
+  advanced: boolean;
+  enabled: Partial<Record<AnswerMode, boolean>>;
+}): AnswerMode[] => (advanced ? ['select', ...ADVANCED_ANSWER_MODES.filter((mode) => enabled[mode])] : ['select']);
 
 export const assignAnswerModes = (
   count: number,
@@ -106,6 +109,8 @@ export const isPracticeComplete = (state: PracticeState): boolean =>
 
 export const isAnswerCorrect = (question: PracticeQuestion, { selectedAnswerId, response }: PracticeAnswer): boolean => {
   switch (question.mode) {
+    case 'class':
+      return question.answer.consonantClass === response;
     case 'type':
       return isTypedAnswerCorrect(question.answer, response);
     case 'speak':

@@ -85,10 +85,10 @@ describe('generatePracticeQuestions', () => {
     it('mixes them across the questions', () => {
       const questions = generatePracticeQuestions(buildLargeVocabulary(60), {
         questionCount: 60,
-        modes: ['select', 'type', 'speak'],
+        modes: ['select', 'class', 'type', 'speak'],
       });
 
-      expect(new Set(questions.map((question) => question.mode))).toEqual(new Set(['select', 'type', 'speak']));
+      expect(new Set(questions.map((question) => question.mode))).toEqual(new Set(['select', 'class', 'type', 'speak']));
     });
   });
 
@@ -265,6 +265,20 @@ describe('practiceReducer', () => {
       });
     });
 
+    describe('given the correct group is chosen', () => {
+      it('scores the answer', () => {
+        const chosen = practiceReducer(createPracticeState([buildQuestion(0, 'class')]), {
+          type: 'ENTER_RESPONSE',
+          response: 'middle',
+        });
+
+        const state = practiceReducer(chosen, { type: 'SUBMIT_ANSWER' });
+
+        expect(state.answered).toBe(true);
+        expect(state.score).toBe(1);
+      });
+    });
+
     describe('given a wrong word is spoken', () => {
       it('marks the question answered without scoring', () => {
         const spoken = practiceReducer(createPracticeState([buildQuestion(0, 'speak')]), {
@@ -362,6 +376,13 @@ describe('isAnswerCorrect', () => {
     });
   });
 
+  describe('given a group question', () => {
+    it("compares the chosen class with the letter's class", () => {
+      expect(isAnswerCorrect(buildQuestion(0, 'class'), { selectedAnswerId: null, response: 'middle' })).toBe(true);
+      expect(isAnswerCorrect(buildQuestion(0, 'class'), { selectedAnswerId: null, response: 'high' })).toBe(false);
+    });
+  });
+
   describe('given a speaking question', () => {
     it('looks for the word in what was heard', () => {
       expect(isAnswerCorrect(buildQuestion(0, 'speak'), { selectedAnswerId: null, response: 'กอ ไก่' })).toBe(true);
@@ -387,21 +408,27 @@ describe('hasAnswer', () => {
 });
 
 describe('getAnswerModes', () => {
+  const allEnabled = { class: true, type: true, speak: true };
+
   describe('given advanced practice is off', () => {
     it('only selects answers', () => {
-      expect(getAnswerModes({ advanced: false, speech: true })).toEqual(['select']);
+      expect(getAnswerModes({ advanced: false, enabled: allEnabled })).toEqual(['select']);
     });
   });
 
   describe('given advanced practice is on', () => {
-    it('adds typing and speaking', () => {
-      expect(getAnswerModes({ advanced: true, speech: true })).toEqual(['select', 'type', 'speak']);
+    it('adds choosing the group, typing and speaking', () => {
+      expect(getAnswerModes({ advanced: true, enabled: allEnabled })).toEqual(['select', 'class', 'type', 'speak']);
     });
   });
 
-  describe('given speech recognition is unavailable', () => {
-    it('leaves speaking out', () => {
-      expect(getAnswerModes({ advanced: true, speech: false })).toEqual(['select', 'type']);
+  describe('given some question types are turned off', () => {
+    it('leaves them out but always keeps selecting', () => {
+      expect(getAnswerModes({ advanced: true, enabled: { class: true, type: false, speak: false } })).toEqual([
+        'select',
+        'class',
+      ]);
+      expect(getAnswerModes({ advanced: true, enabled: {} })).toEqual(['select']);
     });
   });
 });
