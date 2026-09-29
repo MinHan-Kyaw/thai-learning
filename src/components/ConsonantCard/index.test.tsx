@@ -42,6 +42,23 @@ describe('ConsonantCard', () => {
     expect(onPlayAudio).toHaveBeenCalledWith(consonant.words[0]);
   });
 
+  it('uses the default size', () => {
+    render(<ConsonantCard consonant={buildConsonant()} onPlayAudio={vi.fn()} />);
+
+    expect(screen.getByRole('article')).toHaveAttribute('data-size', 'default');
+  });
+
+  describe('given the compact size', () => {
+    it('shows the same content', () => {
+      render(<ConsonantCard consonant={buildConsonant()} onPlayAudio={vi.fn()} size="compact" />);
+
+      expect(screen.getByRole('article', { name: 'ก' })).toHaveAttribute('data-size', 'compact');
+      expect(screen.getByText('ไก่')).toBeInTheDocument();
+      expect(screen.getByRole('img', { name: 'ကြက်' })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Play Thai audio for ไก่' })).toBeInTheDocument();
+    });
+  });
+
   describe('given the word has no image', () => {
     it('renders a placeholder instead of an image', () => {
       render(<ConsonantCard consonant={buildConsonant({ image: undefined })} onPlayAudio={vi.fn()} />);

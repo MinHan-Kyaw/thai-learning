@@ -35,7 +35,7 @@ Run a single test file: `npx vitest run src/helpers/practice.test.ts`
 ```text
 src/
 ├── components/   Reusable, presentational UI. One folder per component: index.tsx, index.test.tsx
-├── screens/      Page-level composition (Home, Consonants, Practice). Screens own state and wire services.
+├── screens/      Page-level composition (Home, Consonants, Practice, AllConsonants). Screens own state and wire services.
 ├── data/         Learning content JSON + typed loader (index.ts) + data validation test
 ├── helpers/      Pure functions (randomizeArray, practice engine, vocabulary, assetUrl)
 ├── constants/    Shared constants (practice question/option counts)
