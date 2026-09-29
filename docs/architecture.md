@@ -17,7 +17,7 @@ flowchart LR
   Loader --> Screens
   Helpers["src/helpers<br/>(pure functions)"] --> Screens
   Services["src/services<br/>audio.ts · sound.ts · speech.ts"] --> Screens
-  Screens["src/screens<br/>Home · Consonants · Practice"] --> Components["src/components<br/>(presentational)"]
+  Screens["src/screens<br/>Home · Consonants · Practice · AllConsonants"] --> Components["src/components<br/>(presentational)"]
 ```
 
 | Layer         | Responsibility                                      | May import                             |
@@ -32,12 +32,13 @@ flowchart LR
 
 `BrowserRouter` with `basename = import.meta.env.BASE_URL`, so the app works at a domain root or a sub-path.
 
-| Path                                  | Screen                                                        |
-| ------------------------------------- | ------------------------------------------------------------- |
-| `/`                                   | Home                                                          |
-| `/consonants?class=middle\|high\|low` | Consonant browser (class kept in the URL so it can be linked) |
-| `/practice`                           | Picture quiz                                                  |
-| `*`                                   | Redirects to `/`                                              |
+| Path                                  | Screen                                                                                                                                                                        |
+| ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/`                                   | Home                                                                                                                                                                          |
+| `/consonants?class=middle\|high\|low` | Consonant browser (class kept in the URL so it can be linked)                                                                                                                 |
+| `/practice`                           | Picture quiz                                                                                                                                                                  |
+| `/all`                                | All 44 consonants as compact cards (letter, picture, Burmese meaning; no Thai word or audio) on one full-width page without the header; not linked, reached by typing the URL |
+| `*`                                   | Redirects to `/`                                                                                                                                                              |
 
 Static hosts must serve `index.html` for unknown paths. Cloudflare Pages does this automatically because the build has no
 `404.html`.

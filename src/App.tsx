@@ -1,12 +1,14 @@
 import { Navigate, Route, Routes } from 'react-router';
 
 import Layout from './components/Layout';
+import AllConsonants from './screens/AllConsonants';
 import Consonants from './screens/Consonants';
 import Home from './screens/Home';
 import Practice from './screens/Practice';
 
 const App = () => (
   <Routes>
+    <Route path="all" element={<AllConsonants />} />
     <Route element={<Layout />}>
       <Route index element={<Home />} />
       <Route path="consonants" element={<Consonants />} />
