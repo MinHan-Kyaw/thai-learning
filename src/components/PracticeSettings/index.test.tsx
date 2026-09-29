@@ -10,7 +10,7 @@ const QUESTION_TYPES: QuestionTypeOption[] = [
 ];
 
 const renderSettings = ({
-  questionCount = { value: 10, min: 5, max: 30, step: 5 },
+  questionCount = { value: 10, min: 5, max: 30 },
   questionTypes = QUESTION_TYPES,
 }: { questionCount?: QuestionCount; questionTypes?: QuestionTypeOption[] } = {}) => {
   const onQuestionCountChange = vi.fn();
@@ -44,29 +44,69 @@ describe('PracticeSettings', () => {
     await openMenu();
 
     expect(getMenuButton()).toHaveAttribute('aria-expanded', 'true');
-    expect(screen.getByRole('group', { name: 'Questions' })).toHaveTextContent('10');
+    expect(screen.getByRole('spinbutton', { name: 'Questions' })).toHaveValue(10);
     expect(screen.getByRole('checkbox', { name: 'Audio' })).toBeChecked();
     expect(screen.getByRole('checkbox', { name: 'Type' })).not.toBeChecked();
     expect(screen.getByRole('checkbox', { name: 'Group' })).toBeChecked();
   });
 
-  it('steps the number of questions up and down', async () => {
+  it('steps the number of questions up and down by one', async () => {
     const { onQuestionCountChange } = renderSettings();
     await openMenu();
 
     await userEvent.click(screen.getByRole('button', { name: 'More questions' }));
     await userEvent.click(screen.getByRole('button', { name: 'Fewer questions' }));
 
-    expect(onQuestionCountChange.mock.calls).toEqual([[15], [5]]);
+    expect(onQuestionCountChange.mock.calls).toEqual([[11], [9]]);
   });
 
   describe('given the number of questions is at a limit', () => {
     it('disables stepping past it', async () => {
-      renderSettings({ questionCount: { value: 30, min: 5, max: 30, step: 5 } });
+      renderSettings({ questionCount: { value: 30, min: 5, max: 30 } });
       await openMenu();
 
       expect(screen.getByRole('button', { name: 'More questions' })).toBeDisabled();
       expect(screen.getByRole('button', { name: 'Fewer questions' })).toBeEnabled();
+    });
+  });
+
+  describe('given a number is typed', () => {
+    it('applies it on Enter', async () => {
+      const { onQuestionCountChange } = renderSettings();
+      await openMenu();
+
+      await userEvent.clear(screen.getByRole('spinbutton', { name: 'Questions' }));
+      await userEvent.type(screen.getByRole('spinbutton', { name: 'Questions' }), '25{Enter}');
+
+      expect(onQuestionCountChange.mock.calls).toEqual([[25]]);
+    });
+
+    it('keeps it within 5 to 30 when leaving the field', async () => {
+      const { onQuestionCountChange } = renderSettings();
+      await openMenu();
+      const input = screen.getByRole('spinbutton', { name: 'Questions' });
+
+      await userEvent.clear(input);
+      await userEvent.type(input, '3');
+      await userEvent.tab();
+      await userEvent.clear(input);
+      await userEvent.type(input, '99{Enter}');
+
+      expect(onQuestionCountChange.mock.calls).toEqual([[5], [30]]);
+    });
+
+    describe('given the field is left empty', () => {
+      it('goes back to the current number without a change', async () => {
+        const { onQuestionCountChange } = renderSettings();
+        await openMenu();
+        const input = screen.getByRole('spinbutton', { name: 'Questions' });
+
+        await userEvent.clear(input);
+        await userEvent.tab();
+
+        expect(input).toHaveValue(10);
+        expect(onQuestionCountChange).not.toHaveBeenCalled();
+      });
     });
   });
 
@@ -83,7 +123,7 @@ describe('PracticeSettings', () => {
     it('only shows the number of questions', async () => {
       render(
         <PracticeSettings
-          questionCount={{ value: 10, min: 5, max: 30, step: 5 }}
+          questionCount={{ value: 10, min: 5, max: 30 }}
           onQuestionCountChange={vi.fn()}
           onQuestionTypeChange={vi.fn()}
         />

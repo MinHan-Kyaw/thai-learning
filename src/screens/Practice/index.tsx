@@ -11,7 +11,7 @@ import type { AnswerResult } from '../../components/ResultIcon';
 import SpokenAnswer, { type SpeechStatus } from '../../components/SpokenAnswer';
 import Toggle from '../../components/Toggle';
 import TypedAnswer from '../../components/TypedAnswer';
-import { MAX_QUESTION_COUNT, MIN_QUESTION_COUNT, QUESTION_COUNT, QUESTION_COUNT_STEP } from '../../constants/practice';
+import { MAX_QUESTION_COUNT, MIN_QUESTION_COUNT, QUESTION_COUNT } from '../../constants/practice';
 import { consonantClasses, consonants } from '../../data';
 import { assetUrl } from '../../helpers/assetUrl';
 import {
@@ -204,7 +204,6 @@ const Practice = () => {
             value: questionCount,
             min: MIN_QUESTION_COUNT,
             max: MAX_QUESTION_COUNT,
-            step: QUESTION_COUNT_STEP,
           }}
           onQuestionCountChange={handleQuestionCountChange}
           questionTypes={

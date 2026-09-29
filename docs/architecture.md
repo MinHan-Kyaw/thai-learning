@@ -94,8 +94,8 @@ root-relative and resolved at render time with `assetUrl()` so a sub-path deploy
 - `generatePracticeQuestions(vocabulary, { questionCount, optionCount, modes, random })`
   - pool = vocabulary items that have an image;
   - shuffles the pool (question order) and takes `questionCount` answers (default `QUESTION_COUNT`, 10), each asked once;
-    the learner picks 5–30 in steps of 5 from the ⋮ practice settings menu (`MIN_QUESTION_COUNT`, `MAX_QUESTION_COUNT`,
-    `QUESTION_COUNT_STEP`), which restarts the practice;
+    the learner sets 5–30 (`MIN_QUESTION_COUNT`, `MAX_QUESTION_COUNT`) in the ⋮ practice settings menu with − / +
+    (one at a time) or by typing a number, applied on Enter or blur and clamped to the range; this restarts the practice;
   - for each answer picks `ANSWER_OPTION_COUNT - 1` (2) distractors from the same pool with unique Thai text;
   - shuffles the options so the correct position varies;
   - gives each question a random answer mode from `modes` (default `['select']`) via `assignAnswerModes`.

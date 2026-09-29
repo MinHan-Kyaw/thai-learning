@@ -183,22 +183,22 @@ describe('Practice', () => {
       await userEvent.click(screen.getByRole('button', { name: 'More questions' }));
       await userEvent.click(screen.getByRole('button', { name: 'More questions' }));
 
-      expect(screen.getByRole('group', { name: 'Questions' })).toHaveTextContent('20');
-      expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuemax', '20');
+      expect(screen.getByRole('spinbutton', { name: 'Questions' })).toHaveValue(12);
+      expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuemax', '12');
       expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
     });
   });
 
-  describe('given the maximum number of questions', () => {
-    it('stops at 30', async () => {
+  describe('given a number above the maximum is typed', () => {
+    it('uses 30 questions', async () => {
       renderPractice();
       await openSettings();
+      const input = screen.getByRole('spinbutton', { name: 'Questions' });
 
-      for (let index = 0; index < 5; index += 1) {
-        await userEvent.click(screen.getByRole('button', { name: 'More questions' }));
-      }
+      await userEvent.clear(input);
+      await userEvent.type(input, '40{Enter}');
 
-      expect(screen.getByRole('group', { name: 'Questions' })).toHaveTextContent('30');
+      expect(input).toHaveValue(30);
       expect(screen.getByRole('button', { name: 'More questions' })).toBeDisabled();
       expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuemax', '30');
     });
