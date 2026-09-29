@@ -42,12 +42,45 @@ describe('ConsonantCard', () => {
     expect(onPlayAudio).toHaveBeenCalledWith(consonant.words[0]);
   });
 
+  it('uses the default size', () => {
+    render(<ConsonantCard consonant={buildConsonant()} onPlayAudio={vi.fn()} />);
+
+    expect(screen.getByRole('article')).toHaveAttribute('data-size', 'default');
+  });
+
+  describe('given the compact size', () => {
+    it('shows the same content', () => {
+      render(<ConsonantCard consonant={buildConsonant()} onPlayAudio={vi.fn()} size="compact" />);
+
+      expect(screen.getByRole('article', { name: 'ก' })).toHaveAttribute('data-size', 'compact');
+      expect(screen.getByText('ไก่')).toBeInTheDocument();
+      expect(screen.getByRole('img', { name: 'ကြက်' })).toBeInTheDocument();
+    });
+  });
+
   describe('given the word has no image', () => {
     it('renders a placeholder instead of an image', () => {
       render(<ConsonantCard consonant={buildConsonant({ image: undefined })} onPlayAudio={vi.fn()} />);
 
       expect(screen.queryByRole('img')).not.toBeInTheDocument();
       expect(screen.getByText('Picture coming soon')).toBeInTheDocument();
+    });
+  });
+
+  describe('given the word is hidden', () => {
+    it('shows the letter, picture and Burmese meaning only', () => {
+      render(<ConsonantCard consonant={buildConsonant()} showWord={false} />);
+
+      expect(screen.getByRole('article', { name: 'ก' })).toHaveTextContent('ကြက် (ကောကိုင်)');
+      expect(screen.queryByText('ไก่')).not.toBeInTheDocument();
+    });
+  });
+
+  describe('given no audio handler', () => {
+    it('does not render the audio button', () => {
+      render(<ConsonantCard consonant={buildConsonant()} />);
+
+      expect(screen.queryByRole('button')).not.toBeInTheDocument();
     });
   });
 
