@@ -1,6 +1,7 @@
 [
   {
     "id": "middle",
+    "group": 1,
     "name": "Middle Class",
     "shortName": "Middle",
     "burmeseName": "အလယ်သံဗျည်းအုပ်စု",
@@ -8,6 +9,7 @@
   },
   {
     "id": "high",
+    "group": 2,
     "name": "High Class",
     "shortName": "High",
     "burmeseName": "အမြင့်သံဗျည်းအုပ်စု",
@@ -15,6 +17,7 @@
   },
   {
     "id": "low",
+    "group": 3,
     "name": "Low Class",
     "shortName": "Low",
     "burmeseName": "အနိမ့်သံဗျည်းအုပ်စု",

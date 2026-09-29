@@ -24,10 +24,10 @@ describe('getConsonantsByClass', () => {
 });
 
 describe('getVocabulary', () => {
-  it('flattens words and keeps a reference to their consonant', () => {
+  it('flattens words and keeps a reference to their consonant and its class', () => {
     expect(getVocabulary(consonants)).toEqual([
-      { id: 'ก-ไก่', thai: 'ไก่', pronunciation: 'ကောကိုင်', meaning: 'ကြက်', consonant: 'ก' },
-      { id: 'ข-ไข่', thai: 'ไข่', pronunciation: 'ခေါခိုင်', meaning: 'ဥ', consonant: 'ข' },
+      { id: 'ก-ไก่', thai: 'ไก่', pronunciation: 'ကောကိုင်', meaning: 'ကြက်', consonant: 'ก', consonantClass: 'middle' },
+      { id: 'ข-ไข่', thai: 'ไข่', pronunciation: 'ခေါခိုင်', meaning: 'ဥ', consonant: 'ข', consonantClass: 'high' },
     ]);
   });
 });

@@ -30,13 +30,18 @@ const AnswerOptions = ({ question, selectedAnswerId, answered, onSelectAnswer }:
     {question.options.map((option) => (
       <li key={option.id}>
         <AnswerOption
-          thai={getLetterWithWord(option)}
-          pronunciation={option.pronunciation}
           selected={option.id === selectedAnswerId}
           result={getOptionResult(option, question, selectedAnswerId, answered)}
           disabled={answered}
           onSelect={() => onSelectAnswer(option)}
-        />
+        >
+          <span className="font-thai text-[1.625rem] leading-[1.3] font-medium" lang="th">
+            {getLetterWithWord(option)}
+          </span>{' '}
+          <span className="font-burmese text-[1.0625rem] leading-[1.8] text-ink-muted" lang="my">
+            {option.pronunciation}
+          </span>
+        </AnswerOption>
       </li>
     ))}
   </ul>

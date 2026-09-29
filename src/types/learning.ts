@@ -2,6 +2,7 @@ export type ConsonantClassId = 'middle' | 'high' | 'low';
 
 export interface ConsonantClass {
   id: ConsonantClassId;
+  group: number;
   name: string;
   shortName: string;
   burmeseName: string;
@@ -26,9 +27,10 @@ export interface Consonant {
 
 export interface VocabularyItem extends Word {
   consonant: string;
+  consonantClass: ConsonantClassId;
 }
 
-export type AnswerMode = 'select' | 'type' | 'speak';
+export type AnswerMode = 'select' | 'class' | 'type' | 'speak';
 
 export interface PracticeQuestion {
   id: string;

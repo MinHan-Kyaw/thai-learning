@@ -6,9 +6,9 @@ import type { ConsonantClass } from '../../types/learning';
 import ClassTabs from '.';
 
 const classes: ConsonantClass[] = [
-  { id: 'middle', name: 'Middle Class', shortName: 'Middle', burmeseName: 'အလယ်', tone: 'Mid tone' },
-  { id: 'high', name: 'High Class', shortName: 'High', burmeseName: 'အမြင့်', tone: 'Rising tone' },
-  { id: 'low', name: 'Low Class', shortName: 'Low', burmeseName: 'အနိမ့်', tone: 'Mid tone' },
+  { id: 'middle', group: 1, name: 'Middle Class', shortName: 'Middle', burmeseName: 'အလယ်', tone: 'Mid tone' },
+  { id: 'high', group: 2, name: 'High Class', shortName: 'High', burmeseName: 'အမြင့်', tone: 'Rising tone' },
+  { id: 'low', group: 3, name: 'Low Class', shortName: 'Low', burmeseName: 'အနိမ့်', tone: 'Mid tone' },
 ];
 const counts = { middle: 9, high: 11, low: 24 };
 
