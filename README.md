@@ -6,18 +6,22 @@ A responsive, client-side web app for Burmese-speaking learners studying Thai co
 
 **Live site:** https://thai-learning-dxd.pages.dev
 
-- **Consonants:** browse the 44 Thai consonants by class (Middle, High, Low). Each card shows the letter, a picture, the
-  Thai word, its Burmese meaning and pronunciation, and plays the Thai letter name (e.g. "กอ ไก่").
-- **Practice:** a picture quiz of 10 questions by default (5–30, set in the ⋮ menu). Pick the matching answer, shown as
-  letter and word (`ก (ไก่)`) with its Burmese pronunciation, hear it, then press Next to see ✓ or ✗. Turn on
-  **Advanced** to mix in, at random, questions where you choose the letter's group (1 Middle, 2 High, 3 Low), type the
-  Thai letter (hinted by its Burmese pronunciation) or say it aloud into the microphone; the Audio / Type / Group
-  checkboxes in the ⋮ menu turn each kind on or off. Speaking uses the browser's speech recognition (Chrome, Edge,
-  Safari); where it is unavailable or the learner taps "Can't speak now", Audio is turned off and those questions become
-  other kinds.
+- **Consonants:** browse the 44 Thai consonants by class (Middle, High, Low); the class tabs stay pinned while you
+  scroll. Each card shows the letter, a picture, the Thai word, its Burmese meaning and pronunciation, and plays the Thai
+  letter name (e.g. "กอ ไก่").
+- **Practice:** a picture quiz. Pick the matching answer, shown as letter and word (`ก (ไก่)`) with its Burmese
+  pronunciation, hear it, then press Next: a chime and ✓ for a correct answer, a low tone and ✗ for a wrong one.
+  - **Number of questions:** 10 by default; set 5–30 in the ⋮ menu with − / + or by typing a number.
+  - **Advanced:** mixes in, at random, questions where you:
+    - **Group:** choose the letter's group (1 Middle, 2 High, 3 Low) for the picture and word shown;
+    - **Type:** type the Thai letter, hinted by its Burmese pronunciation (needs a Thai keyboard);
+    - **Audio:** say the word aloud from the picture alone, using the browser's speech recognition (Chrome, Edge, Safari).
+  - The Audio / Type / Group checkboxes in the ⋮ menu turn each kind on or off. Where speech recognition is unavailable,
+    or after "Can't speak now", Audio is off.
+  - Changing Advanced or any setting starts a new practice.
 
 There is no backend, database or user account. All learning content is static JSON bundled with the app, and practice
-progress lives only in memory for the current session.
+progress and settings live only in memory: reloading the page starts over with the defaults.
 
 ## Tech stack
 
