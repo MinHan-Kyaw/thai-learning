@@ -1,15 +1,18 @@
 import { useEffect, useReducer, useRef, useState } from 'react';
 
 import AnswerOptions from '../../components/AnswerOptions';
+import ClassOptions from '../../components/ClassOptions';
 import PracticeFeedback from '../../components/PracticeFeedback';
 import PracticeQuestion from '../../components/PracticeQuestion';
+import PracticeSettings from '../../components/PracticeSettings';
 import PracticeSummary from '../../components/PracticeSummary';
 import ProgressBar from '../../components/ProgressBar';
 import type { AnswerResult } from '../../components/ResultIcon';
 import SpokenAnswer, { type SpeechStatus } from '../../components/SpokenAnswer';
 import Toggle from '../../components/Toggle';
 import TypedAnswer from '../../components/TypedAnswer';
-import { consonants } from '../../data';
+import { MAX_QUESTION_COUNT, MIN_QUESTION_COUNT, QUESTION_COUNT } from '../../constants/practice';
+import { consonantClasses, consonants } from '../../data';
 import { assetUrl } from '../../helpers/assetUrl';
 import {
   assignAnswerModes,
@@ -31,7 +34,8 @@ import type { AnswerMode, VocabularyItem } from '../../types/learning';
 
 const SPEECH_LANGUAGE = 'th-TH';
 
-const buildQuestions = (modes: readonly AnswerMode[]) => generatePracticeQuestions(getVocabulary(consonants), { modes });
+const buildQuestions = (modes: readonly AnswerMode[], questionCount: number) =>
+  generatePracticeQuestions(getVocabulary(consonants), { modes, questionCount });
 
 const playWordAudio = (word: VocabularyItem) => {
   if (word.audio) {
@@ -39,15 +43,27 @@ const playWordAudio = (word: VocabularyItem) => {
   }
 };
 
+type EnabledModes = Partial<Record<AnswerMode, boolean>>;
+
+const QUESTION_TYPES: { mode: AnswerMode; label: string }[] = [
+  { mode: 'speak', label: 'Audio' },
+  { mode: 'type', label: 'Type' },
+  { mode: 'class', label: 'Group' },
+];
+
 const Practice = () => {
   const [advanced, setAdvanced] = useState(false);
-  const [speakingSkipped, setSpeakingSkipped] = useState(false);
+  const [enabledModes, setEnabledModes] = useState<EnabledModes>({ speak: true, type: true, class: true });
+  const [questionCount, setQuestionCount] = useState(QUESTION_COUNT);
   const [speechStatus, setSpeechStatus] = useState<SpeechStatus>('idle');
-  const [state, dispatch] = useReducer(practiceReducer, undefined, () => createPracticeState(buildQuestions(['select'])));
+  const [state, dispatch] = useReducer(practiceReducer, undefined, () =>
+    createPracticeState(buildQuestions(['select'], QUESTION_COUNT))
+  );
   const listenRequest = useRef(0);
   const wordAudioTimer = useRef<number | undefined>(undefined);
   const question = getCurrentQuestion(state);
-  const speechAvailable = isSpeechRecognitionSupported() && !speakingSkipped;
+  const speechSupported = isSpeechRecognitionSupported();
+  const withSpeechSupport = (modes: EnabledModes): EnabledModes => ({ ...modes, speak: modes.speak && speechSupported });
 
   useEffect(
     () => () => {
@@ -65,16 +81,31 @@ const Practice = () => {
     setSpeechStatus('idle');
   };
 
-  const restart = (isAdvanced: boolean) => {
+  const restart = (changes: { advanced?: boolean; enabledModes?: EnabledModes; questionCount?: number } = {}) => {
     window.clearTimeout(wordAudioTimer.current);
     stopAudio();
     resetSpeech();
-    dispatch({ type: 'RESTART', questions: buildQuestions(getAnswerModes({ advanced: isAdvanced, speech: speechAvailable })) });
+    const answerModes = getAnswerModes({
+      advanced: changes.advanced ?? advanced,
+      enabled: withSpeechSupport(changes.enabledModes ?? enabledModes),
+    });
+    dispatch({ type: 'RESTART', questions: buildQuestions(answerModes, changes.questionCount ?? questionCount) });
   };
 
   const handleAdvancedChange = (checked: boolean) => {
     setAdvanced(checked);
-    restart(checked);
+    restart({ advanced: checked });
+  };
+
+  const handleQuestionTypeChange = (mode: AnswerMode, checked: boolean) => {
+    const modes = { ...enabledModes, [mode]: checked };
+    setEnabledModes(modes);
+    restart({ enabledModes: modes });
+  };
+
+  const handleQuestionCountChange = (count: number) => {
+    setQuestionCount(count);
+    restart({ questionCount: count });
   };
 
   if (state.questions.length === 0) {
@@ -86,7 +117,7 @@ const Practice = () => {
   }
 
   if (isPracticeComplete(state) || !question) {
-    return <PracticeSummary score={state.score} total={state.questions.length} onRestart={() => restart(advanced)} />;
+    return <PracticeSummary score={state.score} total={state.questions.length} onRestart={() => restart()} />;
   }
 
   const isLastQuestion = state.currentQuestionIndex === state.questions.length - 1;
@@ -144,8 +175,9 @@ const Practice = () => {
 
   const handleSkipSpeaking = () => {
     resetSpeech();
-    setSpeakingSkipped(true);
-    const fallbackModes = assignAnswerModes(state.questions.length, getAnswerModes({ advanced, speech: false }));
+    const modes = { ...enabledModes, speak: false };
+    setEnabledModes(modes);
+    const fallbackModes = assignAnswerModes(state.questions.length, getAnswerModes({ advanced, enabled: modes }));
     dispatch({
       type: 'SET_ANSWER_MODES',
       modes: state.questions.map((item, index) => (item.mode === 'speak' ? (fallbackModes[index] ?? 'select') : item.mode)),
@@ -163,9 +195,28 @@ const Practice = () => {
         />
         <Toggle
           label="Advanced"
-          description={speechAvailable ? 'Also type and speak your answers' : 'Also type your answers'}
+          description="Mix in audio, typing and group questions"
           checked={advanced}
           onChange={handleAdvancedChange}
+        />
+        <PracticeSettings
+          questionCount={{
+            value: questionCount,
+            min: MIN_QUESTION_COUNT,
+            max: MAX_QUESTION_COUNT,
+          }}
+          onQuestionCountChange={handleQuestionCountChange}
+          questionTypes={
+            advanced
+              ? QUESTION_TYPES.map(({ mode, label }) => ({
+                  mode,
+                  label,
+                  checked: Boolean(enabledModes[mode]),
+                  unavailable: mode === 'speak' && !speechSupported,
+                }))
+              : undefined
+          }
+          onQuestionTypeChange={handleQuestionTypeChange}
         />
       </div>
       <PracticeQuestion question={question}>
@@ -175,6 +226,15 @@ const Practice = () => {
             selectedAnswerId={state.selectedAnswerId}
             answered={state.answered}
             onSelectAnswer={handleSelectAnswer}
+          />
+        )}
+        {question.mode === 'class' && (
+          <ClassOptions
+            classes={consonantClasses}
+            correctClassId={question.answer.consonantClass}
+            selectedClassId={state.response}
+            answered={state.answered}
+            onSelect={(classId) => dispatch({ type: 'ENTER_RESPONSE', response: classId })}
           />
         )}
         {question.mode === 'type' && (
@@ -202,6 +262,11 @@ const Practice = () => {
       <PracticeFeedback
         result={result}
         correctAnswer={question.answer}
+        correctClass={
+          question.mode === 'class'
+            ? consonantClasses.find((consonantClass) => consonantClass.id === question.answer.consonantClass)
+            : undefined
+        }
         actionLabel={actionLabel}
         actionDisabled={!state.answered && !hasAnswer(question, state)}
         onAction={handleAction}

@@ -51,6 +51,7 @@ type ConsonantClassId = 'middle' | 'high' | 'low';
 
 interface ConsonantClass {
   id: ConsonantClassId;
+  group: number; // 1 middle, 2 high, 3 low — the numbers asked in group questions
   name: string; // "Middle Class" — headings, badges
   shortName: string; // "Middle" — class tabs
   burmeseName: string;
@@ -73,7 +74,7 @@ interface Consonant {
   words: Word[];
 }
 
-type AnswerMode = 'select' | 'type' | 'speak';
+type AnswerMode = 'select' | 'class' | 'type' | 'speak';
 
 interface PracticeQuestion {
   id: string;
@@ -92,13 +93,17 @@ root-relative and resolved at render time with `assetUrl()` so a sub-path deploy
 
 - `generatePracticeQuestions(vocabulary, { questionCount, optionCount, modes, random })`
   - pool = vocabulary items that have an image;
-  - shuffles the pool (question order) and takes `QUESTION_COUNT` (10) answers, each asked once;
+  - shuffles the pool (question order) and takes `questionCount` answers (default `QUESTION_COUNT`, 10), each asked once;
+    the learner sets 5–30 (`MIN_QUESTION_COUNT`, `MAX_QUESTION_COUNT`) in the ⋮ practice settings menu with − / +
+    (one at a time) or by typing a number, applied on Enter or blur and clamped to the range; this restarts the practice;
   - for each answer picks `ANSWER_OPTION_COUNT - 1` (2) distractors from the same pool with unique Thai text;
   - shuffles the options so the correct position varies;
   - gives each question a random answer mode from `modes` (default `['select']`) via `assignAnswerModes`.
   - `random` is injectable for deterministic tests. `randomizeArray` never mutates its input.
-- `getAnswerModes({ advanced, speech })`: `select` only when Advanced is off; otherwise `select` + `type`, plus `speak`
-  when the browser supports speech recognition and the learner has not tapped "Can't speak now".
+- `getAnswerModes({ advanced, enabled })`: `select` only when Advanced is off; otherwise `select` plus each of
+  `class`, `type` and `speak` that is enabled. The Practice screen enables them with the Audio / Type / Group checkboxes
+  in the ⋮ practice settings menu right of the Advanced toggle (shown there while Advanced is on), and leaves `speak` out when the
+  browser has no speech recognition. "Can't speak now" unticks Audio.
 - `practiceReducer(state, action)` drives the session:
 
 ```mermaid
@@ -114,7 +119,7 @@ stateDiagram-v2
   Answering --> Unanswered: RESTART (Advanced switched on or off)
 ```
 
-Switching Advanced on or off restarts the practice with new questions in the new modes. `SET_ANSWER_MODES`
+Switching Advanced on or off, or ticking a question type, restarts the practice with new questions in the new modes. `SET_ANSWER_MODES`
 ("Can't speak now") re-assigns the modes of the current question, if it is not yet evaluated, and every later question;
 a current question whose mode changes loses its unsubmitted answer.
 
@@ -135,15 +140,16 @@ and is never persisted; the Advanced toggle is screen state and starts off on ev
 
 ### Answer modes
 
-| Mode     | Prompt                               | Correct when                                                                 |
-| -------- | ------------------------------------ | ---------------------------------------------------------------------------- |
-| `select` | picture, "Which word is this?"       | the chosen option is the answer                                              |
-| `type`   | picture + Burmese pronunciation hint | the text is the letter `ก`; `ไก่`, `ก ไก่`, `ก (ไก่)` or `กอ ไก่` also count |
-| `speak`  | picture only, "Say this word"        | a recognized transcript contains the word                                    |
+| Mode     | Prompt                                                  | Correct when                                                                 |
+| -------- | ------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `select` | picture, "Which word is this?"                          | the chosen option is the answer                                              |
+| `class`  | picture + `ก (ไก่)` and pronunciation, groups 1 / 2 / 3 | the chosen group is the letter's class (`VocabularyItem.consonantClass`)     |
+| `type`   | picture + Burmese pronunciation hint                    | the text is the letter `ก`; `ไก่`, `ก ไก่`, `ก (ไก่)` or `กอ ไก่` also count |
+| `speak`  | picture only, "Say this word"                           | a recognized transcript contains the word                                    |
 
 `src/helpers/thaiAnswer.ts` compares after `normalizeThai` (NFKC, spaces, brackets and zero-width characters removed),
 so mark order and `ำ`/`ํา` spellings don't matter. For `speak`, the recognizer returns up to 5 alternatives and the
-first one containing the word is kept. Checking an answer plays a feedback sound; type and speak questions then play
+first one containing the word is kept. Checking an answer plays a feedback sound; class, type and speak questions then play
 the word's Thai audio once that sound has finished.
 
 ## Audio

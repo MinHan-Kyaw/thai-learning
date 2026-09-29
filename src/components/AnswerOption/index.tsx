@@ -1,14 +1,16 @@
+import type { ReactNode } from 'react';
+
 import { classNames } from '../../helpers/classNames';
 import ResultIcon, { type AnswerResult } from '../ResultIcon';
 
 type AnswerStatus = 'default' | 'selected' | AnswerResult;
 
 interface AnswerOptionProps {
-  thai: string;
-  pronunciation: string;
+  children: ReactNode;
   selected: boolean;
   result?: AnswerResult | null;
   disabled?: boolean;
+  compact?: boolean;
   onSelect: () => void;
 }
 
@@ -20,14 +22,15 @@ const STATUS_CLASS_NAMES: Record<AnswerStatus, string> = {
   incorrect: 'border-error bg-error-light shadow-edge-error',
 };
 
-const AnswerOption = ({ thai, pronunciation, selected, result = null, disabled = false, onSelect }: AnswerOptionProps) => {
+const AnswerOption = ({ children, selected, result = null, disabled = false, compact = false, onSelect }: AnswerOptionProps) => {
   const status: AnswerStatus = result ?? (selected ? 'selected' : 'default');
 
   return (
     <button
       type="button"
       className={classNames(
-        'relative flex min-h-[4.75rem] w-full cursor-pointer flex-col items-center justify-center gap-1 rounded-2xl border-2 px-12 py-2 text-ink transition-[background-color,border-color,transform] duration-150 disabled:cursor-default',
+        'relative flex min-h-[4.75rem] w-full cursor-pointer flex-col items-center justify-center gap-1 rounded-2xl border-2 py-2 text-ink transition-[background-color,border-color,transform] duration-150 disabled:cursor-default',
+        compact ? 'px-3' : 'px-12',
         STATUS_CLASS_NAMES[status],
         disabled && !result && 'opacity-60'
       )}
@@ -36,13 +39,13 @@ const AnswerOption = ({ thai, pronunciation, selected, result = null, disabled =
       disabled={disabled}
       onClick={onSelect}
     >
-      <span className="font-thai text-[1.625rem] leading-[1.3] font-medium" lang="th">
-        {thai}
-      </span>{' '}
-      <span className="font-burmese text-[1.0625rem] leading-[1.8] text-ink-muted" lang="my">
-        {pronunciation}
-      </span>{' '}
-      {result && <ResultIcon result={result} className="absolute top-1/2 right-4 -translate-y-1/2" />}
+      {children}{' '}
+      {result && (
+        <ResultIcon
+          result={result}
+          className={compact ? 'absolute top-2 right-2' : 'absolute top-1/2 right-4 -translate-y-1/2'}
+        />
+      )}
     </button>
   );
 };
