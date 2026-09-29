@@ -1,12 +1,8 @@
 import { render, screen, within } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 
 import { consonants } from '../../data';
-import { playAudio } from '../../services/audio';
 
 import AllConsonants from '.';
-
-vi.mock('../../services/audio', () => ({ playAudio: vi.fn(), stopAudio: vi.fn() }));
 
 describe('AllConsonants', () => {
   it('shows all 44 consonants as compact cards in class order', () => {
@@ -21,11 +17,14 @@ describe('AllConsonants', () => {
     cards.forEach((card) => expect(card).toHaveAttribute('data-size', 'compact'));
   });
 
-  it('plays a word when its audio button is pressed', async () => {
+  it('shows the letter, picture and Burmese meaning without the Thai word or audio buttons', () => {
     render(<AllConsonants />);
 
-    await userEvent.click(screen.getByRole('button', { name: 'Play Thai audio for ไก่' }));
+    const card = screen.getByRole('article', { name: 'ก' });
 
-    expect(playAudio).toHaveBeenCalledWith('/audio/words/kai.m4a');
+    expect(within(card).getByRole('img', { name: 'ကြက်' })).toBeInTheDocument();
+    expect(card).toHaveTextContent('ကြက် (ကောကိုင်)');
+    expect(within(card).queryByText('ไก่')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button')).not.toBeInTheDocument();
   });
 });

@@ -55,7 +55,6 @@ describe('ConsonantCard', () => {
       expect(screen.getByRole('article', { name: 'ก' })).toHaveAttribute('data-size', 'compact');
       expect(screen.getByText('ไก่')).toBeInTheDocument();
       expect(screen.getByRole('img', { name: 'ကြက်' })).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: 'Play Thai audio for ไก่' })).toBeInTheDocument();
     });
   });
 
@@ -65,6 +64,23 @@ describe('ConsonantCard', () => {
 
       expect(screen.queryByRole('img')).not.toBeInTheDocument();
       expect(screen.getByText('Picture coming soon')).toBeInTheDocument();
+    });
+  });
+
+  describe('given the word is hidden', () => {
+    it('shows the letter, picture and Burmese meaning only', () => {
+      render(<ConsonantCard consonant={buildConsonant()} showWord={false} />);
+
+      expect(screen.getByRole('article', { name: 'ก' })).toHaveTextContent('ကြက် (ကောကိုင်)');
+      expect(screen.queryByText('ไก่')).not.toBeInTheDocument();
+    });
+  });
+
+  describe('given no audio handler', () => {
+    it('does not render the audio button', () => {
+      render(<ConsonantCard consonant={buildConsonant()} />);
+
+      expect(screen.queryByRole('button')).not.toBeInTheDocument();
     });
   });
 

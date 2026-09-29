@@ -7,8 +7,9 @@ type CardSize = 'default' | 'compact';
 
 interface ConsonantCardProps {
   consonant: Consonant;
-  onPlayAudio: (word: Word) => void;
+  onPlayAudio?: (word: Word) => void;
   size?: CardSize;
+  showWord?: boolean;
 }
 
 const SIZE_CLASS_NAMES: Record<
@@ -37,7 +38,7 @@ const SIZE_CLASS_NAMES: Record<
     audio: 'mt-2',
   },
   compact: {
-    card: 'relative gap-0.5 rounded-2xl px-1.5 py-1.5',
+    card: 'gap-0.5 rounded-2xl px-1.5 py-1.5',
     letter: 'text-[2rem]',
     picture: 'mb-1 w-14 rounded-xl',
     placeholder: 'p-1 text-[0.625rem]',
@@ -45,11 +46,11 @@ const SIZE_CLASS_NAMES: Record<
     meaning: 'text-sm',
     pronunciation: 'text-xs',
     burmese: 'leading-[1.5]',
-    audio: 'absolute top-0.5 right-0.5',
+    audio: 'mt-1',
   },
 };
 
-const ConsonantCard = ({ consonant, onPlayAudio, size = 'default' }: ConsonantCardProps) => {
+const ConsonantCard = ({ consonant, onPlayAudio, size = 'default', showWord = true }: ConsonantCardProps) => {
   const headingId = `consonant-${consonant.id}`;
   const sizeClassNames = SIZE_CLASS_NAMES[size];
 
@@ -87,14 +88,16 @@ const ConsonantCard = ({ consonant, onPlayAudio, size = 'default' }: ConsonantCa
                 Picture coming soon
               </div>
             )}
-            <p className={classNames('font-thai font-medium', sizeClassNames.word)} lang="th">
-              {word.thai}
-            </p>
+            {showWord && (
+              <p className={classNames('font-thai font-medium', sizeClassNames.word)} lang="th">
+                {word.thai}
+              </p>
+            )}
             <p className={classNames('font-burmese', sizeClassNames.burmese)} lang="my">
               <span className={classNames('font-bold text-brand', sizeClassNames.meaning)}>{word.meaning}</span>{' '}
               <span className={classNames('text-ink-muted', sizeClassNames.pronunciation)}>({word.pronunciation})</span>
             </p>
-            {word.audio && (
+            {word.audio && onPlayAudio && (
               <div className={sizeClassNames.audio}>
                 <AudioButton label={`Play Thai audio for ${word.thai}`} onPlay={() => onPlayAudio(word)} />
               </div>
