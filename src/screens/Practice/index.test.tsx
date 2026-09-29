@@ -76,7 +76,7 @@ const answerQuestion = async (option: HTMLElement) => {
 
 const turnOnAdvanced = () => userEvent.click(screen.getByRole('switch', { name: 'Advanced' }));
 
-const openQuestionTypes = () => userEvent.click(screen.getByRole('button', { name: 'Question types' }));
+const openSettings = () => userEvent.click(screen.getByRole('button', { name: 'Practice settings' }));
 
 describe('Practice', () => {
   it('shows the first question with three answer options and a disabled Next button', () => {
@@ -174,6 +174,36 @@ describe('Practice', () => {
     expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
   });
 
+  describe('given the number of questions is changed', () => {
+    it('starts a new practice with that many questions', async () => {
+      renderPractice();
+      await answerQuestion(getCorrectOption());
+      await openSettings();
+
+      await userEvent.click(screen.getByRole('button', { name: 'More questions' }));
+      await userEvent.click(screen.getByRole('button', { name: 'More questions' }));
+
+      expect(screen.getByRole('group', { name: 'Questions' })).toHaveTextContent('20');
+      expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuemax', '20');
+      expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
+    });
+  });
+
+  describe('given the maximum number of questions', () => {
+    it('stops at 30', async () => {
+      renderPractice();
+      await openSettings();
+
+      for (let index = 0; index < 5; index += 1) {
+        await userEvent.click(screen.getByRole('button', { name: 'More questions' }));
+      }
+
+      expect(screen.getByRole('group', { name: 'Questions' })).toHaveTextContent('30');
+      expect(screen.getByRole('button', { name: 'More questions' })).toBeDisabled();
+      expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuemax', '30');
+    });
+  });
+
   describe('given advanced practice is off', () => {
     it('only asks the learner to select answers', () => {
       renderPractice();
@@ -239,10 +269,12 @@ describe('Practice', () => {
     it('offers audio, type and group, all ticked', async () => {
       renderPractice();
 
-      expect(screen.queryByRole('button', { name: 'Question types' })).not.toBeInTheDocument();
+      await openSettings();
+
+      expect(screen.queryByRole('checkbox')).not.toBeInTheDocument();
 
       await turnOnAdvanced();
-      await openQuestionTypes();
+      await openSettings();
 
       expect(screen.getByRole('checkbox', { name: 'Audio' })).toBeDisabled();
       expect(screen.getByRole('checkbox', { name: 'Type' })).toBeChecked();
@@ -254,7 +286,7 @@ describe('Practice', () => {
         renderPractice();
         await turnOnAdvanced();
         await userEvent.type(screen.getByRole('textbox'), `${getCorrectAnswer().consonant}{Enter}`);
-        await openQuestionTypes();
+        await openSettings();
 
         await userEvent.click(screen.getByRole('checkbox', { name: 'Type' }));
 
@@ -303,7 +335,7 @@ describe('Practice', () => {
       renderPractice();
 
       await turnOnAdvanced();
-      await openQuestionTypes();
+      await openSettings();
 
       expect(screen.getByRole('checkbox', { name: 'Audio' })).toBeEnabled();
       expect(screen.getByRole('heading', { name: 'Say this word' })).toBeInTheDocument();
@@ -340,7 +372,7 @@ describe('Practice', () => {
 
         expect(screen.getByRole('heading', { name: 'Type the Thai letter' })).toBeInTheDocument();
 
-        await openQuestionTypes();
+        await openSettings();
 
         expect(screen.getByRole('checkbox', { name: 'Audio' })).not.toBeChecked();
       });
