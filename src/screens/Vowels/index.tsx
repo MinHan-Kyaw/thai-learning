@@ -38,7 +38,7 @@ const Vowels = () => {
   };
 
   return (
-    <div className="mx-auto flex max-w-[42rem] flex-col gap-4">
+    <div className="flex flex-col gap-4">
       <h1 className="text-[1.75rem] font-extrabold">
         Thai Vowels<span className="ms-2 rounded-full bg-brand-light px-3 text-sm font-bold text-brand">{vowels.length}</span>
       </h1>

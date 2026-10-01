@@ -59,7 +59,7 @@ const TONE_RULES: ToneRule[] = [
 ];
 
 const Tones = () => (
-  <div className="mx-auto flex max-w-[42rem] flex-col gap-8">
+  <div className="flex flex-col gap-8">
     <section aria-labelledby="tones-title">
       <h1 id="tones-title" className="text-[1.75rem] font-extrabold">
         Thai Tones
