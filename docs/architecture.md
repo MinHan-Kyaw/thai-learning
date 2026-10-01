@@ -17,7 +17,7 @@ flowchart LR
   Loader --> Screens
   Helpers["src/helpers<br/>(pure functions)"] --> Screens
   Services["src/services<br/>audio.ts · sound.ts · speech.ts"] --> Screens
-  Screens["src/screens<br/>Home · Consonants · Practice · AllConsonants"] --> Components["src/components<br/>(presentational)"]
+  Screens["src/screens<br/>Home · Consonants · Vowels · Tones · Practice · VowelPractice · AllConsonants"] --> Components["src/components<br/>(presentational)"]
 ```
 
 | Layer         | Responsibility                                      | May import                             |
@@ -32,13 +32,16 @@ flowchart LR
 
 `BrowserRouter` with `basename = import.meta.env.BASE_URL`, so the app works at a domain root or a sub-path.
 
-| Path                                  | Screen                                                                                                                                                                        |
-| ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `/`                                   | Home                                                                                                                                                                          |
-| `/consonants?class=middle\|high\|low` | Consonant browser (class kept in the URL so it can be linked)                                                                                                                 |
-| `/practice`                           | Picture quiz                                                                                                                                                                  |
-| `/all`                                | All 44 consonants as compact cards (letter, picture, Burmese meaning; no Thai word or audio) on one full-width page without the header; not linked, reached by typing the URL |
-| `*`                                   | Redirects to `/`                                                                                                                                                              |
+| Path                                           | Screen                                                                                                                                                                        |
+| ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/`                                            | Home                                                                                                                                                                          |
+| `/consonants?class=middle\|high\|low`          | Consonant browser (class kept in the URL so it can be linked)                                                                                                                 |
+| `/vowels?group=short\|long\|extra\|standalone` | The 32 vowels in group tabs (group kept in the URL), with each group's tone rules and a middle / high / low class example per vowel                                           |
+| `/tones`                                       | The five tones and the tone rules table (class × live/dead syllable and tone marks)                                                                                           |
+| `/practice/vowels`                             | Consonant + vowel quiz: random combinations, asking how it is written or which tone it has                                                                                    |
+| `/practice`                                    | Picture quiz                                                                                                                                                                  |
+| `/all`                                         | All 44 consonants as compact cards (letter, picture, Burmese meaning; no Thai word or audio) on one full-width page without the header; not linked, reached by typing the URL |
+| `*`                                            | Redirects to `/`                                                                                                                                                              |
 
 Static hosts must serve `index.html` for unknown paths. Cloudflare Pages does this automatically because the build has no
 `404.html`.
@@ -152,6 +155,25 @@ and is never persisted; the Advanced toggle is screen state and starts off on ev
 so mark order and `ำ`/`ํา` spellings don't matter. For `speak`, the recognizer returns up to 5 alternatives and the
 first one containing the word is kept. Checking an answer plays a feedback sound; class, type and speak questions then play
 the word's Thai audio once that sound has finished.
+
+## Vowels and tones
+
+Data: `tones.json` (5 tones with Thai and Burmese name and a 1–5 pitch contour), `guide.json` (the Burmese explanations on
+the tones screen and in the vowel practice), `toneMarks.json` (่ ้ ๊ ๋), `vowelGroups.json` and
+`vowels.json` (32 vowels: 12 short, 12 long, 4 extra ำ ใ ไ เา, 4 standalone ฤ ฤๅ ฦ ฦๅ). A vowel id is its written form
+with `-` for the consonant (`เ-ือะ`); standalone vowels have no dash. Each consonant class names an `exampleConsonant`
+(ก / ข / ค) and its English initial `exampleSound` (k / kh / kh) for the vowel and tone tables; a vowel example's
+romanization is `exampleSound` + the vowel's `sound` (กะ → ka).
+
+- `src/helpers/tones.ts`: `getUnmarkedTone(class, 'live' | 'dead')` and `getMarkedTone(class, mark)` hold the tone rules.
+  Only open syllables (no final consonant) are modelled.
+- `src/helpers/vowels.ts`: `combineVowel` replaces the dash with a consonant; short vowels make dead syllables, long and
+  extra vowels live ones (`getSyllableTone`). `getVowelLabel` shows `◌` instead of the dash where a mark sits above or
+  below the consonant (`◌ิ`, `เ◌ีย`), because fonts can't stack a Thai mark on a dash.
+- `generateVowelQuestions(consonants, vowels, { questionCount, optionCount, random })` shuffles every consonant ×
+  combinable vowel pair, takes `questionCount` distinct ones and makes each either a `spell` question (3 spellings of the
+  same consonant with different vowels) or a `tone` question (the five tones). The Vowel practice screen keeps its
+  session in `useState`.
 
 ## Audio
 

@@ -22,6 +22,12 @@ describe('Layout', () => {
     expect(screen.getByRole('link', { name: 'Thai Learning' })).toHaveAttribute('href', '/');
     expect(screen.getByRole('navigation', { name: 'Main' })).toBeInTheDocument();
     expect(screen.getByRole('main')).toHaveTextContent('Screen content');
+    expect(
+      screen
+        .getAllByRole('link')
+        .slice(1)
+        .map((link) => link.textContent)
+    ).toEqual(['Consonants', 'Vowels', 'Tones', 'Practice']);
   });
 
   describe('given the current route matches a navigation item', () => {

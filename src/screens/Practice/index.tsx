@@ -26,7 +26,7 @@ import {
   practiceReducer,
 } from '../../helpers/practice';
 import { pickTranscript } from '../../helpers/thaiAnswer';
-import { getVocabulary } from '../../helpers/vocabulary';
+import { getLetterWithWord, getVocabulary } from '../../helpers/vocabulary';
 import { playAudio, stopAudio } from '../../services/audio';
 import { FEEDBACK_SOUND_DURATION_MS, playFeedbackSound } from '../../services/sound';
 import { isSpeechRecognitionSupported, listen, stopListening } from '../../services/speech';
@@ -123,6 +123,14 @@ const Practice = () => {
   const isLastQuestion = state.currentQuestionIndex === state.questions.length - 1;
   const result: AnswerResult | null = state.answered ? (isAnswerCorrect(question, state) ? 'correct' : 'incorrect') : null;
   const actionLabel = !state.answered ? 'Next' : isLastQuestion ? 'See results' : 'Continue';
+
+  const correctClass = consonantClasses.find((consonantClass) => consonantClass.id === question.answer.consonantClass);
+  const correctAnswer =
+    question.mode === 'class' && correctClass ? (
+      `group ${correctClass.group}, ${correctClass.shortName}`
+    ) : (
+      <span lang="th">{getLetterWithWord(question.answer)}</span>
+    );
 
   const handleSelectAnswer = (answer: VocabularyItem) => {
     dispatch({ type: 'SELECT_ANSWER', answerId: answer.id });
@@ -261,12 +269,7 @@ const Practice = () => {
       </PracticeQuestion>
       <PracticeFeedback
         result={result}
-        correctAnswer={question.answer}
-        correctClass={
-          question.mode === 'class'
-            ? consonantClasses.find((consonantClass) => consonantClass.id === question.answer.consonantClass)
-            : undefined
-        }
+        correctAnswer={correctAnswer}
         actionLabel={actionLabel}
         actionDisabled={!state.answered && !hasAnswer(question, state)}
         onAction={handleAction}

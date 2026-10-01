@@ -5,7 +5,9 @@
     "name": "Middle Class",
     "shortName": "Middle",
     "burmeseName": "အလယ်သံဗျည်းအုပ်စု",
-    "tone": "Mid tone"
+    "tone": "Mid Tone",
+    "exampleConsonant": "ก",
+    "exampleSound": "k"
   },
   {
     "id": "high",
@@ -13,7 +15,9 @@
     "name": "High Class",
     "shortName": "High",
     "burmeseName": "အမြင့်သံဗျည်းအုပ်စု",
-    "tone": "Rising tone"
+    "tone": "Rising Tone",
+    "exampleConsonant": "ข",
+    "exampleSound": "kh"
   },
   {
     "id": "low",
@@ -21,6 +25,8 @@
     "name": "Low Class",
     "shortName": "Low",
     "burmeseName": "အနိမ့်သံဗျည်းအုပ်စု",
-    "tone": "Mid tone"
+    "tone": "Mid Tone",
+    "exampleConsonant": "ค",
+    "exampleSound": "kh"
   }
 ]

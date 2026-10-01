@@ -7,6 +7,7 @@ interface PracticeSummaryProps {
   score: number;
   total: number;
   onRestart: () => void;
+  explore?: { to: string; label: string };
 }
 
 const getMessage = (score: number, total: number): string => {
@@ -24,7 +25,12 @@ const getMessage = (score: number, total: number): string => {
   return 'Keep going! Practice makes progress.';
 };
 
-const PracticeSummary = ({ score, total, onRestart }: PracticeSummaryProps) => {
+const PracticeSummary = ({
+  score,
+  total,
+  onRestart,
+  explore = { to: '/consonants', label: 'Explore consonants' },
+}: PracticeSummaryProps) => {
   const headingRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
@@ -50,8 +56,8 @@ const PracticeSummary = ({ score, total, onRestart }: PracticeSummaryProps) => {
         <Button fullWidth onClick={onRestart}>
           Practice again
         </Button>
-        <ButtonLink to="/consonants" variant="secondary" fullWidth>
-          Explore consonants
+        <ButtonLink to={explore.to} variant="secondary" fullWidth>
+          {explore.label}
         </ButtonLink>
       </div>
     </section>

@@ -46,7 +46,14 @@ const Consonants = () => {
       <h1 className="sr-only">Thai Consonants</h1>
 
       <div className="sticky top-header z-5 -mx-4 -mt-2 bg-surface px-4 py-2">
-        <ClassTabs classes={consonantClasses} counts={counts} selectedClassId={selectedClassId} onSelect={handleSelectClass} />
+        <ClassTabs
+          items={consonantClasses.map((consonantClass) => ({ id: consonantClass.id, label: consonantClass.shortName }))}
+          counts={counts}
+          selectedId={selectedClassId}
+          label="Consonant class"
+          countLabel="letters"
+          onSelect={handleSelectClass}
+        />
       </div>
 
       {selectedClass && (
