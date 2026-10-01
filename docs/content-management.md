@@ -2,12 +2,14 @@
 
 ## Files
 
-| File                             | Contents                                                                    |
-| -------------------------------- | --------------------------------------------------------------------------- |
-| `src/data/consonantClasses.json` | The three classes: `id`, English `name`, `shortName`, `burmeseName`, `tone` |
-| `src/data/consonants.json`       | 44 consonants, each with its vocabulary `words`                             |
-| `public/images/words/*.svg`      | Vocabulary pictures (vector)                                                |
-| `public/audio/words/*.m4a`       | Thai audio                                                                  |
+| File                             | Contents                                                                                                |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `src/data/consonantClasses.json` | The three classes: `id`, English `name`, `shortName`, `burmeseName`, `tone`                             |
+| `src/data/consonants.json`       | 44 consonants, each with its vocabulary `words`                                                         |
+| `src/data/vowels.json`           | 32 vowels: `id` (written with `-` for the consonant), `group`, English `sound`, Burmese `pronunciation` |
+| `src/data/vowelGroups.json`      | Short, long, extra and standalone vowel groups with a Burmese note and tone rules                       |
+| `public/images/words/*.svg`      | Vocabulary pictures (vector)                                                                            |
+| `public/audio/words/*.m4a`       | Thai audio                                                                                              |
 
 ## Word schema
 
@@ -112,14 +114,16 @@ Items for the project owner to confirm.
 
 ### Open
 
-| Item                          | Detail                                                                                                                                                                             |
-| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `ฝ-ฝา`, `ฟ-ฟัน` pronunciation | The source writes these in Latin script (`Faw Far`, `Faw Fan`); Burmese script has no /f/. Stored as-is and listed in `PENDING_BURMESE_PRONUNCIATION`. Provide Burmese if desired. |
-| `ษ-ฤาษี` meaning              | Source text reads `ရသေ့င်္` (trailing kinzi with no following consonant, which renders as a broken glyph). Stored as `ရသေ့`.                                                       |
-| `ฮ-นกฮูก` pronunciation       | Source splits it over two lines (`ဟော` / `နို(က်)ဟု(က်)`); stored joined as `ဟောနို(က်)ဟု(က်)`.                                                                                    |
-| `ญ-หญิง` pronunciation        | Source gives two variants `ယောယင်/ယောဖူးယင်`; stored as written.                                                                                                                   |
-| Approximate pictures          | จาน, ฤาษี, มณโฑ, ทหาร and ยักษ์ use the closest Fluent emoji (see [Current picture sources](#current-picture-sources)). Confirm or replace.                                        |
-| Audio                         | Placeholder text-to-speech; see [Sources and licensing](#sources-and-licensing).                                                                                                   |
+| Item                                   | Detail                                                                                                                                                                                                                                                                                                         |
+| -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ฝ-ฝา`, `ฟ-ฟัน` pronunciation          | The source writes these in Latin script (`Faw Far`, `Faw Fan`); Burmese script has no /f/. Stored as-is and listed in `PENDING_BURMESE_PRONUNCIATION`. Provide Burmese if desired.                                                                                                                             |
+| `ษ-ฤาษี` meaning                       | Source text reads `ရသေ့င်္` (trailing kinzi with no following consonant, which renders as a broken glyph). Stored as `ရသေ့`.                                                                                                                                                                                   |
+| `ฮ-นกฮูก` pronunciation                | Source splits it over two lines (`ဟော` / `နို(က်)ဟု(က်)`); stored joined as `ဟောနို(က်)ဟု(က်)`.                                                                                                                                                                                                                |
+| `ญ-หญิง` pronunciation                 | Source gives two variants `ယောယင်/ယောဖူးယင်`; stored as written.                                                                                                                                                                                                                                               |
+| Vowel sounds and Burmese pronunciation | Drafted by Claude at the owner's request (2026-10-01), following the spellings in the consonant words (เสือ → ဆူးရ, เฌอ → ချေး, ฤาษี → ရူဆီး). Pairs share a Burmese spelling where Burmese has no matching vowel: `-ึ`/`-ุ`, `-ือ`/`-ู`, `เ-ะ`/`เ-อะ`, `เ-`/`เ-อ`. To be reviewed and corrected by the owner. |
+| Burmese vowel group names and notes    | Drafted by Claude at the owner's request (2026-10-01) in `vowelGroups.json`. To be reviewed by the owner.                                                                                                                                                                                                      |
+| Approximate pictures                   | จาน, ฤาษี, มณโฑ, ทหาร and ยักษ์ use the closest Fluent emoji (see [Current picture sources](#current-picture-sources)). Confirm or replace.                                                                                                                                                                    |
+| Audio                                  | Placeholder text-to-speech; see [Sources and licensing](#sources-and-licensing).                                                                                                                                                                                                                               |
 
 ### Mechanical Unicode fixes applied (no change in rendering)
 
