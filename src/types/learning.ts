@@ -41,6 +41,22 @@ export interface PracticeQuestion {
   mode: AnswerMode;
 }
 
+export type SyllableType = 'live' | 'dead';
+
+export type ToneId = 'mid' | 'low' | 'falling' | 'high' | 'rising';
+
+export interface Tone {
+  id: ToneId;
+  name: string;
+  thaiName: string;
+  pitch: [number, number]; // start and end pitch, 1 (lowest) to 5 (highest)
+}
+
+export interface ToneMark {
+  mark: string;
+  thaiName: string;
+}
+
 export type VowelGroupId = 'short' | 'long' | 'extra' | 'standalone';
 
 export interface VowelGroup {
@@ -55,4 +71,16 @@ export interface Vowel {
   group: VowelGroupId;
   sound: string; // English approximation, e.g. "eua"
   pronunciation: string; // Burmese pronunciation from the source, e.g. "အူရ"
+}
+
+interface SyllableGuide {
+  name: string;
+  thaiName: string;
+  detail: string;
+}
+
+// Explanations shown on the tones screen; English until the owner supplies Burmese.
+export interface Guide {
+  syllables: Record<SyllableType, SyllableGuide>;
+  tones: { intro: string; rulesNote: string; markDetail: string; notUsed: string };
 }

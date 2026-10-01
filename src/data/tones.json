@@ -1,0 +1,32 @@
+[
+  {
+    "id": "mid",
+    "name": "Mid Tone",
+    "thaiName": "เสียงสามัญ",
+    "pitch": [3, 3]
+  },
+  {
+    "id": "low",
+    "name": "Low Tone",
+    "thaiName": "เสียงเอก",
+    "pitch": [2, 1]
+  },
+  {
+    "id": "falling",
+    "name": "Falling Tone",
+    "thaiName": "เสียงโท",
+    "pitch": [4, 1]
+  },
+  {
+    "id": "high",
+    "name": "High Tone",
+    "thaiName": "เสียงตรี",
+    "pitch": [4, 5]
+  },
+  {
+    "id": "rising",
+    "name": "Rising Tone",
+    "thaiName": "เสียงจัตวา",
+    "pitch": [1, 4]
+  }
+]
