@@ -1,20 +1,27 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import type { ConsonantClass } from '../../types/learning';
-
 import ClassTabs from '.';
 
-const classes: ConsonantClass[] = [
-  { id: 'middle', group: 1, name: 'Middle Class', shortName: 'Middle', burmeseName: 'အလယ်', tone: 'Mid tone' },
-  { id: 'high', group: 2, name: 'High Class', shortName: 'High', burmeseName: 'အမြင့်', tone: 'Rising tone' },
-  { id: 'low', group: 3, name: 'Low Class', shortName: 'Low', burmeseName: 'အနိမ့်', tone: 'Mid tone' },
+const items: { id: 'middle' | 'high' | 'low'; label: string }[] = [
+  { id: 'middle', label: 'Middle' },
+  { id: 'high', label: 'High' },
+  { id: 'low', label: 'Low' },
 ];
 const counts = { middle: 9, high: 11, low: 24 };
 
 describe('ClassTabs', () => {
-  it('renders one button per class with its short name and letter count', () => {
-    render(<ClassTabs classes={classes} counts={counts} selectedClassId="middle" onSelect={vi.fn()} />);
+  it('renders one button per item with its label and count', () => {
+    render(
+      <ClassTabs
+        items={items}
+        counts={counts}
+        selectedId="middle"
+        label="Consonant class"
+        countLabel="letters"
+        onSelect={vi.fn()}
+      />
+    );
 
     expect(screen.getByRole('button', { name: 'Middle 9 letters' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'High 11 letters' })).toBeInTheDocument();
@@ -22,7 +29,16 @@ describe('ClassTabs', () => {
   });
 
   it('shows the count without the word "letters" or "Class" on screen', () => {
-    render(<ClassTabs classes={classes} counts={counts} selectedClassId="middle" onSelect={vi.fn()} />);
+    render(
+      <ClassTabs
+        items={items}
+        counts={counts}
+        selectedId="middle"
+        label="Consonant class"
+        countLabel="letters"
+        onSelect={vi.fn()}
+      />
+    );
 
     const button = screen.getByRole('button', { name: /Middle/ });
 
@@ -32,15 +48,48 @@ describe('ClassTabs', () => {
   });
 
   it('marks the selected class as pressed', () => {
-    render(<ClassTabs classes={classes} counts={counts} selectedClassId="high" onSelect={vi.fn()} />);
+    render(
+      <ClassTabs
+        items={items}
+        counts={counts}
+        selectedId="high"
+        label="Consonant class"
+        countLabel="letters"
+        onSelect={vi.fn()}
+      />
+    );
 
     expect(screen.getByRole('button', { name: /High/ })).toHaveAttribute('aria-pressed', 'true');
     expect(screen.getByRole('button', { name: /Middle/ })).toHaveAttribute('aria-pressed', 'false');
   });
 
+  it('names the tab list', () => {
+    render(
+      <ClassTabs
+        items={items}
+        counts={counts}
+        selectedId="middle"
+        label="Consonant class"
+        countLabel="letters"
+        onSelect={vi.fn()}
+      />
+    );
+
+    expect(screen.getByRole('list', { name: 'Consonant class' })).toBeInTheDocument();
+  });
+
   it('calls onSelect with the chosen class', async () => {
     const onSelect = vi.fn();
-    render(<ClassTabs classes={classes} counts={counts} selectedClassId="middle" onSelect={onSelect} />);
+    render(
+      <ClassTabs
+        items={items}
+        counts={counts}
+        selectedId="middle"
+        label="Consonant class"
+        countLabel="letters"
+        onSelect={onSelect}
+      />
+    );
 
     await userEvent.click(screen.getByRole('button', { name: /Low/ }));
 

@@ -35,9 +35,9 @@ Run a single test file: `npx vitest run src/helpers/practice.test.ts`
 ```text
 src/
 ├── components/   Reusable, presentational UI. One folder per component: index.tsx, index.test.tsx
-├── screens/      Page-level composition (Home, Consonants, Practice, AllConsonants). Screens own state and wire services.
+├── screens/      Page-level composition (Home, Consonants, Vowels, Practice, AllConsonants). Screens own state and wire services.
 ├── data/         Learning content JSON + typed loader (index.ts) + data validation test
-├── helpers/      Pure functions (randomizeArray, practice engine, vocabulary, assetUrl)
+├── helpers/      Pure functions (randomizeArray, practice engine, vocabulary, vowels, assetUrl)
 ├── constants/    Shared constants (practice question/option counts)
 ├── services/     Side-effect wrappers (audio playback, feedback sounds, speech recognition)
 ├── types/        Shared TypeScript types for learning data
@@ -88,6 +88,7 @@ public/
   from practice.
 - Audio: `public/audio/words/<romanized-slug>.m4a` (AAC). Audio is the **Thai** recitation of the full letter name,
   `<consonant>อ <word>` ("กอ ไก่"), matching the Burmese pronunciation — even though the screen shows only `ไก่`.
+- Vowel ids are the written form with `-` for the consonant (`-ะ`, `เ-ือ`).
 - Full procedure: [docs/content-management.md](docs/content-management.md).
 
 ## Burmese pronunciation — strict rule
