@@ -46,13 +46,14 @@ export type VowelGroupId = 'short' | 'long' | 'extra' | 'standalone';
 export interface VowelGroup {
   id: VowelGroupId;
   name: string;
-  shortName: string;
-  rules?: string[]; // one per consonant class, in group order, as the source states it; none where the source has none
+  burmeseName: string;
+  note: string; // Burmese
+  rules?: string[]; // one per consonant class, in group order; none for standalone vowels
 }
 
 export interface Vowel {
   id: string; // written with a dash for the consonant, e.g. "เ-ือะ"; standalone vowels have none
   group: VowelGroupId;
   sound: string; // English approximation, e.g. "eua"
-  pronunciation: string; // Burmese pronunciation from the source, e.g. "အူရ"
+  pronunciation: string; // Burmese pronunciation, e.g. "အုအ"
 }
