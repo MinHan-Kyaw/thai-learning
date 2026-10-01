@@ -1,16 +1,29 @@
 import { useEffect, useRef, useState } from 'react';
 
 import AnswerOption from '../../components/AnswerOption';
+import AudioButton from '../../components/AudioButton';
+import CheckboxChips from '../../components/CheckboxChips';
 import PracticeFeedback from '../../components/PracticeFeedback';
 import PracticeSummary from '../../components/PracticeSummary';
 import ProgressBar from '../../components/ProgressBar';
 import type { AnswerResult } from '../../components/ResultIcon';
 import ToneContour from '../../components/ToneContour';
-import { consonantClasses, consonants, guide, toneById, tones, vowels } from '../../data';
-import { generateVowelQuestions, getSyllable, getVowelAnswer, getVowelLabel } from '../../helpers/vowels';
-import { playFeedbackSound } from '../../services/sound';
+import { consonantClasses, consonants, guide, toneById, tones, vowelGroups, vowels } from '../../data';
+import { generateVowelQuestions, getSyllable, getVowelAnswer, getVowelLabel, isCombinable } from '../../helpers/vowels';
+import { FEEDBACK_SOUND_DURATION_MS, playFeedbackSound } from '../../services/sound';
+import { speakThai, stopSpeaking } from '../../services/voice';
+import type { VowelGroupId } from '../../types/learning';
 
-const buildQuestions = () => generateVowelQuestions(consonants, vowels);
+type GroupSelection = Partial<Record<VowelGroupId, boolean>>;
+
+const practiceGroups = vowelGroups.filter((group) => vowels.some((vowel) => vowel.group === group.id && isCombinable(vowel)));
+const ALL_GROUPS: GroupSelection = Object.fromEntries(practiceGroups.map((group) => [group.id, true]));
+
+const buildQuestions = (groups: GroupSelection) =>
+  generateVowelQuestions(
+    consonants,
+    vowels.filter((vowel) => groups[vowel.group])
+  );
 
 const getOptionResult = (option: string, answer: string, selected: string | null, answered: boolean): AnswerResult | null => {
   if (!answered) {
@@ -23,13 +36,15 @@ const getOptionResult = (option: string, answer: string, selected: string | null
 };
 
 const VowelPractice = () => {
-  const [questions, setQuestions] = useState(buildQuestions);
+  const [groups, setGroups] = useState(ALL_GROUPS);
+  const [questions, setQuestions] = useState(() => buildQuestions(ALL_GROUPS));
   const [index, setIndex] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
   const [answered, setAnswered] = useState(false);
   const [score, setScore] = useState(0);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const isFirstQuestion = useRef(true);
+  const speakTimer = useRef<number | undefined>(undefined);
   const question = questions[index];
 
   useEffect(() => {
@@ -40,12 +55,32 @@ const VowelPractice = () => {
     headingRef.current?.focus();
   }, [question?.id]);
 
-  const restart = () => {
-    setQuestions(buildQuestions());
+  useEffect(
+    () => () => {
+      window.clearTimeout(speakTimer.current);
+      stopSpeaking();
+    },
+    []
+  );
+
+  const silence = () => {
+    window.clearTimeout(speakTimer.current);
+    stopSpeaking();
+  };
+
+  const restart = (nextGroups = groups) => {
+    silence();
+    setQuestions(buildQuestions(nextGroups));
     setIndex(0);
     setSelected(null);
     setAnswered(false);
     setScore(0);
+  };
+
+  const handleGroupChange = (groupId: VowelGroupId, checked: boolean) => {
+    const nextGroups = { ...groups, [groupId]: checked };
+    setGroups(nextGroups);
+    restart(nextGroups);
   };
 
   if (!question) {
@@ -53,7 +88,7 @@ const VowelPractice = () => {
       <PracticeSummary
         score={score}
         total={questions.length}
-        onRestart={restart}
+        onRestart={() => restart()}
         explore={{ to: '/vowels', label: 'Explore vowels' }}
       />
     );
@@ -68,6 +103,7 @@ const VowelPractice = () => {
 
   const handleAction = () => {
     if (answered) {
+      silence();
       setIndex(index + 1);
       setSelected(null);
       setAnswered(false);
@@ -78,6 +114,11 @@ const VowelPractice = () => {
     }
     playFeedbackSound(isCorrect ? 'correct' : 'incorrect');
     setAnswered(true);
+    if (question.kind === 'tone') {
+      // Heard only after answering: the spoken syllable would give the tone away.
+      const { syllable } = question;
+      speakTimer.current = window.setTimeout(() => speakThai(syllable), FEEDBACK_SOUND_DURATION_MS);
+    }
     if (isCorrect) {
       setScore(score + 1);
     }
@@ -87,13 +128,35 @@ const VowelPractice = () => {
     selected: option === selected,
     result: getOptionResult(option, answer, selected, answered),
     disabled: answered,
-    onSelect: () => setSelected(option),
+    onSelect: () => {
+      setSelected(option);
+      if (question.kind === 'spell') {
+        speakThai(option);
+      }
+    },
   });
 
   return (
     <div className="mx-auto flex max-w-[42rem] flex-col">
       <h1 className="sr-only">Vowel practice</h1>
-      <div className="mb-4 flex items-center gap-3">
+      <CheckboxChips
+        legend="Vowels to practise"
+        options={practiceGroups.map((group) => ({
+          id: group.id,
+          checked: Boolean(groups[group.id]),
+          label: (
+            <>
+              <span className="font-burmese leading-[1.8]" lang="my">
+                {group.burmeseName}
+              </span>
+              <span className="sr-only"> {group.name}</span>{' '}
+              <span className="text-sm">{vowels.filter((vowel) => vowel.group === group.id).length}</span>
+            </>
+          ),
+        }))}
+        onChange={handleGroupChange}
+      />
+      <div className="mt-3 mb-4 flex items-center gap-3">
         <ProgressBar current={index + (answered ? 1 : 0)} total={questions.length} label="Practice progress" />
       </div>
 
@@ -154,7 +217,7 @@ const VowelPractice = () => {
         )}
 
         {answered && (
-          <p className="flex flex-wrap items-baseline justify-center gap-x-2 text-center text-ink-muted">
+          <p className="flex flex-wrap items-center justify-center gap-x-2 text-center text-ink-muted">
             <span className="font-thai font-medium text-ink" lang="th">
               {question.consonant.character}
             </span>{' '}
@@ -172,7 +235,8 @@ const VowelPractice = () => {
             <span className="font-thai font-medium text-ink" lang="th">
               {question.syllable}
             </span>{' '}
-            <strong className="text-ink">{tone.name}</strong>
+            <strong className="text-ink">{tone.name}</strong>{' '}
+            <AudioButton label={`Hear ${question.syllable}`} onPlay={() => speakThai(question.syllable)} />
           </p>
         )}
       </section>

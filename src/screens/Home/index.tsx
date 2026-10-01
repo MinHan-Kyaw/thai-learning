@@ -39,7 +39,7 @@ const Home = () => (
       <ButtonLink to="/tones" variant="secondary" fullWidth>
         Learn Tones
       </ButtonLink>
-      <ButtonLink to="/practice" fullWidth>
+      <ButtonLink to="/practice/consonants" fullWidth>
         Practice Consonants
       </ButtonLink>
       <ButtonLink to="/practice/vowels" fullWidth>

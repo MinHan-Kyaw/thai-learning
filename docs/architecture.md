@@ -16,7 +16,7 @@ flowchart LR
   JSON["src/data/*.json"] --> Loader["src/data/index.ts<br/>(typed exports)"]
   Loader --> Screens
   Helpers["src/helpers<br/>(pure functions)"] --> Screens
-  Services["src/services<br/>audio.ts · sound.ts · speech.ts"] --> Screens
+  Services["src/services<br/>audio.ts · sound.ts · speech.ts · voice.ts"] --> Screens
   Screens["src/screens<br/>Home · Consonants · Vowels · Tones · Practice · VowelPractice · AllConsonants"] --> Components["src/components<br/>(presentational)"]
 ```
 
@@ -38,8 +38,9 @@ flowchart LR
 | `/consonants?class=middle\|high\|low`          | Consonant browser (class kept in the URL so it can be linked)                                                                                                                 |
 | `/vowels?group=short\|long\|extra\|standalone` | The 32 vowels in group tabs (group kept in the URL), with each group's tone rules and a middle / high / low class example per vowel                                           |
 | `/tones`                                       | The five tones and the tone rules table (class × live/dead syllable and tone marks)                                                                                           |
-| `/practice/vowels`                             | Consonant + vowel quiz: random combinations, asking how it is written or which tone it has                                                                                    |
-| `/practice`                                    | Picture quiz                                                                                                                                                                  |
+| `/practice/vowels`                             | Consonant + vowel quiz over the ticked vowel groups (short / long / extra), asking how it is written or which tone it has                                                     |
+| `/practice`                                    | Practice categories: Consonants or Vowels                                                                                                                                     |
+| `/practice/consonants`                         | Picture quiz                                                                                                                                                                  |
 | `/all`                                         | All 44 consonants as compact cards (letter, picture, Burmese meaning; no Thai word or audio) on one full-width page without the header; not linked, reached by typing the URL |
 | `*`                                            | Redirects to `/`                                                                                                                                                              |
 
@@ -187,6 +188,13 @@ learning continues silently. Screens call `stopAudio()` on unmount and when movi
 two-note chime for a correct answer and a low falling tone for an incorrect one (`FEEDBACK_SOUND_DURATION_MS` long).
 One `AudioContext` is created lazily on the first check (a user gesture, as iOS requires) and resumed if the browser
 suspended it. Missing Web Audio or any playback error is swallowed.
+
+## Thai speech synthesis
+
+`src/services/voice.ts` speaks Thai with the browser's `speechSynthesis` (`th-TH`, a Thai voice when installed), for vowel
+practice syllables that have no recorded audio. Choosing a spelling option speaks it; a tone question's syllable is spoken
+only after it is answered (hearing it first would give the tone away), and a speaker button replays it. A missing API,
+missing Thai voice or any error is silent. Pronunciation quality depends on the device's voice.
 
 ## Speech recognition
 
