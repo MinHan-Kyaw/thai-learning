@@ -10,7 +10,7 @@
 | `src/data/vowelGroups.json`      | Short, long, extra and standalone vowel groups: English `name`, `shortName`, tone `rules`               |
 | `src/data/tones.json`            | The five tones: English and Thai name, pitch contour                                                    |
 | `src/data/toneMarks.json`        | The four tone marks and their Thai names                                                                |
-| `src/data/guide.json`            | Explanations on the tones screen (live/dead syllables, rules), in English                               |
+| `src/data/guide.json`            | Explanations on the tones screen and in the vowel practice (live/dead syllables, rules), in English     |
 | `public/images/words/*.svg`      | Vocabulary pictures (vector)                                                                            |
 | `public/audio/words/*.m4a`       | Thai audio                                                                                              |
 

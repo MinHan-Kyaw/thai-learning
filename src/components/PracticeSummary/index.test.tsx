@@ -51,4 +51,16 @@ describe('PracticeSummary', () => {
 
     expect(screen.getByRole('link', { name: 'Explore consonants' })).toHaveAttribute('href', '/consonants');
   });
+
+  describe('given an explore link', () => {
+    it('links there instead', () => {
+      render(
+        <MemoryRouter>
+          <PracticeSummary score={5} total={10} onRestart={vi.fn()} explore={{ to: '/vowels', label: 'Explore vowels' }} />
+        </MemoryRouter>
+      );
+
+      expect(screen.getByRole('link', { name: 'Explore vowels' })).toHaveAttribute('href', '/vowels');
+    });
+  });
 });

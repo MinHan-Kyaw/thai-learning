@@ -35,11 +35,11 @@ Run a single test file: `npx vitest run src/helpers/practice.test.ts`
 ```text
 src/
 ├── components/   Reusable, presentational UI. One folder per component: index.tsx, index.test.tsx
-├── screens/      Page-level composition (Home, Consonants, Vowels, Tones, Practice, AllConsonants). Screens own state and wire services.
+├── screens/      Page-level composition (Home, Consonants, Vowels, Tones, PracticeCategories, Practice, VowelPractice, AllConsonants). Screens own state and wire services.
 ├── data/         Learning content JSON + typed loader (index.ts) + data validation test
 ├── helpers/      Pure functions (randomizeArray, practice engine, vocabulary, tones, vowels, assetUrl)
 ├── constants/    Shared constants (practice question/option counts)
-├── services/     Side-effect wrappers (audio playback, feedback sounds, speech recognition)
+├── services/     Side-effect wrappers (audio playback, feedback sounds, speech recognition, Thai speech synthesis)
 ├── types/        Shared TypeScript types for learning data
 └── tests/        Test setup and shared fixtures
 public/
@@ -107,7 +107,7 @@ Pronunciation is written manually in Burmese script by the project owner and is 
 - Tests are colocated: `Component/index.test.tsx`, `helpers/foo.test.ts`.
 - Put conditions in a `describe('given …')` block, not in the `it` text.
 - Query by role and accessible name (Testing Library) rather than test IDs or class names.
-- Mock `src/services/audio`, `src/services/sound` and `src/services/speech` in component/screen tests; each service has its own unit test.
+- Mock `src/services/audio`, `src/services/sound`, `src/services/speech` and `src/services/voice` in component/screen tests; each service has its own unit test.
 - New reusable components need tests. Practice logic must stay covered for: correct and incorrect answers, question and
   answer randomization, option uniqueness, progression, completion and score, and for each answer mode (select, class, type,
   speak) including the Advanced toggle and the "Can't speak now" fallback.
