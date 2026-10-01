@@ -41,6 +41,8 @@ export interface PracticeQuestion {
   mode: AnswerMode;
 }
 
+export type SyllableType = 'live' | 'dead';
+
 export type ToneId = 'mid' | 'low' | 'falling' | 'high' | 'rising';
 
 export interface Tone {
@@ -77,8 +79,8 @@ interface SyllableGuide {
   detail: string;
 }
 
-// Burmese explanations shown on the tones screen.
+// Explanations shown on the tones screen; English until the owner supplies Burmese.
 export interface Guide {
-  syllables: Record<'live' | 'dead', SyllableGuide>;
-  tones: { intro: string; rulesTitle: string; rulesNote: string; markDetail: string; notUsed: string };
+  syllables: Record<SyllableType, SyllableGuide>;
+  tones: { intro: string; rulesNote: string; markDetail: string; notUsed: string };
 }

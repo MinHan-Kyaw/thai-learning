@@ -119,11 +119,10 @@ describe('vowels', () => {
 describe('guide', () => {
   const texts = [...Object.values(guide.syllables).flatMap(({ name, detail }) => [name, detail]), ...Object.values(guide.tones)];
 
-  it('explains the rules in Burmese', () => {
+  it('fills every explanation without invisible characters', () => {
     texts.forEach((text) => {
-      expect(text).toMatch(/[\u1000-\u109F]/);
+      expect(text).not.toBe('');
       expect(text).not.toMatch(INVISIBLE_CHARACTERS);
-      expect(text).not.toMatch(VISUAL_ORDER_VOWEL_SIGN_E);
     });
   });
 

@@ -10,7 +10,7 @@
 | `src/data/vowelGroups.json`      | Short, long, extra and standalone vowel groups: English `name`, `shortName`, tone `rules`               |
 | `src/data/tones.json`            | The five tones: English and Thai name, pitch contour                                                    |
 | `src/data/toneMarks.json`        | The four tone marks and their Thai names                                                                |
-| `src/data/guide.json`            | Burmese explanations on the tones screen (live/dead syllables, rules)                                   |
+| `src/data/guide.json`            | Explanations on the tones screen (live/dead syllables, rules), in English                               |
 | `public/images/words/*.svg`      | Vocabulary pictures (vector)                                                                            |
 | `public/audio/words/*.m4a`       | Thai audio                                                                                              |
 
@@ -132,6 +132,7 @@ Items for the project owner to confirm.
 | `ฤๅ`, `ฦๅ` spelling                 | The source writes `ฤา` and `ฦา` (with sara aa); stored with lakkhangyao `ๅ`, the standard form. Confirm.                                                                           |
 | Extra vowel tone rules              | The source states tone rules for short and long vowels only, so `-ำ ใ- ไ- เ-า` have none. Provide them if wanted.                                                                  |
 | Burmese vowel group names and notes | Not in the source, so the vowel groups have English names only. Provide Burmese if wanted.                                                                                         |
+| Burmese tones explanations          | Not in the source (pages 66–77 state the tone rules in English only), so `guide.json` and the tones screen are English. Provide Burmese if wanted.                                 |
 | Approximate pictures                | จาน, ฤาษี, มณโฑ, ทหาร and ยักษ์ use the closest Fluent emoji (see [Current picture sources](#current-picture-sources)). Confirm or replace.                                        |
 | Audio                               | Placeholder text-to-speech; see [Sources and licensing](#sources-and-licensing).                                                                                                   |
 

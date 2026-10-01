@@ -1,6 +1,6 @@
-import type { Consonant, ToneId, Vowel } from '../types/learning';
+import type { Consonant, SyllableType, ToneId, Vowel } from '../types/learning';
 
-import { getUnmarkedTone, type Syllable } from './tones';
+import { getUnmarkedTone } from './tones';
 
 const PLACEHOLDER = '-';
 
@@ -13,7 +13,7 @@ export const isCombinable = (vowel: Vowel): boolean => vowel.group !== 'standalo
 
 export const combineVowel = (consonant: string, vowel: Vowel): string => vowel.id.replace(PLACEHOLDER, consonant);
 
-export const getSyllable = (vowel: Vowel): Syllable => (vowel.group === 'short' ? 'dead' : 'live');
+export const getSyllable = (vowel: Vowel): SyllableType => (vowel.group === 'short' ? 'dead' : 'live');
 
 export const getSyllableTone = (consonant: Pick<Consonant, 'class'>, vowel: Vowel): ToneId =>
   getUnmarkedTone(consonant.class, getSyllable(vowel));

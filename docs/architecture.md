@@ -171,7 +171,7 @@ vowels with `VowelCard`.
 ## Tones
 
 Data: `tones.json` (5 tones with English and Thai name and a 1–5 pitch contour), `toneMarks.json` (่ ้ ๊ ๋) and
-`guide.json` (the Burmese explanations on the tones screen: live/dead syllables, rules).
+`guide.json` (the explanations on the tones screen: live/dead syllables, rules; English until the owner supplies Burmese).
 
 - `src/helpers/tones.ts`: `getUnmarkedTone(class, 'live' | 'dead')` and `getMarkedTone(class, mark)` hold the tone rules.
   Only open syllables (no final consonant) are modelled.

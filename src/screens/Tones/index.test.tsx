@@ -27,12 +27,12 @@ describe('Tones', () => {
   it('shows the tone of each class for live and dead syllables', () => {
     renderTones();
 
-    expect([0, 1, 2].map((column) => getCell(/အသံရှင်/, column).textContent)).toEqual([
+    expect([0, 1, 2].map((column) => getCell(/Live syllable/, column).textContent)).toEqual([
       'กา Mid Tone',
       'ขา Rising Tone',
       'คา Mid Tone',
     ]);
-    expect([0, 1, 2].map((column) => getCell(/အသံသေ/, column).textContent)).toEqual([
+    expect([0, 1, 2].map((column) => getCell(/Dead syllable/, column).textContent)).toEqual([
       'กะ Low Tone',
       'ขะ Low Tone',
       'คะ High Tone',
@@ -44,6 +44,6 @@ describe('Tones', () => {
 
     expect(getCell(/ไม้เอก/, 2)).toHaveTextContent('ค่า Falling Tone');
     expect(getCell(/ไม้ตรี/, 0)).toHaveTextContent('ก๊า High Tone');
-    expect(getCell(/ไม้ตรี/, 1)).toHaveTextContent('မသုံးပါ');
+    expect(getCell(/ไม้ตรี/, 1)).toHaveTextContent('Not used');
   });
 });
