@@ -27,7 +27,7 @@ describe('Layout', () => {
         .getAllByRole('link')
         .slice(1)
         .map((link) => link.textContent)
-    ).toEqual(['Consonants', 'Vowels', 'Practice']);
+    ).toEqual(['Consonants', 'Vowels', 'Tones', 'Practice']);
   });
 
   describe('given the current route matches a navigation item', () => {

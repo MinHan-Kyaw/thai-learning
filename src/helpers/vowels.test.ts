@@ -1,7 +1,7 @@
 import { vowels } from '../data';
 import type { Vowel } from '../types/learning';
 
-import { combineVowel, getVowelLabel, isCombinable } from './vowels';
+import { combineVowel, getSyllableTone, getVowelLabel, isCombinable } from './vowels';
 
 const vowel = (id: string): Vowel => vowels.find((item) => item.id === id) as Vowel;
 describe('combineVowel', () => {
@@ -41,5 +41,13 @@ describe('getVowelLabel', () => {
 describe('isCombinable', () => {
   it('excludes the standalone vowels ฤ ฤๅ ฦ ฦๅ', () => {
     expect(vowels.filter((item) => !isCombinable(item)).map((item) => item.id)).toEqual(['ฤ', 'ฤๅ', 'ฦ', 'ฦๅ']);
+  });
+});
+
+describe('getSyllableTone', () => {
+  it('treats short vowels as dead and long and extra vowels as live', () => {
+    expect(getSyllableTone({ class: 'low' }, vowel('-ะ'))).toBe('high');
+    expect(getSyllableTone({ class: 'high' }, vowel('-า'))).toBe('rising');
+    expect(getSyllableTone({ class: 'high' }, vowel('ไ-'))).toBe('rising');
   });
 });

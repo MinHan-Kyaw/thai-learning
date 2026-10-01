@@ -12,12 +12,13 @@ describe('Home', () => {
     expect(screen.getByText('Learn Thai step by step')).toBeInTheDocument();
   });
 
-  it('links to practice mode and the consonants and vowels screens', () => {
+  it('links to practice mode and the consonants, vowels and tones screens', () => {
     render(<Home />, { wrapper: MemoryRouter });
 
     expect(screen.getByRole('link', { name: 'Start Practice' })).toHaveAttribute('href', '/practice');
     expect(screen.getByRole('link', { name: 'Explore Consonants' })).toHaveAttribute('href', '/consonants');
     expect(screen.getByRole('link', { name: 'Explore Vowels' })).toHaveAttribute('href', '/vowels');
+    expect(screen.getByRole('link', { name: 'Learn Tones' })).toHaveAttribute('href', '/tones');
   });
 
   it('summarises the consonant count per class', () => {

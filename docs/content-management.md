@@ -8,6 +8,9 @@
 | `src/data/consonants.json`       | 44 consonants, each with its vocabulary `words`                                                         |
 | `src/data/vowels.json`           | 32 vowels: `id` (written with `-` for the consonant), `group`, English `sound`, Burmese `pronunciation` |
 | `src/data/vowelGroups.json`      | Short, long, extra and standalone vowel groups: English `name`, `shortName`, tone `rules`               |
+| `src/data/tones.json`            | The five tones: English and Thai name, pitch contour                                                    |
+| `src/data/toneMarks.json`        | The four tone marks and their Thai names                                                                |
+| `src/data/guide.json`            | Burmese explanations on the tones screen (live/dead syllables, rules)                                   |
 | `public/images/words/*.svg`      | Vocabulary pictures (vector)                                                                            |
 | `public/audio/words/*.m4a`       | Thai audio                                                                                              |
 
