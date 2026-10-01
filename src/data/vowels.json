@@ -21,7 +21,7 @@
     "id": "-ุ",
     "group": "short",
     "sound": "u",
-    "pronunciation": "အု"
+    "pronunciation": "ဥ"
   },
   {
     "id": "เ-ะ",
@@ -51,19 +51,19 @@
     "id": "เ-อะ",
     "group": "short",
     "sound": "oe",
-    "pronunciation": "အေ့"
+    "pronunciation": "အွတ်"
   },
   {
     "id": "เ-ียะ",
     "group": "short",
     "sound": "ia",
-    "pronunciation": "အိယ"
+    "pronunciation": "အီရ"
   },
   {
     "id": "เ-ือะ",
     "group": "short",
     "sound": "eua",
-    "pronunciation": "အုအ"
+    "pronunciation": "အူရ"
   },
   {
     "id": "-ัวะ",
@@ -93,7 +93,7 @@
     "id": "-ู",
     "group": "long",
     "sound": "uu",
-    "pronunciation": "အူး"
+    "pronunciation": "ဦး"
   },
   {
     "id": "เ-",
@@ -123,55 +123,55 @@
     "id": "เ-อ",
     "group": "long",
     "sound": "ooe",
-    "pronunciation": "အေး"
+    "pronunciation": "အူ"
   },
   {
     "id": "เ-ีย",
     "group": "long",
     "sound": "iia",
-    "pronunciation": "အီးယ"
+    "pronunciation": "အီးရား"
   },
   {
     "id": "เ-ือ",
     "group": "long",
     "sound": "euua",
-    "pronunciation": "အူးအ"
+    "pronunciation": "အူးရား"
   },
   {
     "id": "-ัว",
     "group": "long",
     "sound": "uua",
-    "pronunciation": "အူးဝ"
+    "pronunciation": "အူးဝါး"
   },
   {
     "id": "-ำ",
     "group": "extra",
     "sound": "am",
-    "pronunciation": "အမ်"
+    "pronunciation": "အမ်း"
   },
   {
     "id": "ใ-",
     "group": "extra",
     "sound": "ai",
-    "pronunciation": "အိုင်"
+    "pronunciation": "အိုင်း"
   },
   {
     "id": "ไ-",
     "group": "extra",
     "sound": "ai",
-    "pronunciation": "အိုင်"
+    "pronunciation": "အိုင်း"
   },
   {
     "id": "เ-า",
     "group": "extra",
     "sound": "ao",
-    "pronunciation": "အောင်"
+    "pronunciation": "အောင်း"
   },
   {
     "id": "ฤ",
     "group": "standalone",
     "sound": "reu",
-    "pronunciation": "ရု"
+    "pronunciation": "ရူ"
   },
   {
     "id": "ฤๅ",
@@ -183,7 +183,7 @@
     "id": "ฦ",
     "group": "standalone",
     "sound": "leu",
-    "pronunciation": "လု"
+    "pronunciation": "လူ"
   },
   {
     "id": "ฦๅ",
