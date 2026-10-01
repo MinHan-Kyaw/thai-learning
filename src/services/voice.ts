@@ -1,5 +1,5 @@
 // Speaks Thai with the browser's speech synthesis, for syllables that have no recorded audio.
-// ponytail: depends on the device having a Thai voice; record audio files if pronunciation must be exact.
+// Depends on the device having a Thai voice; record audio files if pronunciation must be exact.
 const LANGUAGE = 'th-TH';
 const RATE = 0.8;
 

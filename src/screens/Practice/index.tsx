@@ -1,6 +1,7 @@
 import { useEffect, useReducer, useRef, useState } from 'react';
 
 import AnswerOptions from '../../components/AnswerOptions';
+import BackLink from '../../components/BackLink';
 import ClassOptions from '../../components/ClassOptions';
 import PracticeFeedback from '../../components/PracticeFeedback';
 import PracticeQuestion from '../../components/PracticeQuestion';
@@ -195,6 +196,7 @@ const Practice = () => {
   return (
     <div className="mx-auto flex max-w-[42rem] flex-col">
       <h1 className="sr-only">Practice</h1>
+      <BackLink to="/practice">Practice</BackLink>
       <div className="mb-4 flex items-center gap-3">
         <ProgressBar
           current={state.currentQuestionIndex + (state.answered ? 1 : 0)}

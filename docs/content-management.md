@@ -114,6 +114,11 @@ Converting a recording on macOS: `afconvert -f m4af -d aac -b 64000 recording.wa
 - **Audio** files are _placeholders_ generated with the macOS Thai voice "Kanya" (`say -v Kanya "กอ ไก่"`), because the
   source has no audio. They are Thai text-to-speech of the Thai word, not derived from Burmese. Replace them with
   recordings by a native speaker.
+- **Vowel practice audio** is spoken live by the browser's speech synthesis (`src/services/voice.ts`, `th-TH`), not
+  recorded, because there are about 1,232 consonant + vowel syllables. The trade-off: devices without a Thai voice
+  (often Windows) stay silent, and the voice and its quality differ by device and browser, unlike the committed
+  consonant `.m4a` files, which sound the same everywhere. Record files instead if a syllable set must sound exact;
+  vowel-page audio can reuse this service or use recorded files.
 
 ## Content review log
 

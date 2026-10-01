@@ -1,15 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
 
 import AnswerOption from '../../components/AnswerOption';
-import AudioButton from '../../components/AudioButton';
+import BackLink from '../../components/BackLink';
 import CheckboxChips from '../../components/CheckboxChips';
 import PracticeFeedback from '../../components/PracticeFeedback';
 import PracticeSummary from '../../components/PracticeSummary';
 import ProgressBar from '../../components/ProgressBar';
 import type { AnswerResult } from '../../components/ResultIcon';
 import ToneContour from '../../components/ToneContour';
+import VowelExplanation from '../../components/VowelExplanation';
+import VowelQuestion from '../../components/VowelQuestion';
 import { consonantClasses, consonants, guide, toneById, tones, vowelGroups, vowels } from '../../data';
-import { generateVowelQuestions, getSyllable, getVowelAnswer, getVowelLabel, isCombinable } from '../../helpers/vowels';
+import { generateVowelQuestions, getSyllable, getVowelAnswer, isCombinable } from '../../helpers/vowels';
 import { FEEDBACK_SOUND_DURATION_MS, playFeedbackSound } from '../../services/sound';
 import { speakThai, stopSpeaking } from '../../services/voice';
 import type { VowelGroupId } from '../../types/learning';
@@ -42,18 +44,8 @@ const VowelPractice = () => {
   const [selected, setSelected] = useState<string | null>(null);
   const [answered, setAnswered] = useState(false);
   const [score, setScore] = useState(0);
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  const isFirstQuestion = useRef(true);
   const speakTimer = useRef<number | undefined>(undefined);
   const question = questions[index];
-
-  useEffect(() => {
-    if (isFirstQuestion.current) {
-      isFirstQuestion.current = false;
-      return;
-    }
-    headingRef.current?.focus();
-  }, [question?.id]);
 
   useEffect(
     () => () => {
@@ -139,6 +131,7 @@ const VowelPractice = () => {
   return (
     <div className="mx-auto flex max-w-[42rem] flex-col">
       <h1 className="sr-only">Vowel practice</h1>
+      <BackLink to="/practice">Practice</BackLink>
       <CheckboxChips
         legend="Vowels to practise"
         options={practiceGroups.map((group) => ({
@@ -146,11 +139,7 @@ const VowelPractice = () => {
           checked: Boolean(groups[group.id]),
           label: (
             <>
-              <span className="font-burmese leading-[1.8]" lang="my">
-                {group.burmeseName}
-              </span>
-              <span className="sr-only"> {group.name}</span>{' '}
-              <span className="text-sm">{vowels.filter((vowel) => vowel.group === group.id).length}</span>
+              {group.name} <span className="text-sm">{vowels.filter((vowel) => vowel.group === group.id).length}</span>
             </>
           ),
         }))}
@@ -160,37 +149,7 @@ const VowelPractice = () => {
         <ProgressBar current={index + (answered ? 1 : 0)} total={questions.length} label="Practice progress" />
       </div>
 
-      <section className="flex flex-col items-center gap-4" aria-labelledby="vowel-question-prompt">
-        <h2 id="vowel-question-prompt" className="rounded-xl text-center text-2xl font-extrabold" ref={headingRef} tabIndex={-1}>
-          {question.kind === 'spell' ? 'How is this written?' : 'Which tone is this?'}
-        </h2>
-        {question.kind === 'spell' ? (
-          <p className="flex items-center gap-3 font-thai text-[2.5rem] leading-[1.4] font-medium" lang="th">
-            <span className="grid min-h-20 min-w-20 place-items-center rounded-2xl border-2 border-line px-3 shadow-edge">
-              {question.consonant.character}
-            </span>
-            +
-            <span className="flex min-h-20 min-w-20 flex-col items-center justify-center rounded-2xl border-2 border-line px-3 shadow-edge">
-              {getVowelLabel(question.vowel)}
-              <span className="flex gap-2 pb-1 font-sans text-sm leading-tight text-ink-muted">
-                <span className="font-bold" lang="en">
-                  {question.vowel.sound}
-                </span>{' '}
-                <span className="font-burmese" lang="my">
-                  {question.vowel.pronunciation}
-                </span>
-              </span>
-            </span>
-          </p>
-        ) : (
-          <p
-            className="grid min-h-28 min-w-28 place-items-center rounded-3xl border-2 border-line px-4 font-thai text-[3.5rem] leading-[1.4] font-medium shadow-edge"
-            lang="th"
-          >
-            {question.syllable}
-          </p>
-        )}
-
+      <VowelQuestion question={question}>
         {question.kind === 'spell' ? (
           <ul className="grid w-full gap-3 md:grid-cols-3" aria-label="Answer options" role="list">
             {question.options.map((option) => (
@@ -217,29 +176,15 @@ const VowelPractice = () => {
         )}
 
         {answered && (
-          <p className="flex flex-wrap items-center justify-center gap-x-2 text-center text-ink-muted">
-            <span className="font-thai font-medium text-ink" lang="th">
-              {question.consonant.character}
-            </span>{' '}
-            <span className="font-burmese" lang="my">
-              {consonantClass?.burmeseName}
-            </span>{' '}
-            +{' '}
-            <span className="font-thai font-medium text-ink" lang="th">
-              {getVowelLabel(question.vowel)}
-            </span>{' '}
-            <span className="font-burmese" lang="my">
-              {guide.syllables[getSyllable(question.vowel)].name}
-            </span>{' '}
-            →{' '}
-            <span className="font-thai font-medium text-ink" lang="th">
-              {question.syllable}
-            </span>{' '}
-            <strong className="text-ink">{tone.name}</strong>{' '}
-            <AudioButton label={`Hear ${question.syllable}`} onPlay={() => speakThai(question.syllable)} />
-          </p>
+          <VowelExplanation
+            question={question}
+            consonantClassName={consonantClass?.burmeseName ?? ''}
+            syllableName={guide.syllables[getSyllable(question.vowel)].name}
+            toneName={tone.name}
+            onPlay={() => speakThai(question.syllable)}
+          />
         )}
-      </section>
+      </VowelQuestion>
 
       <PracticeFeedback
         result={result}

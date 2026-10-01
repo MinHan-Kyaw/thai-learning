@@ -59,6 +59,9 @@ const PracticeSummary = ({
         <ButtonLink to={explore.to} variant="secondary" fullWidth>
           {explore.label}
         </ButtonLink>
+        <ButtonLink to="/practice" variant="secondary" fullWidth>
+          Choose another practice
+        </ButtonLink>
       </div>
     </section>
   );

@@ -47,6 +47,12 @@ const answer = async (name: string | RegExp) => {
 };
 
 describe('VowelPractice', () => {
+  it('links back to the practice categories', () => {
+    renderVowelPractice();
+
+    expect(screen.getByRole('link', { name: 'Back to Practice' })).toHaveAttribute('href', '/practice');
+  });
+
   describe('given a spelling question', () => {
     it('shows the consonant and vowel and waits for a choice', () => {
       renderVowelPractice();
@@ -69,7 +75,7 @@ describe('VowelPractice', () => {
         'data-status',
         'correct'
       );
-      expect(screen.getByText('Low Tone').closest('p')).toHaveTextContent('ก အလယ်သံဗျည်းအုပ်စု + -ะ အသံသေ → กะ Low Tone');
+      expect(screen.getByText('Low Tone').closest('p')).toHaveTextContent('ก အလယ်သံဗျည်းအုပ်စု + -ะ Dead syllable → กะ Low Tone');
       expect(playFeedbackSound).toHaveBeenCalledWith('correct');
     });
   });
