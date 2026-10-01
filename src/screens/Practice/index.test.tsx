@@ -79,6 +79,12 @@ const turnOnAdvanced = () => userEvent.click(screen.getByRole('switch', { name: 
 const openSettings = () => userEvent.click(screen.getByRole('button', { name: 'Practice settings' }));
 
 describe('Practice', () => {
+  it('links back to the practice categories', () => {
+    renderPractice();
+
+    expect(screen.getByRole('link', { name: 'Back to Practice' })).toHaveAttribute('href', '/practice');
+  });
+
   it('shows the first question with three answer options and a disabled Next button', () => {
     renderPractice();
 

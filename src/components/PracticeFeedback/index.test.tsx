@@ -1,14 +1,14 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { buildVocabularyItem } from '../../tests/fixtures';
-
 import PracticeFeedback from '.';
 
 describe('PracticeFeedback', () => {
   describe('given the answer has not been evaluated', () => {
     it('shows no result message', () => {
-      render(<PracticeFeedback result={null} correctAnswer={buildVocabularyItem()} actionLabel="Next" onAction={vi.fn()} />);
+      render(
+        <PracticeFeedback result={null} correctAnswer={<span lang="th">ก (ไก่)</span>} actionLabel="Next" onAction={vi.fn()} />
+      );
 
       expect(screen.getByRole('status')).toBeEmptyDOMElement();
     });
@@ -17,7 +17,7 @@ describe('PracticeFeedback', () => {
       render(
         <PracticeFeedback
           result={null}
-          correctAnswer={buildVocabularyItem()}
+          correctAnswer={<span lang="th">ก (ไก่)</span>}
           actionLabel="Next"
           actionDisabled
           onAction={vi.fn()}
@@ -31,7 +31,12 @@ describe('PracticeFeedback', () => {
   describe('given the answer is correct', () => {
     it('announces success to screen readers only', () => {
       render(
-        <PracticeFeedback result="correct" correctAnswer={buildVocabularyItem()} actionLabel="Continue" onAction={vi.fn()} />
+        <PracticeFeedback
+          result="correct"
+          correctAnswer={<span lang="th">ก (ไก่)</span>}
+          actionLabel="Continue"
+          onAction={vi.fn()}
+        />
       );
 
       expect(screen.getByRole('status')).toHaveTextContent('Correct.');
@@ -42,7 +47,12 @@ describe('PracticeFeedback', () => {
   describe('given the answer is incorrect', () => {
     it('announces the correct answer to screen readers only', () => {
       render(
-        <PracticeFeedback result="incorrect" correctAnswer={buildVocabularyItem()} actionLabel="Continue" onAction={vi.fn()} />
+        <PracticeFeedback
+          result="incorrect"
+          correctAnswer={<span lang="th">ก (ไก่)</span>}
+          actionLabel="Continue"
+          onAction={vi.fn()}
+        />
       );
 
       expect(screen.getByRole('status')).toHaveTextContent('Incorrect. The answer is ก (ไก่).');
@@ -50,35 +60,15 @@ describe('PracticeFeedback', () => {
     });
   });
 
-  describe('given a wrong group was chosen', () => {
-    it('announces the correct group', () => {
-      render(
-        <PracticeFeedback
-          result="incorrect"
-          correctAnswer={buildVocabularyItem()}
-          correctClass={{
-            id: 'middle',
-            group: 1,
-            name: 'Middle Class',
-            shortName: 'Middle',
-            burmeseName: 'အလယ်',
-            tone: 'Mid Tone',
-            exampleConsonant: 'ก',
-            exampleSound: 'k',
-          }}
-          actionLabel="Continue"
-          onAction={vi.fn()}
-        />
-      );
-
-      expect(screen.getByRole('status')).toHaveTextContent('Incorrect. The answer is group 1, Middle.');
-    });
-  });
-
   it('calls onAction when the action button is pressed', async () => {
     const onAction = vi.fn();
     render(
-      <PracticeFeedback result="correct" correctAnswer={buildVocabularyItem()} actionLabel="Continue" onAction={onAction} />
+      <PracticeFeedback
+        result="correct"
+        correctAnswer={<span lang="th">ก (ไก่)</span>}
+        actionLabel="Continue"
+        onAction={onAction}
+      />
     );
 
     await userEvent.click(screen.getByRole('button', { name: 'Continue' }));
