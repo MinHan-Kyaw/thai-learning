@@ -36,7 +36,7 @@ flowchart LR
 | ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `/`                                            | Home                                                                                                                                                                          |
 | `/consonants?class=middle\|high\|low`          | Consonant browser (class kept in the URL so it can be linked)                                                                                                                 |
-| `/vowels?group=short\|long\|extra\|standalone` | The 32 vowels in group tabs (group kept in the URL), with each group's tone rules and a middle / high / low class example per vowel                                           |
+| `/vowels?group=short\|long\|extra\|standalone` | The 32 vowels in group tabs (group kept in the URL), with the short and long vowel tone rules and a middle / high / low class example per vowel                               |
 | `/practice`                                    | Picture quiz                                                                                                                                                                  |
 | `/all`                                         | All 44 consonants as compact cards (letter, picture, Burmese meaning; no Thai word or audio) on one full-width page without the header; not linked, reached by typing the URL |
 | `*`                                            | Redirects to `/`                                                                                                                                                              |
@@ -157,8 +157,8 @@ the word's Thai audio once that sound has finished.
 ## Vowels
 
 Data: `vowelGroups.json` and `vowels.json` (32 vowels: 12 short, 12 long, 4 extra ำ ใ ไ เา, 4 standalone ฤ ฤๅ ฦ ฦๅ). A
-vowel id is its written form with `-` for the consonant (`เ-ือะ`); standalone vowels have no dash. Each group has a
-Burmese note and, except standalone vowels, one tone rule per consonant class. Each consonant class names an
+vowel id is its written form with `-` for the consonant (`เ-ือะ`); standalone vowels have no dash. Short and long
+vowels have one tone rule per consonant class, from the source. Each consonant class names an
 `exampleConsonant` (ก / ข / ค) and its English initial `exampleSound` (k / kh / kh); a vowel example's romanization is
 `exampleSound` + the vowel's `sound` (กะ → ka).
 

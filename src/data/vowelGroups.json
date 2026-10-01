@@ -2,40 +2,23 @@
   {
     "id": "short",
     "name": "Short vowels",
-    "burmeseName": "သရတို",
-    "note": "နောက်ဆုံးဗျည်း မပါလျှင် သရတိုသည် အသံသေ ဖြစ်သည်။",
-    "rules": [
-      "Group 1 (Middle Consonants) ကို Short vowel နဲ့တွဲရင် Low Tone",
-      "Group 2 (High Consonants) ကို Short vowel နဲ့တွဲရင် Low Tone",
-      "Group 3 (Low Consonants) ကို Short vowel နဲ့တွဲရင် High Tone"
-    ]
+    "shortName": "Short",
+    "rules": ["Gp 1 + Short Vowel - Low Tone", "Gp 2 + Short Vowel - Low Tone", "Gp 3 + Short Vowel - High Tone"]
   },
   {
     "id": "long",
     "name": "Long vowels",
-    "burmeseName": "သရရှည်",
-    "note": "နောက်ဆုံးဗျည်း မပါလျှင် သရရှည်သည် အသံရှင် ဖြစ်သည်။",
-    "rules": [
-      "Group 1 (Middle Consonants) ကို Long vowel နဲ့တွဲရင် Mid Tone",
-      "Group 2 (High Consonants) ကို Long vowel နဲ့တွဲရင် Rising Tone",
-      "Group 3 (Low Consonants) ကို Long vowel နဲ့တွဲရင် Mid Tone"
-    ]
+    "shortName": "Long",
+    "rules": ["Gp 1 + Long Vowel - Mid Tone", "Gp 2 + Long Vowel - Rising Tone", "Gp 3 + Long Vowel - Mid Tone"]
   },
   {
     "id": "extra",
     "name": "Extra vowels",
-    "burmeseName": "အပိုသရ",
-    "note": "ဤသရများသည် မ်၊ ယ် သို့မဟုတ် ဝ် အသံဖြင့် ဆုံးသောကြောင့် အသံရှင် ဖြစ်သည်။",
-    "rules": [
-      "Group 1 (Middle Consonants) ကို Extra vowel နဲ့တွဲရင် Mid Tone",
-      "Group 2 (High Consonants) ကို Extra vowel နဲ့တွဲရင် Rising Tone",
-      "Group 3 (Low Consonants) ကို Extra vowel နဲ့တွဲရင် Mid Tone"
-    ]
+    "shortName": "Extra"
   },
   {
     "id": "standalone",
     "name": "Standalone vowels",
-    "burmeseName": "သီးသန့်သရ",
-    "note": "ဗျည်းနှင့် မတွဲဘဲ သီးသန့် ရေးသည်။"
+    "shortName": "Standalone"
   }
 ]

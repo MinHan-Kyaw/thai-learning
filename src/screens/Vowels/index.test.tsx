@@ -27,10 +27,10 @@ describe('Vowels', () => {
     const tabs = within(screen.getByRole('list', { name: 'Vowel group' })).getAllByRole('button');
 
     expect(tabs.map((tab) => tab.textContent)).toEqual([
-      'သရတို 12 vowels',
-      'သရရှည် 12 vowels',
-      'အပိုသရ 4 vowels',
-      'သီးသန့်သရ 4 vowels',
+      'Short 12 vowels',
+      'Long 12 vowels',
+      'Extra 4 vowels',
+      'Standalone 4 vowels',
     ]);
   });
 
@@ -38,8 +38,8 @@ describe('Vowels', () => {
     it('shows the short vowels', () => {
       renderVowels();
 
-      expect(screen.getByRole('button', { name: /သရတို/ })).toHaveAttribute('aria-pressed', 'true');
-      expect(screen.getByRole('heading', { name: 'သရတို Short vowels' })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /Short/ })).toHaveAttribute('aria-pressed', 'true');
+      expect(screen.getByRole('heading', { name: 'Short vowels' })).toBeInTheDocument();
       expect(rowCount()).toBe(12);
     });
   });
@@ -48,7 +48,7 @@ describe('Vowels', () => {
     it('shows that group', () => {
       renderVowels('/vowels?group=extra');
 
-      expect(screen.getByRole('heading', { name: 'အပိုသရ Extra vowels' })).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: 'Extra vowels' })).toBeInTheDocument();
       expect(rowCount()).toBe(4);
     });
   });
@@ -56,9 +56,9 @@ describe('Vowels', () => {
   it('switches group with the tabs', async () => {
     renderVowels();
 
-    await userEvent.click(screen.getByRole('button', { name: /သရရှည်/ }));
+    await userEvent.click(screen.getByRole('button', { name: /Long/ }));
 
-    expect(screen.getByRole('heading', { name: 'သရရှည် Long vowels' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Long vowels' })).toBeInTheDocument();
     expect(rowCount()).toBe(12);
   });
 
@@ -70,21 +70,23 @@ describe('Vowels', () => {
     expect(cells.map((cell) => cell.textContent)).toEqual(['กะ ka', 'ขะ kha', 'คะ kha']);
   });
 
-  it('explains the group and lists its tone rule for each consonant group', () => {
+  it('lists the tone rule for each consonant group', () => {
     renderVowels();
 
     const rules = within(screen.getByRole('list', { name: 'Short vowels tone rules' })).getAllByRole('listitem');
 
-    expect(screen.getByText(/သရတိုသည် အသံသေ/)).toHaveAttribute('lang', 'my');
-    expect(rules).toHaveLength(3);
-    expect(rules[2]).toHaveTextContent('Group 3 (Low Consonants) ကို Short vowel နဲ့တွဲရင် High Tone');
+    expect(rules.map((rule) => rule.textContent)).toEqual([
+      'Gp 1 + Short Vowel - Low Tone',
+      'Gp 2 + Short Vowel - Low Tone',
+      'Gp 3 + Short Vowel - High Tone',
+    ]);
   });
 
   describe('given the standalone vowels', () => {
     it('lists them as cards without examples or tone rules', () => {
       renderVowels('/vowels?group=standalone');
 
-      expect(within(screen.getByRole('list', { name: /Standalone vowels/ })).getAllByRole('article')).toHaveLength(4);
+      expect(within(screen.getByRole('list', { name: 'Standalone vowels' })).getAllByRole('article')).toHaveLength(4);
       expect(screen.queryByRole('table')).not.toBeInTheDocument();
       expect(screen.queryByRole('list', { name: 'Standalone vowels tone rules' })).not.toBeInTheDocument();
     });

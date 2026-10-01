@@ -15,15 +15,6 @@ const counts = Object.fromEntries(
   vowelGroups.map((group) => [group.id, vowels.filter((vowel) => vowel.group === group.id).length])
 ) as Record<VowelGroupId, number>;
 
-const tabs = vowelGroups.map((group) => ({
-  id: group.id,
-  label: (
-    <span className="font-burmese text-[0.8125rem] leading-[1.8] whitespace-nowrap xs:text-base" lang="my">
-      {group.burmeseName}
-    </span>
-  ),
-}));
-
 const Vowels = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const requestedGroupId = searchParams.get('group');
@@ -45,7 +36,7 @@ const Vowels = () => {
 
       <div className="sticky top-header z-5 -mx-4 -mt-2 bg-surface px-4 py-2">
         <ClassTabs
-          items={tabs}
+          items={vowelGroups.map((item) => ({ id: item.id, label: item.shortName }))}
           counts={counts}
           selectedId={selectedGroupId}
           label="Vowel group"
@@ -57,14 +48,8 @@ const Vowels = () => {
       {group && (
         <section className="mt-4" aria-labelledby="vowel-group-title">
           <h2 id="vowel-group-title" className="text-[1.375rem] font-extrabold">
-            <span className="font-burmese" lang="my">
-              {group.burmeseName}
-            </span>{' '}
-            <span className="text-base font-bold text-ink-muted">{group.name}</span>
+            {group.name}
           </h2>
-          <p className="mt-1 font-burmese leading-[1.8] text-ink-muted" lang="my">
-            {group.note}
-          </p>
           {group.rules && (
             <ul
               className="mt-2 grid gap-1 rounded-2xl bg-brand-light px-4 py-3"
@@ -72,9 +57,7 @@ const Vowels = () => {
               aria-label={`${group.name} tone rules`}
             >
               {group.rules.map((rule) => (
-                <li key={rule} className="font-burmese leading-[1.8]" lang="my">
-                  {rule}
-                </li>
+                <li key={rule}>{rule}</li>
               ))}
             </ul>
           )}
