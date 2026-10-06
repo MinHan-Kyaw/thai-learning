@@ -5,6 +5,7 @@ import { classNames } from '../../helpers/classNames';
 const NAV_ITEMS = [
   { to: '/consonants', label: 'Consonants' },
   { to: '/vowels', label: 'Vowels' },
+  { to: '/tones', label: 'Tones' },
   { to: '/practice', label: 'Practice' },
 ];
 

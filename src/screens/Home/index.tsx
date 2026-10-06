@@ -36,6 +36,9 @@ const Home = () => (
       <ButtonLink to="/vowels" variant="secondary" fullWidth>
         Explore Vowels
       </ButtonLink>
+      <ButtonLink to="/tones" variant="secondary" fullWidth>
+        Learn Tones
+      </ButtonLink>
       <ButtonLink to="/practice" fullWidth>
         Start Practice
       </ButtonLink>

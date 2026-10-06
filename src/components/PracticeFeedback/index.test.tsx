@@ -62,7 +62,7 @@ describe('PracticeFeedback', () => {
             name: 'Middle Class',
             shortName: 'Middle',
             burmeseName: 'အလယ်',
-            tone: 'Mid tone',
+            tone: 'Mid Tone',
             exampleConsonant: 'ก',
             exampleSound: 'k',
           }}

@@ -17,7 +17,7 @@ flowchart LR
   Loader --> Screens
   Helpers["src/helpers<br/>(pure functions)"] --> Screens
   Services["src/services<br/>audio.ts · sound.ts · speech.ts"] --> Screens
-  Screens["src/screens<br/>Home · Consonants · Vowels · Practice · AllConsonants"] --> Components["src/components<br/>(presentational)"]
+  Screens["src/screens<br/>Home · Consonants · Vowels · Tones · Practice · AllConsonants"] --> Components["src/components<br/>(presentational)"]
 ```
 
 | Layer         | Responsibility                                      | May import                             |
@@ -37,6 +37,7 @@ flowchart LR
 | `/`                                            | Home                                                                                                                                                                          |
 | `/consonants?class=middle\|high\|low`          | Consonant browser (class kept in the URL so it can be linked)                                                                                                                 |
 | `/vowels?group=short\|long\|extra\|standalone` | The 32 vowels in group tabs (group kept in the URL), with the short and long vowel tone rules and a middle / high / low class example per vowel                               |
+| `/tones`                                       | The five tones and the tone rules table (class × live/dead syllable and tone marks)                                                                                           |
 | `/practice`                                    | Picture quiz                                                                                                                                                                  |
 | `/all`                                         | All 44 consonants as compact cards (letter, picture, Burmese meaning; no Thai word or audio) on one full-width page without the header; not linked, reached by typing the URL |
 | `*`                                            | Redirects to `/`                                                                                                                                                              |
@@ -166,6 +167,16 @@ vowels have one tone rule per consonant class, from the source. Each consonant c
 where a mark sits above or below the consonant (`◌ิ`, `เ◌ีย`), because fonts can't stack a Thai mark on a dash.
 The screen draws combinable groups with `VowelTable` (one row per vowel, a ก / ข / ค column per class) and standalone
 vowels with `VowelCard`.
+
+## Tones
+
+Data: `tones.json` (5 tones with English and Thai name and a 1–5 pitch contour), `toneMarks.json` (่ ้ ๊ ๋) and
+`guide.json` (the explanations on the tones screen: live/dead syllables, rules; English until the owner supplies Burmese).
+
+- `src/helpers/tones.ts`: `getUnmarkedTone(class, 'live' | 'dead')` and `getMarkedTone(class, mark)` hold the tone rules.
+  Only open syllables (no final consonant) are modelled.
+- `src/helpers/vowels.ts`: short vowels make dead syllables, long and extra vowels live ones (`getSyllable`,
+  `getSyllableTone`). `src/data/vowels.test.ts` checks each vowel group's written tone rule against these.
 
 ## Audio
 
