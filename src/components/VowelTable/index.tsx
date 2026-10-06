@@ -1,22 +1,24 @@
+import { classNames } from '../../helpers/classNames';
 import { combineVowel, getVowelLabel } from '../../helpers/vowels';
 import type { ConsonantClass, Vowel } from '../../types/learning';
 
 interface VowelTableProps {
   vowels: Vowel[];
   consonantClasses: ConsonantClass[];
+  tones?: string[];
   labelledBy: string;
 }
 
-const VowelTable = ({ vowels, consonantClasses, labelledBy }: VowelTableProps) => (
+const VowelTable = ({ vowels, consonantClasses, tones, labelledBy }: VowelTableProps) => (
   <div className="overflow-x-auto rounded-2xl border-2 border-line">
     <table className="w-full border-collapse text-center" aria-labelledby={labelledBy}>
       <thead>
-        <tr className="border-b-2 border-line bg-brand-light">
+        <tr className={classNames('bg-brand-light', !tones && 'border-b-2 border-line')}>
           <th scope="col" className="px-2 py-2 text-left xs:px-3">
             Vowel
           </th>
           {consonantClasses.map((consonantClass) => (
-            <th key={consonantClass.id} scope="col" className="px-1 py-2 font-bold xs:px-2">
+            <th key={consonantClass.id} scope="col" className="px-1 py-2 font-bold whitespace-nowrap xs:px-2">
               {consonantClass.shortName}{' '}
               <span className="font-thai font-medium text-brand" lang="th">
                 {consonantClass.exampleConsonant}
@@ -24,6 +26,20 @@ const VowelTable = ({ vowels, consonantClasses, labelledBy }: VowelTableProps) =
             </th>
           ))}
         </tr>
+        {tones && (
+          <tr className="border-b-2 border-line bg-brand-light">
+            <th scope="row" className="px-2 pb-2 text-left text-sm font-bold text-ink-muted xs:px-3">
+              Tone
+            </th>
+            {consonantClasses.map(({ id }, index) => (
+              <td key={id} className="px-1 pb-2 xs:px-2">
+                <span className="inline-block rounded-full border-2 border-brand-border bg-surface px-2 text-xs font-extrabold text-brand">
+                  {tones[index]}
+                </span>
+              </td>
+            ))}
+          </tr>
+        )}
       </thead>
       <tbody>
         {vowels.map((vowel) => (

@@ -32,11 +32,11 @@ const vowels: Vowel[] = [
   { id: '-ิ', group: 'short', sound: 'i', pronunciation: 'အိ' },
 ];
 
-const renderTable = () =>
+const renderTable = (tones?: string[]) =>
   render(
     <>
       <h2 id="title">Short vowels</h2>
-      <VowelTable vowels={vowels} consonantClasses={consonantClasses} labelledBy="title" />
+      <VowelTable vowels={vowels} consonantClasses={consonantClasses} tones={tones} labelledBy="title" />
     </>
   );
 
@@ -76,5 +76,23 @@ describe('VowelTable', () => {
     renderTable();
 
     expect(screen.getByRole('rowheader', { name: /^◌ิ/ })).toBeInTheDocument();
+  });
+
+  describe('given tones', () => {
+    it('shows the tone under each class', () => {
+      renderTable(['Low', 'High']);
+
+      const cells = within(screen.getByRole('row', { name: /^Tone/ })).getAllByRole('cell');
+
+      expect(cells.map((cell) => cell.textContent)).toEqual(['Low', 'High']);
+    });
+  });
+
+  describe('given no tones', () => {
+    it('leaves out the tone row', () => {
+      renderTable();
+
+      expect(screen.queryByRole('row', { name: /^Tone/ })).not.toBeInTheDocument();
+    });
   });
 });

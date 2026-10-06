@@ -12,7 +12,10 @@ const renderVowels = (route = '/vowels') =>
     </MemoryRouter>
   );
 
-const rowCount = () => within(screen.getByRole('table')).getAllByRole('row').length - 1;
+const rowCount = () => {
+  const [, body] = within(screen.getByRole('table')).getAllByRole('rowgroup');
+  return within(body as HTMLElement).getAllByRole('row').length;
+};
 
 describe('Vowels', () => {
   it('hides the page heading visually', () => {
@@ -70,12 +73,12 @@ describe('Vowels', () => {
     expect(cells.map((cell) => cell.textContent)).toEqual(['กะ ka', 'ขะ kha', 'คะ kha']);
   });
 
-  it('shows the tone rules on one line', () => {
+  it('shows the tone each consonant class takes', () => {
     renderVowels();
 
-    expect(screen.getByLabelText('Short vowels tone rules')).toHaveTextContent(
-      'G1 / G2 + Short Vowel → Low Tone, G3 + Short Vowel → High Tone'
-    );
+    const cells = within(screen.getByRole('row', { name: /^Tone/ })).getAllByRole('cell');
+
+    expect(cells.map((cell) => cell.textContent)).toEqual(['Low', 'Low', 'High']);
   });
 
   it('hides the group heading visually', () => {
@@ -85,12 +88,11 @@ describe('Vowels', () => {
   });
 
   describe('given the standalone vowels', () => {
-    it('lists them as cards without examples or tone rules', () => {
+    it('lists them as cards without examples or tones', () => {
       renderVowels('/vowels?group=standalone');
 
       expect(within(screen.getByRole('list', { name: 'Standalone vowels' })).getAllByRole('article')).toHaveLength(4);
       expect(screen.queryByRole('table')).not.toBeInTheDocument();
-      expect(screen.queryByLabelText('Standalone vowels tone rules')).not.toBeInTheDocument();
     });
   });
 });

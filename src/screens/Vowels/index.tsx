@@ -1,11 +1,10 @@
-import { Fragment } from 'react';
 import { useSearchParams } from 'react-router';
 
 import ClassTabs from '../../components/ClassTabs';
 import VowelCard from '../../components/VowelCard';
 import VowelTable from '../../components/VowelTable';
 import { consonantClasses, vowelGroups, vowels } from '../../data';
-import { getToneRules, isCombinable } from '../../helpers/vowels';
+import { isCombinable } from '../../helpers/vowels';
 import type { VowelGroupId } from '../../types/learning';
 
 const DEFAULT_GROUP_ID: VowelGroupId = 'short';
@@ -51,23 +50,15 @@ const Vowels = () => {
           <h2 id="vowel-group-title" className="sr-only">
             {group.name}
           </h2>
-          {group.tones && (
-            <p className="rounded-2xl bg-brand-light px-4 py-3" aria-label={`${group.name} tone rules`}>
-              {getToneRules(group, consonantClasses).map((rule, index) => (
-                <Fragment key={rule}>
-                  {index > 0 && ', '}
-                  <span className="whitespace-nowrap">{rule}</span>
-                </Fragment>
-              ))}
-            </p>
-          )}
-
           {groupVowels.every(isCombinable) ? (
-            <div className="mt-4">
-              <VowelTable vowels={groupVowels} consonantClasses={consonantClasses} labelledBy="vowel-group-title" />
-            </div>
+            <VowelTable
+              vowels={groupVowels}
+              consonantClasses={consonantClasses}
+              tones={group.tones}
+              labelledBy="vowel-group-title"
+            />
           ) : (
-            <ul className="mt-4 grid grid-cols-4 gap-3" role="list" aria-labelledby="vowel-group-title">
+            <ul className="grid grid-cols-4 gap-3" role="list" aria-labelledby="vowel-group-title">
               {groupVowels.map((vowel) => (
                 <li key={vowel.id}>
                   <VowelCard vowel={vowel} />
