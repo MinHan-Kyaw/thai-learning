@@ -63,6 +63,8 @@ describe('PracticeFeedback', () => {
             shortName: 'Middle',
             burmeseName: 'အလယ်',
             tone: 'Mid tone',
+            exampleConsonant: 'ก',
+            exampleSound: 'k',
           }}
           actionLabel="Continue"
           onAction={vi.fn()}

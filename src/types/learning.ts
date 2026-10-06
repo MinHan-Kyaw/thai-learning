@@ -7,6 +7,8 @@ export interface ConsonantClass {
   shortName: string;
   burmeseName: string;
   tone: string;
+  exampleConsonant: string;
+  exampleSound: string; // English initial sound of exampleConsonant, e.g. "kh"
 }
 
 export interface Word {
@@ -37,4 +39,20 @@ export interface PracticeQuestion {
   answer: VocabularyItem;
   options: VocabularyItem[];
   mode: AnswerMode;
+}
+
+export type VowelGroupId = 'short' | 'long' | 'extra' | 'standalone';
+
+export interface VowelGroup {
+  id: VowelGroupId;
+  name: string;
+  shortName: string;
+  tones?: string[]; // tone each consonant class takes, in group order, as the source states it; none where the source has none
+}
+
+export interface Vowel {
+  id: string; // written with a dash for the consonant, e.g. "เ-ือะ"; standalone vowels have none
+  group: VowelGroupId;
+  sound: string; // English approximation, e.g. "eua"
+  pronunciation: string; // Burmese pronunciation from the source, e.g. "အူရ"
 }

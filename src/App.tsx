@@ -5,6 +5,7 @@ import AllConsonants from './screens/AllConsonants';
 import Consonants from './screens/Consonants';
 import Home from './screens/Home';
 import Practice from './screens/Practice';
+import Vowels from './screens/Vowels';
 
 const App = () => (
   <Routes>
@@ -12,6 +13,7 @@ const App = () => (
     <Route element={<Layout />}>
       <Route index element={<Home />} />
       <Route path="consonants" element={<Consonants />} />
+      <Route path="vowels" element={<Vowels />} />
       <Route path="practice" element={<Practice />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Route>
