@@ -70,16 +70,18 @@ describe('Vowels', () => {
     expect(cells.map((cell) => cell.textContent)).toEqual(['กะ ka', 'ขะ kha', 'คะ kha']);
   });
 
-  it('lists the tone rule for each consonant group', () => {
+  it('shows the tone rules on one line', () => {
     renderVowels();
 
-    const rules = within(screen.getByRole('list', { name: 'Short vowels tone rules' })).getAllByRole('listitem');
+    expect(screen.getByLabelText('Short vowels tone rules')).toHaveTextContent(
+      'G1 / G2 + Short Vowel → Low Tone, G3 + Short Vowel → High Tone'
+    );
+  });
 
-    expect(rules.map((rule) => rule.textContent)).toEqual([
-      'Gp 1 + Short Vowel - Low Tone',
-      'Gp 2 + Short Vowel - Low Tone',
-      'Gp 3 + Short Vowel - High Tone',
-    ]);
+  it('hides the group heading visually', () => {
+    renderVowels();
+
+    expect(screen.getByRole('heading', { name: 'Short vowels' })).toHaveClass('sr-only');
   });
 
   describe('given the standalone vowels', () => {
@@ -88,7 +90,7 @@ describe('Vowels', () => {
 
       expect(within(screen.getByRole('list', { name: 'Standalone vowels' })).getAllByRole('article')).toHaveLength(4);
       expect(screen.queryByRole('table')).not.toBeInTheDocument();
-      expect(screen.queryByRole('list', { name: 'Standalone vowels tone rules' })).not.toBeInTheDocument();
+      expect(screen.queryByLabelText('Standalone vowels tone rules')).not.toBeInTheDocument();
     });
   });
 });

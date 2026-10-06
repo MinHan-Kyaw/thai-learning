@@ -59,16 +59,13 @@ describe('vowels', () => {
     });
   });
 
-  it('states one tone rule per consonant group for short and long vowels', () => {
+  it('states one tone per consonant group for short and long vowels', () => {
     vowelGroups
-      .filter((group) => group.rules)
+      .filter((group) => group.tones)
       .forEach((group) => {
-        expect(group.rules).toHaveLength(consonantClasses.length);
-        consonantClasses.forEach((consonantClass, index) => {
-          expect(group.rules?.[index]).toMatch(new RegExp(`^Gp ${consonantClass.group} \\+ `));
-        });
+        expect(group.tones).toHaveLength(consonantClasses.length);
       });
-    expect(vowelGroups.filter((group) => group.rules).map((group) => group.id)).toEqual(['short', 'long']);
+    expect(vowelGroups.filter((group) => group.tones).map((group) => group.id)).toEqual(['short', 'long']);
   });
 
   it('gives every group a name and short name', () => {

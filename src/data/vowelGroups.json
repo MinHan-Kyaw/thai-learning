@@ -3,13 +3,13 @@
     "id": "short",
     "name": "Short vowels",
     "shortName": "Short",
-    "rules": ["Gp 1 + Short Vowel - Low Tone", "Gp 2 + Short Vowel - Low Tone", "Gp 3 + Short Vowel - High Tone"]
+    "tones": ["Low", "Low", "High"]
   },
   {
     "id": "long",
     "name": "Long vowels",
     "shortName": "Long",
-    "rules": ["Gp 1 + Long Vowel - Mid Tone", "Gp 2 + Long Vowel - Rising Tone", "Gp 3 + Long Vowel - Mid Tone"]
+    "tones": ["Mid", "Rising", "Mid"]
   },
   {
     "id": "extra",

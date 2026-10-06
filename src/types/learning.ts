@@ -47,7 +47,7 @@ export interface VowelGroup {
   id: VowelGroupId;
   name: string;
   shortName: string;
-  rules?: string[]; // one per consonant class, in group order, as the source states it; none where the source has none
+  tones?: string[]; // tone each consonant class takes, in group order, as the source states it; none where the source has none
 }
 
 export interface Vowel {
