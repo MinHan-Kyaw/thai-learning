@@ -73,13 +73,24 @@ export interface Vowel {
   pronunciation: string; // Burmese pronunciation from the source, e.g. "အူရ"
 }
 
+interface VowelQuestionBase {
+  id: string; // the syllable
+  consonant: Consonant;
+  vowel: Vowel;
+  syllable: string;
+  tone: ToneId;
+}
+
+// spell: pick how consonant + vowel is written; tone: pick the tone of the written syllable.
+export type VowelQuestion = (VowelQuestionBase & { kind: 'spell'; options: string[] }) | (VowelQuestionBase & { kind: 'tone' });
+
 interface SyllableGuide {
   name: string;
   thaiName: string;
   detail: string;
 }
 
-// Explanations shown on the tones screen; English until the owner supplies Burmese.
+// Explanations shown on the tones screen and in the vowel practice; English until the owner supplies Burmese.
 export interface Guide {
   syllables: Record<SyllableType, SyllableGuide>;
   tones: { intro: string; rulesNote: string; markDetail: string; notUsed: string };

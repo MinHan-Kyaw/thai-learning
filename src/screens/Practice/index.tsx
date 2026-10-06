@@ -1,6 +1,7 @@
 import { useEffect, useReducer, useRef, useState } from 'react';
 
 import AnswerOptions from '../../components/AnswerOptions';
+import BackLink from '../../components/BackLink';
 import ClassOptions from '../../components/ClassOptions';
 import PracticeFeedback from '../../components/PracticeFeedback';
 import PracticeQuestion from '../../components/PracticeQuestion';
@@ -26,7 +27,7 @@ import {
   practiceReducer,
 } from '../../helpers/practice';
 import { pickTranscript } from '../../helpers/thaiAnswer';
-import { getVocabulary } from '../../helpers/vocabulary';
+import { getLetterWithWord, getVocabulary } from '../../helpers/vocabulary';
 import { playAudio, stopAudio } from '../../services/audio';
 import { FEEDBACK_SOUND_DURATION_MS, playFeedbackSound } from '../../services/sound';
 import { isSpeechRecognitionSupported, listen, stopListening } from '../../services/speech';
@@ -124,6 +125,14 @@ const Practice = () => {
   const result: AnswerResult | null = state.answered ? (isAnswerCorrect(question, state) ? 'correct' : 'incorrect') : null;
   const actionLabel = !state.answered ? 'Next' : isLastQuestion ? 'See results' : 'Continue';
 
+  const correctClass = consonantClasses.find((consonantClass) => consonantClass.id === question.answer.consonantClass);
+  const correctAnswer =
+    question.mode === 'class' && correctClass ? (
+      `group ${correctClass.group}, ${correctClass.shortName}`
+    ) : (
+      <span lang="th">{getLetterWithWord(question.answer)}</span>
+    );
+
   const handleSelectAnswer = (answer: VocabularyItem) => {
     dispatch({ type: 'SELECT_ANSWER', answerId: answer.id });
     playWordAudio(answer);
@@ -187,6 +196,7 @@ const Practice = () => {
   return (
     <div className="mx-auto flex max-w-[42rem] flex-col">
       <h1 className="sr-only">Practice</h1>
+      <BackLink to="/practice">Practice</BackLink>
       <div className="mb-4 flex items-center gap-3">
         <ProgressBar
           current={state.currentQuestionIndex + (state.answered ? 1 : 0)}
@@ -261,12 +271,7 @@ const Practice = () => {
       </PracticeQuestion>
       <PracticeFeedback
         result={result}
-        correctAnswer={question.answer}
-        correctClass={
-          question.mode === 'class'
-            ? consonantClasses.find((consonantClass) => consonantClass.id === question.answer.consonantClass)
-            : undefined
-        }
+        correctAnswer={correctAnswer}
         actionLabel={actionLabel}
         actionDisabled={!state.answered && !hasAnswer(question, state)}
         onAction={handleAction}
