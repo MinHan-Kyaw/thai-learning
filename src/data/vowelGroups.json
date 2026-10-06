@@ -1,0 +1,24 @@
+[
+  {
+    "id": "short",
+    "name": "Short vowels",
+    "shortName": "Short",
+    "tones": ["Low", "Low", "High"]
+  },
+  {
+    "id": "long",
+    "name": "Long vowels",
+    "shortName": "Long",
+    "tones": ["Mid", "Rising", "Mid"]
+  },
+  {
+    "id": "extra",
+    "name": "Extra vowels",
+    "shortName": "Extra"
+  },
+  {
+    "id": "standalone",
+    "name": "Standalone vowels",
+    "shortName": "Standalone"
+  }
+]
