@@ -4,13 +4,14 @@ import { classNames } from '../../helpers/classNames';
 
 const NAV_ITEMS = [
   { to: '/consonants', label: 'Consonants' },
+  { to: '/vowels', label: 'Vowels' },
   { to: '/practice', label: 'Practice' },
 ];
 
 const Layout = () => (
   <div className="flex min-h-dvh flex-col">
     <header className="sticky top-0 z-10 h-header border-b-2 border-line bg-surface">
-      <div className="mx-auto flex max-w-content items-center justify-between gap-4 px-4 py-3">
+      <div className="mx-auto flex max-w-content items-center justify-between gap-2 px-4 py-3">
         <Link to="/" className="inline-flex items-center gap-2 rounded-xl text-xl font-extrabold text-brand no-underline">
           <span
             className="inline-grid size-9 place-items-center rounded-xl bg-brand font-thai text-xl leading-none font-medium text-white"
@@ -21,14 +22,14 @@ const Layout = () => (
           <span className="max-xs:sr-only">Thai Learning</span>
         </Link>
         <nav aria-label="Main">
-          <ul className="flex gap-1" role="list">
+          <ul className="flex sm:gap-1" role="list">
             {NAV_ITEMS.map(({ to, label }) => (
               <li key={to}>
                 <NavLink
                   to={to}
                   className={({ isActive }) =>
                     classNames(
-                      'inline-flex min-h-11 items-center rounded-xl px-3 py-2 font-bold no-underline hover:bg-brand-light hover:text-brand',
+                      'inline-flex min-h-11 items-center rounded-xl px-1 py-2 text-sm font-bold no-underline hover:bg-brand-light hover:text-brand xs:px-2 xs:text-[0.9375rem] sm:px-3 sm:text-base',
                       isActive ? 'bg-brand-light text-brand' : 'text-ink-muted'
                     )
                   }

@@ -1,0 +1,194 @@
+[
+  {
+    "id": "-ะ",
+    "group": "short",
+    "sound": "a",
+    "pronunciation": "အ"
+  },
+  {
+    "id": "-ิ",
+    "group": "short",
+    "sound": "i",
+    "pronunciation": "အိ"
+  },
+  {
+    "id": "-ึ",
+    "group": "short",
+    "sound": "eu",
+    "pronunciation": "အု"
+  },
+  {
+    "id": "-ุ",
+    "group": "short",
+    "sound": "u",
+    "pronunciation": "ဥ"
+  },
+  {
+    "id": "เ-ะ",
+    "group": "short",
+    "sound": "e",
+    "pronunciation": "အေ့"
+  },
+  {
+    "id": "แ-ะ",
+    "group": "short",
+    "sound": "ae",
+    "pronunciation": "အဲ့"
+  },
+  {
+    "id": "โ-ะ",
+    "group": "short",
+    "sound": "o",
+    "pronunciation": "အို့"
+  },
+  {
+    "id": "เ-าะ",
+    "group": "short",
+    "sound": "aw",
+    "pronunciation": "အော့"
+  },
+  {
+    "id": "เ-อะ",
+    "group": "short",
+    "sound": "oe",
+    "pronunciation": "အွတ်"
+  },
+  {
+    "id": "เ-ียะ",
+    "group": "short",
+    "sound": "ia",
+    "pronunciation": "အီရ"
+  },
+  {
+    "id": "เ-ือะ",
+    "group": "short",
+    "sound": "eua",
+    "pronunciation": "အူရ"
+  },
+  {
+    "id": "-ัวะ",
+    "group": "short",
+    "sound": "ua",
+    "pronunciation": "အူဝ"
+  },
+  {
+    "id": "-า",
+    "group": "long",
+    "sound": "aa",
+    "pronunciation": "အား"
+  },
+  {
+    "id": "-ี",
+    "group": "long",
+    "sound": "ii",
+    "pronunciation": "အီး"
+  },
+  {
+    "id": "-ือ",
+    "group": "long",
+    "sound": "euu",
+    "pronunciation": "အူး"
+  },
+  {
+    "id": "-ู",
+    "group": "long",
+    "sound": "uu",
+    "pronunciation": "ဦး"
+  },
+  {
+    "id": "เ-",
+    "group": "long",
+    "sound": "ee",
+    "pronunciation": "အေး"
+  },
+  {
+    "id": "แ-",
+    "group": "long",
+    "sound": "aae",
+    "pronunciation": "အဲ"
+  },
+  {
+    "id": "โ-",
+    "group": "long",
+    "sound": "oo",
+    "pronunciation": "အိုး"
+  },
+  {
+    "id": "-อ",
+    "group": "long",
+    "sound": "aaw",
+    "pronunciation": "အော"
+  },
+  {
+    "id": "เ-อ",
+    "group": "long",
+    "sound": "ooe",
+    "pronunciation": "အူ"
+  },
+  {
+    "id": "เ-ีย",
+    "group": "long",
+    "sound": "iia",
+    "pronunciation": "အီးရား"
+  },
+  {
+    "id": "เ-ือ",
+    "group": "long",
+    "sound": "euua",
+    "pronunciation": "အူးရား"
+  },
+  {
+    "id": "-ัว",
+    "group": "long",
+    "sound": "uua",
+    "pronunciation": "အူးဝါး"
+  },
+  {
+    "id": "-ำ",
+    "group": "extra",
+    "sound": "am",
+    "pronunciation": "အမ်း"
+  },
+  {
+    "id": "ใ-",
+    "group": "extra",
+    "sound": "ai",
+    "pronunciation": "အိုင်း"
+  },
+  {
+    "id": "ไ-",
+    "group": "extra",
+    "sound": "ai",
+    "pronunciation": "အိုင်း"
+  },
+  {
+    "id": "เ-า",
+    "group": "extra",
+    "sound": "ao",
+    "pronunciation": "အောင်း"
+  },
+  {
+    "id": "ฤ",
+    "group": "standalone",
+    "sound": "reu",
+    "pronunciation": "ရူ"
+  },
+  {
+    "id": "ฤๅ",
+    "group": "standalone",
+    "sound": "reuu",
+    "pronunciation": "ရူး"
+  },
+  {
+    "id": "ฦ",
+    "group": "standalone",
+    "sound": "leu",
+    "pronunciation": "လူ"
+  },
+  {
+    "id": "ฦๅ",
+    "group": "standalone",
+    "sound": "leuu",
+    "pronunciation": "လူး"
+  }
+]
