@@ -13,7 +13,7 @@ const VowelCard = ({ vowel }: VowelCardProps) => (
       {vowel.id}
     </h3>{' '}
     <span className="text-sm font-bold text-ink-muted">{vowel.sound}</span>{' '}
-    <span className="font-burmese text-sm text-ink-muted" lang="my">
+    <span className="font-burmese text-sm text-brand" lang="my">
       {vowel.pronunciation}
     </span>
   </article>

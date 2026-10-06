@@ -33,7 +33,7 @@ const VowelTable = ({ vowels, consonantClasses, labelledBy }: VowelTableProps) =
                 {getVowelLabel(vowel)}
               </span>{' '}
               <span className="text-sm font-bold text-ink-muted">{vowel.sound}</span>{' '}
-              <span className="font-burmese text-sm font-normal text-ink-muted" lang="my">
+              <span className="font-burmese text-sm font-normal text-brand" lang="my">
                 {vowel.pronunciation}
               </span>
             </th>
